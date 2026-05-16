@@ -1,5 +1,11 @@
+﻿using Microsoft.AspNetCore.Connections;
+using Microsoft.EntityFrameworkCore;
+using UniDocs.Data;
+
 namespace UniDocs
 {
+    // Đăng ký DbContext vào hệ thống
+    // ===== Thêm kết nối Database =====
     public class Program
     {
         public static void Main(string[] args)
@@ -8,6 +14,12 @@ namespace UniDocs
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+
+            // ===== -> Cho phép toàn bộ Web sử dụng được AppDbContext =====
+            builder.Services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
             var app = builder.Build();
 
@@ -20,7 +32,8 @@ namespace UniDocs
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+
+            app.UseStaticFiles(); // Phải được kích hoạt để có thể đọc được style.css và main.js trong thư mục wwwroot
 
             app.UseRouting();
 

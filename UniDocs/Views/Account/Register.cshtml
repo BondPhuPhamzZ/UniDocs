@@ -1,0 +1,94 @@
+﻿@{
+    ViewData["Title"] = "Đăng ký";
+}
+<!-- Nội dung Đăng ký -->
+<div class="container flex-grow-1 d-flex align-items-center justify-content-center py-5">
+    <div class="card border-0 shadow-sm"
+         style="max-width: 500px; width: 100%">
+        <div class="card-body p-4 p-md-5">
+            <div class="text-center mb-4">
+                <i class="bi bi-person-plus-fill fs-1 text-primary"></i>
+                <h3 class="fw-bold mt-2">Đăng ký tài khoản</h3>
+                <p class="text-muted small">
+                    Tham gia cộng đồng sinh viên chia sẻ tài liệu lớn nhất
+                </p>
+            </div>
+
+            <form>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="firstName" class="form-label fw-bold small">Tên</label>
+                        <input type="text"
+                               class="form-control"
+                               id="firstName"
+                               placeholder="Tên của bạn" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="lastName" class="form-label fw-bold small">Họ</label>
+                        <input type="text"
+                               class="form-control"
+                               id="lastName"
+                               placeholder="Họ của bạn" />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="university" class="form-label fw-bold small">Trường Đại học</label>
+                    <select class="form-select" id="university">
+                        <option value="">Chọn trường đại học...</option>
+                        <option value="1">Đại học Bách Khoa HN</option>
+                        <option value="2">Đại học Khoa học Tự nhiên</option>
+                        <option value="3">Đại học FPT</option>
+                        <option value="4">Khác...</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label fw-bold small">Email sinh viên (Nên dùng đuôi .edu.vn)</label>
+                    <input type="email"
+                           class="form-control"
+                           id="email"
+                           placeholder="mssv@student.edu.vn" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label fw-bold small">Mật khẩu</label>
+                    <input type="password"
+                           class="form-control"
+                           id="password"
+                           placeholder="Tạo mật khẩu (ít nhất 6 ký tự)" />
+                </div>
+
+                <div class="mb-4 form-check">
+                    <input type="checkbox"
+                           class="form-check-input"
+                           id="terms"
+                           required />
+                    <label class="form-check-label small text-muted" for="terms">
+                        Tôi đồng ý với các
+                        <a href="#" class="text-decoration-none">Điều khoản dịch vụ</a>
+                        và
+                        <a href="#" class="text-decoration-none">Chính sách bảo mật</a>
+                        của UniDoc.
+                    </label>
+                </div>
+
+                <button type="submit"
+                        class="btn btn-primary w-100 fw-bold py-2 mb-3">
+                    Đăng ký thành viên
+                </button>
+
+                <!-- Advanced Feature: OTP Info -->
+                <div class="alert alert-info py-2 small mb-0 text-center">
+                    <i class="bi bi-info-circle me-1"></i> Mã xác nhận OTP sẽ được gửi
+                    về email của bạn sau khi nhấn Đăng ký.
+                </div>
+            </form>
+
+            <div class="text-center mt-4 small">
+                Đã có tài khoản?
+                <a href="login.html" class="text-decoration-none fw-bold">Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+</div>

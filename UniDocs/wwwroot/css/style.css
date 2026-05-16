@@ -1,0 +1,44 @@
+/* Chỉ giữ lại các CSS custom tối thiểu, ưu tiên dùng class của Bootstrap 5 */
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+}
+
+/* Hiệu ứng hover nhẹ cho danh sách tài liệu */
+.list-item-hover {
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+  border: 1px solid #e9ecef !important;
+}
+
+.list-item-hover:hover {
+  background-color: #f8f9fa;
+  transform: translateX(5px); /* Trượt nhẹ sang phải thay vì bay lên bóng bẩy */
+  border-color: #dee2e6 !important;
+}
+
+/* Tùy chỉnh icon file cho đẹp mắt hơn */
+.bi-file-earmark-pdf,
+.bi-file-earmark-word {
+  opacity: 0.8;
+}
+
+/* Form check cho bộ lọc */
+.form-check-label {
+  cursor: pointer;
+}
+
+/* Nút thêm vào yêu thích (user) -> nằm trên card tài liệu */
+/* Hiệu ứng khi bấm nút Yêu thích */
+.btn-favorite-active {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.btn-favorite-active i::before {
+    content: "\F415"; /* Chuyển icon bi-heart thành bi-heart-fill */
+}
+
