@@ -47,6 +47,10 @@
 
                 @* Khối các Login/ Register (bên phải) *@
                 <div class="d-flex align-items-center gap-2">
+                    @* ===== Xem tạm Profile ===== *@
+                    <a asp-controller="Account" asp-action="Profile" class="btn btn-warning btn-sm fw-bold px-3 text-dark">
+                        <i class="bi bi-person-circle"></i> Xem Profile
+                    </a>
                     <a asp-controller="Account" asp-action="Login" class="btn btn-light btn-sm text-primary fw-bold px-3">Đăng nhập</a>
                     <a asp-controller="Account" asp-action="Register" class="btn btn-light btn-sm text-primary fw-bold px-3">Đăng ký</a>
                 </div>
