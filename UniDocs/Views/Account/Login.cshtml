@@ -12,58 +12,30 @@
                 <p class="text-muted small">Chào mừng bạn quay lại với UniDoc!</p>
             </div>
 
-            <div class="alert alert-info py-2 small mb-4">
-                <strong>Tài khoản Demo:</strong><br />
-                - Admin: <code>admin@unidoc.com</code> / Mật khẩu:
-                <code>admin123</code><br />
-                - Sinh viên: Nhập bất kỳ
-            </div>
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger text-center small fw-bold">@ViewBag.Error</div>
+            }
 
-            <form id="loginForm">
+            <form asp-controller="Account" asp-action="Login" method="post">
                 <div class="mb-3">
-                    <label for="email" class="form-label fw-bold small">Email đăng nhập</label>
-                    <input type="email"
-                           class="form-control"
-                           id="email"
-                           placeholder="Ví dụ: admin@unidoc.com"
-                           required />
+                    <label class="form-label fw-bold small">Email đăng nhập</label>
+                    <input type="email" name="email" class="form-control" placeholder="Ví dụ: admin@unidoc.com" required />
                 </div>
                 <div class="mb-3">
-                    <div class="d-flex justify-content-between">
-                        <label for="password" class="form-label fw-bold small">Mật khẩu</label>
-                        <a href="#" class="text-decoration-none small text-primary">Quên mật khẩu?</a>
-                    </div>
-                    <input type="password"
-                           class="form-control"
-                           id="password"
-                           placeholder="Nhập mật khẩu"
-                           required />
-                </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="rememberMe" />
-                    <label class="form-check-label small" for="rememberMe">Ghi nhớ đăng nhập</label>
+                    <label class="form-label fw-bold small">Mật khẩu</label>
+                    <input type="password" name="password" class="form-control" placeholder="Nhập mật khẩu" required />
                 </div>
 
-                <button type="submit"
-                        class="btn btn-primary w-100 fw-bold py-2 mb-3">
-                    Đăng nhập
-                </button>
-
-                <!-- Login Google -->
-                <div class="d-flex align-items-center mb-3">
-                    <hr class="flex-grow-1" />
-                    <span class="mx-2 text-muted small">HOẶC</span>
-                    <hr class="flex-grow-1" />
-                </div>
-                <button type="button" class="btn btn-outline-danger w-100 py-2">
-                    <i class="bi bi-google me-2"></i> Đăng nhập bằng Google
-                </button>
+                <button type="submit" class="btn btn-primary w-100 fw-bold py-2 mb-3">Đăng nhập</button>
             </form>
+
 
             <div class="text-center mt-4 small">
                 Chưa có tài khoản?
-                <a href="register.html" class="text-decoration-none fw-bold">Đăng ký ngay</a>
+                <a asp-controller="Account" asp-action="Register" class="text-decoration-none fw-bold">Đăng ký ngay</a>
             </div>
+
         </div>
     </div>
 </div>

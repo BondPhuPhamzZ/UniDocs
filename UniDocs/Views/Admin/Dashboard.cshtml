@@ -1,0 +1,97 @@
+﻿@{
+    // Ép trang này sử dụng Layout riêng của Admin
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Quản lý Báo cáo";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="m-0 fw-bold">Danh sách Tài liệu bị Báo cáo vi phạm</h4>
+    <button class="btn btn-primary btn-sm">
+        <i class="bi bi-arrow-clockwise"></i> Làm mới
+    </button>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col" class="ps-4">Tên tài liệu</th>
+                        <th scope="col">Người đăng</th>
+                        <th scope="col">Lý do báo cáo</th>
+                        <th scope="col">Ngày báo cáo</th>
+                        <th scope="col" class="text-end pe-4">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dòng 1 -->
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-file-earmark-zip text-warning fs-4 me-3"></i>
+                                <div>
+                                    <a href="#" class="text-decoration-none text-dark fw-bold">Source Code Đồ án Web bán hàng</a>
+                                    <div class="text-muted small">Môn: Lập trình Web</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div>DevMaster</div>
+                            <div class="text-muted small">dev@student.edu.vn</div>
+                        </td>
+                        <td>
+                            <span class="badge bg-danger-subtle text-danger">Chứa mã độc / Virus</span>
+                        </td>
+                        <td>14/05/2026</td>
+                        <td class="text-end pe-4">
+                            <button class="btn btn-sm btn-outline-primary" title="Tải về kiểm tra">
+                                <i class="bi bi-download"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger ms-1" title="Xóa tài liệu">
+                                <i class="bi bi-trash"></i> Xóa
+                            </button>
+                            <button class="btn btn-sm btn-success ms-1" title="Bỏ qua báo cáo">
+                                <i class="bi bi-check-lg"></i> Bỏ qua
+                            </button>
+                        </td>
+                    </tr>
+                    <!-- Dòng 2 -->
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-file-earmark-pdf text-danger fs-4 me-3"></i>
+                                <div>
+                                    <a href="#" class="text-decoration-none text-dark fw-bold">Đề thi cuối kỳ Toán CC 1</a>
+                                    <div class="text-muted small">Môn: Toán cao cấp 1</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div>NamNguyen99</div>
+                            <div class="text-muted small">nam@student.edu.vn</div>
+                        </td>
+                        <td>
+                            <span class="badge bg-warning-subtle text-warning">Sai môn học / Rác</span>
+                        </td>
+                        <td>13/05/2026</td>
+                        <td class="text-end pe-4">
+                            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i></button>
+                            <button class="btn btn-sm btn-danger ms-1"><i class="bi bi-trash"></i> Xóa</button>
+                            <button class="btn btn-sm btn-success ms-1"><i class="bi bi-check-lg"></i> Bỏ qua</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Phân trang -->
+<nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-end">
+        <li class="page-item disabled"><a class="page-link" href="#">Trước</a></li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">Sau</a></li>
+    </ul>
+</nav>

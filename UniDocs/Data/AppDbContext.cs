@@ -3,6 +3,8 @@ using UniDocs.Models;
 
 namespace UniDocs.Data
 {
+    // ========== DATABASE CHÍNH ==========
+
     // ===== Cây cầu nối -> Lấy 4 class trong thư mục Data tạo thành 4 cái bảng trong CSDL =====
     public class AppDbContext : DbContext
     {

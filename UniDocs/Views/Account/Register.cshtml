@@ -14,7 +14,7 @@
                 </p>
             </div>
 
-            <form>
+            @* <form>
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="firstName" class="form-label fw-bold small">Tên</label>
@@ -83,11 +83,52 @@
                     <i class="bi bi-info-circle me-1"></i> Mã xác nhận OTP sẽ được gửi
                     về email của bạn sau khi nhấn Đăng ký.
                 </div>
+            </form> *@
+
+
+            <!-- Hiển thị lỗi nếu có -->
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger text-center small fw-bold">@ViewBag.Error</div>
+            }
+
+            <form asp-controller="Account" asp-action="Register" method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold small">Tên</label>
+                        <input type="text" name="firstName" class="form-control" placeholder="Tên của bạn" required />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold small">Họ</label>
+                        <input type="text" name="lastName" class="form-control" placeholder="Họ của bạn" required />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold small">Trường Đại học</label>
+                    <select name="university" class="form-select">
+                        <option value="">Chọn trường đại học...</option>
+                        <option value="Đại học Ngoại ngữ - Tin học TP.HCM">Đại học Ngoại ngữ - Tin học TP.HCM</option>
+                        <option value="Đại học Bách Khoa HN">Đại học Bách Khoa HN</option>
+                        <option value="Đại học Khoa học Tự nhiên">Đại học Khoa học Tự nhiên</option>
+                        <option value="Đại học FPT">Đại học FPT</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold small">Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="mssv@student.edu.vn" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold small">Mật khẩu</label>
+                    <input type="password" name="password" class="form-control" placeholder="Tạo mật khẩu" required />
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 fw-bold py-2 mb-3">Đăng ký thành viên</button>
             </form>
+
 
             <div class="text-center mt-4 small">
                 Đã có tài khoản?
-                <a href="login.html" class="text-decoration-none fw-bold">Đăng nhập</a>
+                <a asp-controller="Account" asp-action="Login" class="text-decoration-none fw-bold">Đăng nhập</a>
             </div>
         </div>
     </div>

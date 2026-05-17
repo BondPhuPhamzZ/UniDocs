@@ -1,0 +1,86 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Danh mục Môn học";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="m-0 fw-bold">Danh sách Môn học</h4>
+    <button class="btn btn-success btn-sm fw-bold" data-bs-toggle="modal" data-bs-target="#addCourseModal">
+        <i class="bi bi-plus-circle"></i> Thêm môn học mới
+    </button>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col" class="ps-4">Mã môn</th>
+                        <th scope="col">Tên môn học</th>
+                        <th scope="col">Thuộc Khoa</th>
+                        <th scope="col" class="text-center">Số tài liệu</th>
+                        <th scope="col" class="text-end pe-4">Hành động</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td class="ps-4 fw-bold">IT101</td>
+                        <td>Nhập môn Lập trình C</td>
+                        <td><span class="badge bg-light text-dark border">Công nghệ thông tin</span></td>
+                        <td class="text-center fw-bold text-primary">124</td>
+                        <td class="text-end pe-4">
+                            <button class="btn btn-sm btn-outline-secondary" title="Sửa"><i class="bi bi-pencil"></i></button>
+                            <button class="btn btn-sm btn-outline-danger ms-1" title="Xóa"><i class="bi bi-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal Thêm môn học -->
+<div class="modal fade" id="addCourseModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow">
+
+            <div class="modal-header bg-success text-white border-0">
+                <h5 class="modal-title"><i class="bi bi-plus-circle"></i> Thêm Môn học Mới</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body p-4">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Mã môn học</label>
+                        <input type="text" class="form-control" placeholder="VD: IT202" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Tên môn học</label>
+                        <input type="text" class="form-control" placeholder="VD: Trí tuệ nhân tạo" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Thuộc Khoa</label>
+                        <select class="form-select">
+                            <option>Công nghệ thông tin</option>
+                            <option>Kinh tế</option>
+                            <option>Đông phương</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-success fw-bold">Lưu môn học</button>
+            </div>
+
+        </div>
+    </div>
+</div>

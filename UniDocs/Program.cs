@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Connections;
 using Microsoft.EntityFrameworkCore;
 using UniDocs.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace UniDocs
 {
@@ -13,12 +14,23 @@ namespace UniDocs
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            //builder.Services.AddControllersWithViews();
 
 
-            // ===== -> Cho phép toàn bộ Web sử dụng được AppDbContext =====
+            // ===== -> Khai báo Database =====
             builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+            // ===== Khai báo Cookie Authentication (cấu hình mới) =====
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login"; // Nếu chưa login mà đòi vào trang cấm, sẽ bị đuổi về đây
+                    options.AccessDeniedPath = "/Account/Login";
+                });
+
+            builder.Services.AddControllersWithViews();
 
 
             var app = builder.Build();
@@ -36,6 +48,12 @@ namespace UniDocs
             app.UseStaticFiles(); // Phải được kích hoạt để có thể đọc được style.css và main.js trong thư mục wwwroot
 
             app.UseRouting();
+
+
+            // Kích hoạt xác thực và phân quyền
+            app.UseAuthentication();
+            app.UseAuthorization();
+
 
             app.UseAuthorization();
 
