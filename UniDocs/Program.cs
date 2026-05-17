@@ -52,7 +52,6 @@ namespace UniDocs
 
             // Kích hoạt xác thực và phân quyền
             app.UseAuthentication();
-            app.UseAuthorization();
 
 
             app.UseAuthorization();
