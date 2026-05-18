@@ -56,8 +56,8 @@ namespace UniDocs.Migrations
                     DocType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AcademicYear = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UploadData = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DowloadCount = table.Column<int>(type: "int", nullable: false),
+                    UploadDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DownloadCount = table.Column<int>(type: "int", nullable: false),
                     IsApproved = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     CourseId = table.Column<int>(type: "int", nullable: false)

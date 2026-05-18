@@ -71,7 +71,7 @@ namespace UniDocs.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DowloadCount")
+                    b.Property<int>("DownloadCount")
                         .HasColumnType("int");
 
                     b.Property<string>("FilePath")
@@ -86,7 +86,7 @@ namespace UniDocs.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<DateTime>("UploadData")
+                    b.Property<DateTime>("UploadDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UserId")

@@ -12,7 +12,7 @@ using UniDocs.Data;
 namespace UniDocs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260515172623_InitialCreate")]
+    [Migration("20260518141208_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -74,7 +74,7 @@ namespace UniDocs.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DowloadCount")
+                    b.Property<int>("DownloadCount")
                         .HasColumnType("int");
 
                     b.Property<string>("FilePath")
@@ -89,7 +89,7 @@ namespace UniDocs.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<DateTime>("UploadData")
+                    b.Property<DateTime>("UploadDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UserId")

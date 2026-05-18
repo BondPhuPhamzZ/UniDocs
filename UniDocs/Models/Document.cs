@@ -39,7 +39,7 @@ namespace UniDocs.Models
 
 
         // 8. So luong user DOWLOAD docs ve
-        public int DowloadCount { get; set; } = 0;
+        public int DownloadCount { get; set; } = 0;
 
 
         // 9. Khi UPLOAD thì tài liệu cần đc Admin duyệt -> Default là FALSE -> đang chờ duyệt

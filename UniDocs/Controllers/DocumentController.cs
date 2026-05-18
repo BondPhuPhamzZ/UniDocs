@@ -55,18 +55,19 @@ namespace UniDocs.Controllers
             string uniqueFileName = DateTime.Now.Ticks.ToString() + "_" + uploadedFile.FileName;
             // 4. Tìm đường dẫn tới thư mục wwwroot/ uploads
             string uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");
+
             string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-            // 5. Copy file từ trình duyệt của người dùng vào ổ cứng máy chủ
+            // 5. Copy file (Bơm file vào ổ cứng) từ trình duyệt của người dùng vào ổ cứng máy chủ
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
                 await uploadedFile.CopyToAsync(fileStream);
             }
 
             // 6. Cập nhật các thông tin còn thiếu cho Object Document
-            model.FilePath = "/uploads" + uniqueFileName; // Lưu đường dẫn tương đối vào DB
+            model.FilePath = "/uploads/" + uniqueFileName; // Lưu đường dẫn tương đối vào DB
             model.UploadDate = DateTime.Now;
-            model.DowloadCount = 0;
+            model.DownloadCount = 0;
             model.IsApproved = false; // Mặc định là chờ duyệt -> hệ thống Auto-Moderation AI sẽ can thiệp sau 
 
             // Lấy ID của người dùng đang đăng nhập từ Cookie
