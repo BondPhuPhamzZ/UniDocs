@@ -5,6 +5,7 @@
 <div class="container flex-grow-1 py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
+
             <div class="d-flex align-items-center mb-4">
                 <i class="bi bi-cloud-arrow-up fs-2 text-primary me-3"></i>
                 <div>
@@ -15,9 +16,85 @@
                 </div>
             </div>
 
+
             <div class="card border-0 shadow-sm">
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger">@ViewBag.Error</div>
+                }
+
+                <!-- Thêm method và enctype bắt buộc để truyền file -->
+                <form asp-controller="Document" asp-action="Upload" method="post" enctype="multipart/form-data">
+
+                    @* Chọn file muốn up có định dạng phù hợp *@
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Chọn file tải lên <span class="text-danger">*</span></label>
+                        <div class="border border-2 border-dashed rounded bg-light text-center p-5">
+                            <i class="bi bi-file-earmark-arrow-up fs-1 text-muted mb-2"></i>
+                            <h5>Click để chọn file</h5>
+                            <p class="text-muted small mb-3">Hỗ trợ định dạng: PDF, DOCX, PPTX, ZIP (Tối đa 50MB)</p>
+
+                            <input type="file" name="uploadedFile" class="form-control" required />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Tên tài liệu <span class="text-danger">*</span></label>
+                        <input type="text" name="Title" class="form-control" placeholder="Ví dụ: Đề thi giữa kỳ môn Cơ sở dữ liệu 2023" required />
+                    </div>
+
+
+                    <div class="row">
+                        @* Chọn môn *@
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold small">Môn học <span class="text-danger">*</span></label>
+                            <select name="CourseId" class="form-select" required>
+                                <option value="">Chọn môn học...</option>
+                                @if (ViewBag.Courses != null)
+                                {
+                                    foreach (var course in ViewBag.Courses)
+                                    {
+                                        <option value="@course.Id">@course.CourseName (@course.CourseCode)</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold small">Loại tài liệu</label>
+                            <select name="DocType" class="form-select">
+                                <option value="Đề thi / Kiểm tra">Đề thi / Kiểm tra</option>
+                                <option value="Bài giảng / Slide">Bài giảng / Slide</option>
+                                <option value="Bài tập lớn">Bài tập lớn</option>
+                                <option value="Khác">Khác</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">Năm học</label>
+                        <input type="text" name="AcademicYear" class="form-control" placeholder="Ví dụ: 2023-2024" />
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">Mô tả thêm (Tùy chọn)</label>
+                        <textarea name="Description" class="form-control" rows="3" placeholder="Ghi chú thêm về tài liệu..."></textarea>
+                    </div>
+
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary px-4 fw-bold">
+                            <i class="bi bi-cloud-upload me-1"></i> Gửi Tài Liệu
+                        </button>
+                    </div>
+
+                </form>
+
+
+                @* DEMO CŨ *@
                 <div class="card-body p-4">
-                    <form>
+                    @* <form>
                         <!-- Kéo thả File (Giao diện giả lập) -->
                         <div class="mb-4">
                             <label class="form-label fw-bold small">Chọn file tải lên</label>
@@ -104,8 +181,10 @@
                                 <i class="bi bi-cloud-upload me-1"></i> Gửi Tài Liệu
                             </button>
                         </div>
-                    </form>
+                    </form> *@
                 </div>
+
+
             </div>
         </div>
     </div>

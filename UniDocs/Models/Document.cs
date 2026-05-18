@@ -35,7 +35,7 @@ namespace UniDocs.Models
 
 
         // 7. Ngay gio UP tai lieu len
-        public DateTime UploadData { get; set; } = DateTime.Now;
+        public DateTime UploadDate { get; set; } = DateTime.Now;
 
 
         // 8. So luong user DOWLOAD docs ve
