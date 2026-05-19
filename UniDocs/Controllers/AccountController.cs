@@ -25,22 +25,25 @@ namespace UniDocs.Controllers
         {
             return View();
         }
+
         // === Xử lý đăng nhập ===
         [HttpPost]
-        public async Task<IActionResult> Login(string email, string password)
+        // public async Task<IActionResult> Login(string email, string password)
+        public async Task<IActionResult> Login(User model)
         {
             // 1. Tìm user trong Database theo Email
-            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            /*var user = _context.Users.FirstOrDefault(u => u.Email == email);*/
+            var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
             // 2. Ktra tài khaonr có tồn tại, có bị khóa, pass có khớp ko
-            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(model.PasswordHash, user.PasswordHash))
             {
                 ViewBag.Error = "Email hoặc mật khẩu không chính xác!";
-                return View();
+                return View(model);
             }
             if (user.IsActive == false)
             {
                 ViewBag.Error = "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ Admin.";
-                return View();
+                return View(model);
             }
             // 3. Tạo "vé thông hành" (Cookie)
             var claims = new List<Claim>
