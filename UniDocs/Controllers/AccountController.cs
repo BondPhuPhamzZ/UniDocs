@@ -21,7 +21,7 @@ namespace UniDocs.Controllers
 
 
         // ========== Đăng nhập ===========
-        public IActionResult Login()
+        public ViewResult Login()
         {
             return View();
         }
@@ -71,25 +71,43 @@ namespace UniDocs.Controllers
 
 
         // ========== Đăng ký ==========
-        public IActionResult Register()
+        public ViewResult Register()
         {
             return View();
         }
         // === Xử lý đăng ký ===
         [HttpPost]
-        public IActionResult Register(string firstName, string lastName, string email, string password, string university)
+        public IActionResult Register(User model)
         {
-            // 1. Check email tồn tại trong db chưa
-            var emailTonTai = _context.Users.Any(u => u.Email == email);
+            // Check dữ liệu gõ vào có hợp lệ không? Dựa vào [Required] trong Model
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // Check email tồn tại trong db chưa
+            var emailTonTai = _context.Users.Any(u => u.Email == model.Email);
+            if (emailTonTai)
+            {
+                ViewBag.Error = "Email này đã được sử dụng!";
+                return View(model);
+            }
+
+            /*var emailTonTai = _context.Users.Any(u => u.Email == email);
             if (emailTonTai)
             {
                 ViewBag.Error = "Email này đã được sử dụng!";
                 return View();
-            }
-            // 2. Mã hóa mật khẩu
-            string hashedPass = BCrypt.Net.BCrypt.HashPassword(password);
-            // 3. Tạo Object User mới và lưu vào DB
-            var newUser = new User
+            }*/
+
+
+            // Mã hóa mật khẩu
+            /*string hashedPass = BCrypt.Net.BCrypt.HashPassword(password);*/
+            model.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
+
+
+            // Tạo Object User mới và lưu vào DB
+            /*var newUser = new User
             {
                 FirstName = firstName,
                 LastName = lastName,
@@ -98,8 +116,13 @@ namespace UniDocs.Controllers
                 University = university,
                 Role = "Student",
                 IsActive = true
-            };
-            _context.Users.Add(newUser);
+            };*/
+
+            model.Role = "Student";
+            model.IsActive = true;
+
+            // Lưu vào db
+            _context.Users.Add(model);
             _context.SaveChanges();
             return RedirectToAction("Login", "Account");
         }
@@ -115,7 +138,7 @@ namespace UniDocs.Controllers
 
 
         // User Profile -> Trang cá nhân
-        public IActionResult Profile()
+        public ViewResult Profile()
         {
             return View();
         }

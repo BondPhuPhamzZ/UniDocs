@@ -22,7 +22,7 @@ namespace UniDocs.Controllers
 
 
         // ===== Giao diện trang Upload (Get) =====
-        public IActionResult Upload()
+        public ViewResult Upload()
         {
             ViewBag.Courses = _context.Courses.ToList();
             return View();

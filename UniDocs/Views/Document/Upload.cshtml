@@ -1,4 +1,5 @@
-﻿@{
+﻿@model UniDocs.Models.Document;
+@{
     ViewData["Title"] = "Đăng tải tài liệu";
 }
 <!-- Nội dung Đóng góp tài liệu -->
@@ -39,17 +40,18 @@
                         </div>
                     </div>
 
+                    @* Nhập tên tài liệu *@
                     <div class="mb-3">
                         <label class="form-label fw-bold small">Tên tài liệu <span class="text-danger">*</span></label>
-                        <input type="text" name="Title" class="form-control" placeholder="Ví dụ: Đề thi giữa kỳ môn Cơ sở dữ liệu 2023" required />
+                        @* <input type="text" name="Title" class="form-control" placeholder="Ví dụ: Đề thi giữa kỳ môn Cơ sở dữ liệu 2023" required /> *@
+                        <input asp-for="Title" class="form-control" placeholder="VD: Đề thi giữa kỳ môn CSDL" required />
                     </div>
 
-
+                    @* Chọn môn *@
                     <div class="row">
-                        @* Chọn môn *@
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold small">Môn học <span class="text-danger">*</span></label>
-                            <select name="CourseId" class="form-select" required>
+                            <select asp-for="CourseId" class="form-select" required>
                                 <option value="">Chọn môn học...</option>
                                 @if (ViewBag.Courses != null)
                                 {
@@ -61,9 +63,10 @@
                             </select>
                         </div>
 
+                        @* Chọn loại tài liệu *@
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold small">Loại tài liệu</label>
-                            <select name="DocType" class="form-select">
+                            <select asp-for="DocType" class="form-select">
                                 <option value="Đề thi / Kiểm tra">Đề thi / Kiểm tra</option>
                                 <option value="Bài giảng / Slide">Bài giảng / Slide</option>
                                 <option value="Bài tập lớn">Bài tập lớn</option>
@@ -73,16 +76,19 @@
 
                     </div>
 
+                    @* Năm học *@
                     <div class="mb-3">
                         <label class="form-label fw-bold small">Năm học</label>
-                        <input type="text" name="AcademicYear" class="form-control" placeholder="Ví dụ: 2023-2024" />
+                        <input asp-for="AcademicYear" class="form-control" placeholder="Ví dụ: 2023-2024" />
                     </div>
 
+                    @* Mô tả thêm cho tài liệu *@
                     <div class="mb-4">
                         <label class="form-label fw-bold small">Mô tả thêm (Tùy chọn)</label>
-                        <textarea name="Description" class="form-control" rows="3" placeholder="Ghi chú thêm về tài liệu..."></textarea>
+                        <textarea asp-for="Description" class="form-control" rows="3" placeholder="Ghi chú thêm về tài liệu..."></textarea>
                     </div>
 
+                    @* Button gửi tlieu *@
                     <div class="text-end">
                         <button type="submit" class="btn btn-primary px-4 fw-bold">
                             <i class="bi bi-cloud-upload me-1"></i> Gửi Tài Liệu
