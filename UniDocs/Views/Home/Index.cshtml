@@ -1,29 +1,38 @@
-﻿@{
+﻿@model IEnumerable<UniDocs.Models.Document>
+@{
     ViewData["Title"] = "Thư viện tài liệu sinh viên";
 }
 
 <!-- Khung tìm kiếm -->
 <div class="bg-white border-bottom py-4 mb-4">
     <div class="container">
+
         <div class="row justify-content-center">
+
             <div class="col-md-8 text-center">
+
                 <h2 class="h4 mb-3 text-dark">
                     Tìm kiếm tài liệu học tập, giáo trình, đề thi
                 </h2>
+
                 <form class="d-flex gap-2" action="#">
                     <input type="text" class="form-control form-control-lg shadow-sm" placeholder="Nhập tên môn học, mã môn hoặc tên tài liệu..." id="searchInput" />
                     <button class="btn btn-primary btn-lg px-4 shadow-sm" type="button" id="btnSearch">
                         <i class="bi bi-search"></i>
                     </button>
                 </form>
+
                 <div class="mt-2 text-muted small">
                     Gợi ý:
                     <a href="#" class="text-decoration-none">Nhập môn lập trình</a>,
                     <a href="#" class="text-decoration-none">Kỹ thuật lập trình</a>,
                     <a href="#" class="text-decoration-none">Cấu trúc dữ liệu và giải thuật</a>
                 </div>
+
             </div>
+
         </div>
+
     </div>
 </div>
 
@@ -56,18 +65,22 @@
                     @* Loại tài liệu *@
                     <div class="mb-3">
                         <label class="form-label text-muted small fw-bold">LOẠI TÀI LIỆU</label>
+
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" checked id="type1" />
                             <label class="form-check-label small" for="type1">Đề thi / Kiểm tra</label>
                         </div>
+
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" checked id="type2" />
                             <label class="form-check-label small" for="type2">Bài giảng / Slide</label>
                         </div>
+
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="type3" />
                             <label class="form-check-label small" for="type3">Bài tập lớn (BTL)</label>
                         </div>
+
                     </div>
 
                 </div>
@@ -75,49 +88,76 @@
             </div>
         </div>
 
-        <!-- Danh sách tài liệu -> BÊN PHẢI -->
+        <!-- ===== DANH SÁCH TÀI LIỆU ===== -> BÊN PHẢI -->
         <div class="col-lg-9">
 
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="m-0 fw-bold">Tài liệu mới cập nhật</h5>
-                <span class="badge bg-secondary">1,245 tài liệu</span>
+                <span class="badge bg-secondary">@Model.Count() tài liệu</span>
             </div>
 
-            <!-- Item 1 -->
-            <div class="card mb-3 border-0 shadow-sm list-item-hover position-relative">
+            @* Vòng lặp in dữ liệu động *@
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <div class="card mb-3 border-0 shadow-sm list-item-hover position-relative">
 
-                <div class="card-body">
-                    <div class="row align-items-center">
+                        <div class="card-body">
 
-                        <div class="col-auto text-center">
-                            <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
-                        </div>
+                            <div class="row align-items-center">
 
-                        <div class="col">
-                            <a href="#" class="text-decoration-none text-dark fw-bold fs-5 stretched-link">Đề thi giữa kỳ môn Cơ sở Dữ liệu 2023 (Có đáp án)</a>
-                            <div class="text-muted small mt-1">
-                                <i class="bi bi-book"></i> Môn: Cơ sở dữ liệu •
-                                <i class="bi bi-building"></i> ĐH Bách Khoa HN
+                                @* Cột 1 => Thay đổi icon theo DocType (tạm để PDF) *@
+                                <div class="col-auto text-center">
+                                    <i class="bi-file-earmark-pdf text-danger fs-1"></i>
+                                </div>
+
+                                @* Cột 2 => Thông tin tài liệu *@
+                                <div class="col">
+                                    <!-- In Tên tài liệu -->
+                                    <a href="#" class="text-decoration-none text-dark fw-bold fs-5 stretched-link">@item.Title</a>
+
+                                    <div class="text-muted small mt-1">
+                                        @* Tên môn học *@
+                                        <i class="bi bi-book"></i> Môn: @item.Course?.CourseName •
+                                        @* Trường Đại học *@
+                                        <i class="bi bi-building"></i> @item.User?.University
+                                    </div>
+
+                                    <div class="mt-2 text-secondary small">
+                                        @* Tên người đăng và ngày tháng *@
+                                        Người đăng: <strong>@item.User?.LastName @item.User?.FirstName</strong> • Đăng vào @item.UploadDate.ToString("dd/MM/yyyy")
+                                    </div>
+                                </div>
+
+                                <!-- Cột 3: Nút bấm -->
+                                <div class="col-auto text-end d-flex flex-column gap-2 mt-3 mt-md-0">
+                                    @* Nút tải về gắn link vào FilePath *@
+                                    <a href="@item.FilePath" download class="btn btn-primary btn-sm px-3 position-relative z-3 shadow-sm rounded-pill">
+                                        <i class="bi bi-download"></i> Tải về (@item.DownloadCount)
+                                    </a>
+
+                                    <button class="btn btn-light btn-sm text-success fw-bold border shadow-sm px-3 position-relative z-3 rounded-pill btn-ai-summary" data-title="@item.Title">
+                                        <i class="bi bi-robot"></i> Tóm tắt AI
+                                    </button>
+                                </div>
+
+
                             </div>
-                            <div class="mt-2 text-secondary small">
-                                Người đăng: <strong>NamNguyen99</strong> • Đăng 2 ngày trước
-                            </div>
-                        </div>
 
-                        <div class="col-auto text-end d-flex flex-column gap-2 mt-3 mt-md-0">
-                            <button class="btn btn-primary btn-sm px-3 position-relative z-3 shadow-sm rounded-pill">
-                                <i class="bi bi-download"></i> Tải về
-                            </button>
-                            <button class="btn btn-light btn-sm text-success fw-bold border shadow-sm px-3 position-relative z-3 rounded-pill btn-ai-summary" data-title="Đề thi giữa kỳ môn Cơ sở Dữ liệu 2023">
-                                <i class="bi bi-robot"></i> Tóm tắt AI
-                            </button>
-                            <p class="mt-2 text-secondary small">Xem chi tiết -></p>
                         </div>
 
                     </div>
+                }
+            }
+            else
+            {
+                @* Nếu DB chưa có tài liệu nào *@
+                <div class="alert alert-info text-center py-5">
+                    <i class="bi bi-emoji-frown fs-1 d-block mb-3"></i>
+                    Hiện tại chưa có tài liệu nào được hệ thống kiểm duyệt!
                 </div>
-
-            </div>
+            }
 
         </div>
 

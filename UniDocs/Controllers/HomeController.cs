@@ -1,23 +1,41 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using UniDocs.Models;
+using Microsoft.EntityFrameworkCore;
+using UniDocs.Data; // Dùng cho Include
 
 namespace UniDocs.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly AppDbContext _context;
+        // Inject database vào Controller
+        private HomeController(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        /*private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-        }
+        }*/
 
         public IActionResult Index()
         {
-            return View();
+            // LinQ truy vấn DB
+            var danhSachTaiLieu = _context.Documents
+                .Include(d => d.Course) 
+                .Include(d => d.User) 
+                .Where(d => d.IsApproved == true) 
+                .OrderByDescending(d => d.UploadDate) 
+                .ToList(); // Chuyển thanh danh sách List
+
+            return View(danhSachTaiLieu);
         }
 
+        // ===== KO cần quan tâm =====
         public IActionResult Privacy()
         {
             return View();
@@ -28,5 +46,6 @@ namespace UniDocs.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }
