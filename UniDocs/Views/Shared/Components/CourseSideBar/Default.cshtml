@@ -1,0 +1,44 @@
+﻿@model IEnumerable<UniDocs.Models.Course>
+@* Sidebar bên TRÁI -> Lấy từ courses.cshtml *@
+<div class="card border-0 shadow-sm sticky-top" style="top: 20px">
+
+    <div class="card-header bg-white fw-bold border-bottom-0 pt-3">
+        Lọc theo Môn học
+    </div>
+
+    <div class="card-body">
+
+        <div class="input-group input-group-sm mb-3">
+            <input type="text" class="form-control" placeholder="Tìm môn học..." />
+            <button class="btn btn-outline-secondary" type="button">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+
+        <div class="list-group list-group-flush small">
+
+            <a asp-controller="Course" asp-action="Index"
+               class="list-group-item list-group-item-action border-0 rounded bg-primary-subtle text-primary fw-bold">
+                Tất cả môn học
+            </a>
+
+            @* Danh sách các môn học *@
+            @foreach (var course in Model)
+            {
+                // Đếm số tài liệu đã duyệt
+                int docCount = course.Documents?.Count(d => d.IsApproved) ?? 0;
+
+                // Bấm vào tên -> Truyền ID sang cho trang Detail
+                <a asp-controller="Course" asp-action="Detail" asp-route-id="@course.Id"
+                   class="list-group-item list-group-item-action border-0 d-flex justify-content-between align-items-center">
+                    @course.CourseName
+                    <span class="badge bg-secondary rounded-pill">@docCount</span>
+                </a>
+            }
+
+        </div>
+
+    </div>
+
+</div>
+

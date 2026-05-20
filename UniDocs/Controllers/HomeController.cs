@@ -8,7 +8,7 @@ namespace UniDocs.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext _context; 
         private readonly ILogger<HomeController> _logger;
 
         // Inject database vào Controller
