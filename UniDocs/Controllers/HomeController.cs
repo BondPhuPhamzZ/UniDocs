@@ -9,18 +9,20 @@ namespace UniDocs.Controllers
     public class HomeController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly ILogger<HomeController> _logger;
+
         // Inject database vào Controller
-        private HomeController(AppDbContext context)
+        public HomeController(AppDbContext context, ILogger<HomeController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
-        /*private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        /*public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }*/
+
 
         public IActionResult Index()
         {
