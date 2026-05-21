@@ -9,12 +9,12 @@ namespace UniDocs.ViewComponents
     }*/
 
     // Kế thừa ViewComponent
-    public class CourseSideBarViewComponent : ViewComponent
+    public class CourseSidebarViewComponent : ViewComponent
     {
         private readonly AppDbContext _context;
 
         // Inject db
-        public CourseSideBarViewComponent(AppDbContext context)
+        public CourseSidebarViewComponent(AppDbContext context)
         {
             _context = context;
         }
