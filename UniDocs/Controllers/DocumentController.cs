@@ -21,7 +21,7 @@ namespace UniDocs.Controllers
         }
 
 
-        // Tải file và lượt tải => ===== DOWLOAD =====
+        // Tải file và lượt tải => ===== DOWNLOAD =====
         [AllowAnonymous]
         public async Task<IActionResult> Download(int id)
         {
