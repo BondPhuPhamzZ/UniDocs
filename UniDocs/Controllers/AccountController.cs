@@ -34,17 +34,21 @@ namespace UniDocs.Controllers
             // 1. Tìm user trong Database theo Email
             /*var user = _context.Users.FirstOrDefault(u => u.Email == email);*/
             var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
+
             // 2. Ktra tài khaonr có tồn tại, có bị khóa, pass có khớp ko
             if (user == null || !BCrypt.Net.BCrypt.Verify(model.PasswordHash, user.PasswordHash))
             {
-                ViewBag.Error = "Email hoặc mật khẩu không chính xác!";
+                /*ViewBag.Error = "Email hoặc mật khẩu không chính xác!";*/
+                ModelState.AddModelError(string.Empty, "Email hoặc mật khẩu không chính xác!");
                 return View(model);
             }
             if (user.IsActive == false)
             {
-                ViewBag.Error = "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ Admin.";
+                /*ViewBag.Error = "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ Admin.";*/
+                ModelState.AddModelError(string.Empty, "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ Admin!");
                 return View(model);
             }
+
             // 3. Tạo "vé thông hành" (Cookie)
             var claims = new List<Claim>
             {
@@ -79,7 +83,7 @@ namespace UniDocs.Controllers
         [HttpPost]
         public IActionResult Register(User model)
         {
-            // Check dữ liệu gõ vào có hợp lệ không? Dựa vào [Required] trong Model
+            // Check input => [Required] trong Models
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -89,7 +93,8 @@ namespace UniDocs.Controllers
             var emailTonTai = _context.Users.Any(u => u.Email == model.Email);
             if (emailTonTai)
             {
-                ViewBag.Error = "Email này đã được sử dụng!";
+                /*ViewBag.Error = "Email này đã được sử dụng!";*/
+                ModelState.AddModelError(string.Empty, "Email này đã được sử dụng!");
                 return View(model);
             }
 

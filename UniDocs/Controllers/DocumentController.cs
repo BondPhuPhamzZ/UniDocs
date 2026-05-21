@@ -29,7 +29,8 @@ namespace UniDocs.Controllers
             var document = await _context.Documents.FindAsync(id);
             if (document == null)
             {
-                return NotFound("Tài liệu không tồn tại!");
+                ModelState.AddModelError(string.Empty, "Tài liệu không tồn tại!");
+                return NotFound();
             }
 
             // 2. Số lượt tải tăng lên và lưu lại
@@ -41,7 +42,8 @@ namespace UniDocs.Controllers
 
             if (!System.IO.File.Exists(physicalPath))
             {
-                return NotFound("Lỗi: Không tìm thấy file trong máy chủ!");
+                ModelState.AddModelError(string.Empty, "Lỗi: Không tìm thấy file trong máy chủ!");
+                return NotFound();
             }
 
             // 4. Trả file về cho trình duyệt kèm tên gốc
@@ -69,7 +71,7 @@ namespace UniDocs.Controllers
             // 1. Kiểm tra xem người dùng chọn File chưa
             if (uploadedFile == null || uploadedFile.Length == 0)
             {
-                ViewBag.Error = "Vui lòng chọn 1 file để tải lên!";
+                ModelState.AddModelError(string.Empty, "Vui lòng chọn 1 file để tải lên!");
                 ViewBag.Courses = _context.Courses.ToList();
                 return View(model);
             }
@@ -80,7 +82,7 @@ namespace UniDocs.Controllers
 
             if (!allowedExtensions.Contains(extension))
             {
-                ViewBag.Error = "Chỉ cho phép tải lên file PDF, Word, PowerPoint hoặc Zip/ Rar!";
+                ModelState.AddModelError(string.Empty, "Chỉ cho phép tải lên file PDF, Word, PowerPoint hoặc Zip/ Rar!");
                 ViewBag.Courses = _context.Courses.ToList();
                 return View(model);
             }

@@ -20,12 +20,16 @@
 
             <div class="card border-0 shadow-sm">
 
-                @if (ViewBag.Error != null)
+                @* Lỗi -> (nếu có) *@
+                <div asp-validation-summary="All" class="text-danger small fw-bold text-center mb-3"></div>
+
+                @* @if (ViewBag.Error != null)
                 {
                     <div class="alert alert-danger">@ViewBag.Error</div>
-                }
+                } *@
 
-                <!-- Thêm method và enctype bắt buộc để truyền file -->
+
+                @* ===== Form Upload tài liệu ===== *@
                 <form asp-controller="Document" asp-action="Upload" method="post" enctype="multipart/form-data">
 
                     @* Chọn file muốn up có định dạng phù hợp *@
