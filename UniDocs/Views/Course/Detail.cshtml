@@ -1,22 +1,28 @@
-﻿@{
-    ViewData["Title"] = "Chi tiết môn học";
+﻿@model UniDocs.Models.Course
+
+@{
+    ViewData["Title"] = "Chi tiết môn: " + Model.CourseName;
 }
 <!-- Breadcrumb & Header Ngành -->
 <div class="bg-white border-bottom py-3 mb-4">
     <div class="container">
 
-        @* Hiển thị địa chỉ hiện tại đang ở đâu *@
+        @* Breadcumb => Hiện tại đang ở đâu *@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-2 small">
+
                 <li class="breadcrumb-item">
-                    <a href="index.html" class="text-decoration-none">Trang chủ</a>
+                    <a href="/" class="text-decoration-none">Trang chủ</a>
                 </li>
+
                 <li class="breadcrumb-item">
-                    <a href="courses.html" class="text-decoration-none">Danh mục môn học</a>
+                    <a asp-controller="Course" asp-action="Index" class="text-decoration-none">Danh mục môn học</a>
                 </li>
+
                 <li class="breadcrumb-item active" aria-current="page">
-                    Công nghệ thông tin
+                    @Model.CourseName
                 </li>
+
             </ol>
         </nav>
 
@@ -24,15 +30,14 @@
         <div class="d-flex justify-content-between align-items-end">
 
             <div>
-                <h2 class="h3 mb-1 text-dark fw-bold">Khoa Công nghệ thông tin</h2>
+                <h2 class="h3 mb-1 text-dark fw-bold">Môn: @Model.CourseName</h2>
                 <p class="text-muted mb-0">
-                    Tổng hợp tài liệu các môn học thuộc nhóm ngành IT, Khoa học máy
-                    tính.
+                    Thuộc khoa: @Model.Department
                 </p>
             </div>
 
             <div class="text-end d-none d-md-block">
-                <span class="badge bg-primary fs-6 py-2 px-3">1,842 Tài liệu</span>
+                <span class="badge bg-primary fs-6 py-2 px-3">@Model.Documents?.Count() Tài liệu</span>
             </div>
 
         </div>
@@ -40,161 +45,35 @@
     </div>
 </div>
 
-<!-- Nội dung chính -->
+
+@* ===== MAIN CONTENT ===== *@
 <div class="container mb-5 flex-grow-1">
     <div class="row">
-        <!-- Sidebar TRÁI Lọc theo môn học -->
+
+        @* === Sidebar trái lọc môn học === *@
         <div class="col-lg-3 mb-4">
-
-            <div class="card border-0 shadow-sm sticky-top" style="top: 20px">
-
-                <div class="card-header bg-white fw-bold border-bottom-0 pt-3">
-                    Lọc theo Môn học
-                </div>
-
-                <div class="card-body">
-                    <div class="input-group input-group-sm mb-3">
-                        <input type="text"
-                               class="form-control"
-                               placeholder="Tìm môn học..." />
-
-                        <button class="btn btn-outline-secondary" type="button">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
-
-                    <div class="list-group list-group-flush small">
-                        <a href="#"
-                           class="list-group-item list-group-item-action active border-0 rounded bg-primary-subtle text-primary fw-bold">Tất cả môn (CNTT)</a>
-
-                        <a href="#"
-                           class="list-group-item list-group-item-action border-0 d-flex justify-content-between align-items-center">
-                            Nhập môn Lập trình C
-                            <span class="badge bg-secondary rounded-pill">124</span>
-                        </a>
-
-                        <a href="#"
-                           class="list-group-item list-group-item-action border-0 d-flex justify-content-between align-items-center">
-                            Cấu trúc Dữ liệu
-                            <span class="badge bg-secondary rounded-pill">89</span>
-                        </a>
-
-                        <a href="#"
-                           class="list-group-item list-group-item-action border-0 d-flex justify-content-between align-items-center">
-                            Cơ sở Dữ liệu
-                            <span class="badge bg-secondary rounded-pill">210</span>
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
+            <vc:course-sidebar></vc:course-sidebar>
         </div>
 
-        <!-- Danh sách tài liệu của Ngành -->
+        @* === Các tài liệu thuộc môn học đó === *@
         <div class="col-lg-9">
-            <!-- Thanh công cụ sắp xếp -->
-            <div class="d-flex justify-content-between align-items-center mb-3 p-2 bg-white rounded shadow-sm border">
 
-                <div class="d-flex gap-2">
-                    <button class="btn btn-sm btn-primary fw-bold">Mới nhất</button>
-                    <button class="btn btn-sm btn-outline-secondary">
-                        Tải nhiều nhất
-                    </button>
+            @if(Model.Documents != null && Model.Documents.Any())
+            {
+                foreach (var doc in Model.Documents)
+                {
+                    <partial name="_DocumentCardPartial" model="doc" />
+                }
+            }
+            else
+            {
+                <div class="alert alert-info text-center py-5">
+                    <i class="bi bi-folder-x fs-1 d-block mb-3"></i>
+                    Chưa có tài liệu nào cho môn học này! Trở thành người đầu tiên đóng góp ngay nhé.
                 </div>
-
-                <div class="text-muted small">Hiển thị 1-10 của 1,842 kết quả</div>
-            </div>
-
-            <!-- Item 1 (demo version) -->
-            <div class="card mb-3 border-0 shadow-sm list-item-hover position-relative">
-                <div class="card-body">
-
-                    <div class="row align-items-center">
-
-                        <div class="col-auto text-center">
-                            <i class="bi bi-file-earmark-zip text-warning fs-1"></i>
-                        </div>
-
-                        @* Thân card *@
-                        <div class="col">
-                            <a href="#"
-                               class="text-decoration-none text-dark fw-bold fs-5 stretched-link">Source Code Đồ án Web bán hàng (ASP.NET Core)</a>
-
-                            <div class="text-muted small mt-1">
-                                <i class="bi bi-book"></i> Môn: Lập trình Web •
-                                <span class="badge bg-light text-dark border">Bài tập lớn</span>
-                            </div>
-
-                            <div class="mt-2 text-secondary small">
-                                Người đăng: <strong>DevMaster</strong> • Đăng 3 giờ trước
-                            </div>
-
-                        </div>
-
-                        @* Các nút BÊN PHẢI *@
-                        <div class="col-auto text-end d-flex flex-column gap-2 mt-3 mt-md-0">
-                            <button class="btn btn-primary btn-sm px-3 position-relative z-3 shadow-sm rounded-pill">
-                                <i class="bi bi-download"></i> Tải về
-                            </button>
-                            <button class="btn btn-light btn-sm text-danger fw-bold border shadow-sm px-3 position-relative z-3 rounded-pill">
-                                <i class="bi bi-flag"></i> Báo cáo
-                            </button>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Item 2 (AI Version) -->
-            <div class="card mb-3 border-0 shadow-sm list-item-hover position-relative">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-auto text-center">
-                            <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
-                        </div>
-                        <div class="col">
-                            <a href="#"
-                               class="text-decoration-none text-dark fw-bold fs-5 stretched-link">Slide bài giảng Cấu trúc dữ liệu - Chương 1 đến 5</a>
-                            <div class="text-muted small mt-1">
-                                <i class="bi bi-book"></i> Môn: Cấu trúc Dữ liệu •
-                                <span class="badge bg-light text-dark border">Bài giảng</span>
-                            </div>
-                            <div class="mt-2 text-secondary small">
-                                Người đăng: <strong>GV. NguyenVanA</strong> • Đăng 2 ngày
-                                trước
-                            </div>
-                        </div>
-                        <div class="col-auto text-end d-flex flex-column gap-2 mt-3 mt-md-0">
-                            <button class="btn btn-primary btn-sm px-3 position-relative z-3 shadow-sm rounded-pill">
-                                <i class="bi bi-download"></i> Tải về
-                            </button>
-                            <button class="btn btn-light btn-sm text-success fw-bold border shadow-sm px-3 position-relative z-3 rounded-pill btn-ai-summary"
-                                    data-title="Slide bài giảng Cấu trúc dữ liệu">
-                                <i class="bi bi-robot"></i> Tóm tắt AI
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Phân trang -->
-            <nav aria-label="Page navigation" class="mt-4">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#">Trước</a>
-                    </li>
-                    <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Sau</a></li>
-                </ul>
-            </nav>
+            }
 
         </div>
+
     </div>
 </div>

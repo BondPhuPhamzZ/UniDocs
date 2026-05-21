@@ -24,9 +24,19 @@ namespace UniDocs.Controllers
 
 
         // Trang chi tiết tài liệu của 1 môn (major.html)
-        public IActionResult Detail()
+        public IActionResult Detail(int id)
         {
-            return View();
+            var course = _context.Courses
+                .Include(c => c.Documents.Where(d => d.IsApproved == true))
+                .ThenInclude(d => d.User)
+                .FirstOrDefault(c => c.Id == id);
+
+            if (course == null)
+            {
+                return NotFound("Không tìm thấy môn học!");
+            }
+
+            return View(course);
         }
 
 
