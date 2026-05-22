@@ -25,35 +25,32 @@ namespace UniDocs.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Download(int id)
         {
-            // 1. Tìm tài liệu theo ID
+            // Tìm tài liệu theo ID
             var document = await _context.Documents.FindAsync(id);
             if (document == null)
             {
-                ModelState.AddModelError(string.Empty, "Tài liệu không tồn tại!");
-                return NotFound();
+                return NotFound("Tài liệu không tồn tại!");
             }
 
-            // 2. Số lượt tải tăng lên và lưu lại
+            // Số lượt tải tăng lên và lưu lại
             document.DownloadCount += 1;
             await _context.SaveChangesAsync();
 
-            // 3. Tìm file vật lý trong ổ cứng
+            // Tìm file vật lý trong ổ cứng
             string physicalPath = Path.Combine(_env.WebRootPath, document.FilePath.TrimStart('/'));
 
             if (!System.IO.File.Exists(physicalPath))
             {
-                ModelState.AddModelError(string.Empty, "Lỗi: Không tìm thấy file trong máy chủ!");
-                return NotFound();
+                return NotFound("Lỗi: Không tìm thấy file trong máy chủ!");
             }
 
-            // 4. Trả file về cho trình duyệt kèm tên gốc
+            // Trả file về cho trình duyệt kèm tên gốc
             byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(physicalPath);
             string downloadName = document.Title + Path.GetExtension(physicalPath);
 
             return File(fileBytes, "application/octet-stream", downloadName);
 
         }
-
 
 
         // ===== Giao diện trang UPLOAD (Get) =====
@@ -68,7 +65,7 @@ namespace UniDocs.Controllers
         [HttpPost]
         public async Task<IActionResult> Upload(Document model, IFormFile uploadedFile)
         {
-            // 1. Kiểm tra xem người dùng chọn File chưa
+            // Check người dùng đã chọn file để up lên chưa
             if (uploadedFile == null || uploadedFile.Length == 0)
             {
                 ModelState.AddModelError(string.Empty, "Vui lòng chọn 1 file để tải lên!");
@@ -76,7 +73,7 @@ namespace UniDocs.Controllers
                 return View(model);
             }
 
-            // 2. Kiểm tra đuôi file (chỉ cho phép 1 số định dạng)
+            // Check đuôi file đúng định dạng
             var allowedExtensions = new[] { ".pdf", ".doc", ".docx", ".ppt", ".zip", ".rar" };
             var extension = Path.GetExtension(uploadedFile.FileName).ToLower();
 
@@ -87,10 +84,9 @@ namespace UniDocs.Controllers
                 return View(model);
             }
 
-            // 3. Tạo tên file mới để tránh bị trùng lặp (vd: 123456_dethi.pdf)
             string uniqueFileName = DateTime.Now.Ticks.ToString() + "_" + uploadedFile.FileName;
 
-            // 4. Tìm đường dẫn tới thư mục wwwroot/ uploads
+            // Đường dẫn tới thư mục cần lưu (wwwroot/ uploads)
             string uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");
 
             // Check thư mục uploads cos tồn tại
@@ -108,13 +104,13 @@ namespace UniDocs.Controllers
 
             /*string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-            // 5. Copy file (Bơm file vào ổ cứng) từ trình duyệt của người dùng vào ổ cứng máy chủ
+            // Copy file (Bơm file vào ổ cứng) từ trình duyệt của người dùng vào ổ cứng máy chủ
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
                 await uploadedFile.CopyToAsync(fileStream);
             }*/
 
-            // 6. Cập nhật các thông tin còn thiếu cho Object Document
+            // Cập nhật các thông tin còn thiếu cho Object Document => Lưu vào DB
             model.FilePath = "/uploads/" + uniqueFileName; 
             model.UploadDate = DateTime.Now;
             model.DownloadCount = 0;
@@ -124,11 +120,11 @@ namespace UniDocs.Controllers
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
             model.UserId = int.Parse(userIdStr);
 
-            // 7. Lưu vào DB
+            // Lưu vào DB
             _context.Documents.Add(model);
             await _context.SaveChangesAsync();
 
-            // Tạm thời quay về trang chủ (sau này có thể tạo thêm 1 trang thông báo "Thành Công!"
+            // Tạm thời quay về trang chủ (Dự định tạo thêm 1 trang thông báo "Thành Công!"
             return RedirectToAction("Index", "Home");
 
         }

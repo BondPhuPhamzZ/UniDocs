@@ -24,7 +24,7 @@ namespace UniDocs.ViewComponents
         {
             // Lấy dsach môn học, kèm theo đếm số lượng tài liệu đã dc duyệt của môn đó
             var courses = await _context.Courses
-                .Include(c => c.Documents)
+                .Include(c => c.Documents.Where(d => d.IsApproved == true))
                 .ToListAsync();
 
             return View(courses);
