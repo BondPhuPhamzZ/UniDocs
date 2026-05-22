@@ -1,43 +1,24 @@
-﻿@model UniDocs.Models.Course
+﻿@model IEnumerable<UniDocs.Models.Document>
 
 @{
-    ViewData["Title"] = "Chi tiết môn: " + Model.CourseName;
+    ViewData["Title"] = "Chi tiết môn: " + ViewBag.CourseName;
 }
-<!-- Breadcrumb & Header Ngành -->
+<!-- Header Ngành -->
 <div class="bg-white border-bottom py-3 mb-4">
     <div class="container">
-
-        @* Breadcumb => Hiện tại đang ở đâu *@
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-2 small">
-
-                <li class="breadcrumb-item">
-                    <a href="/" class="text-decoration-none">Trang chủ</a>
-                </li>
-
-                <li class="breadcrumb-item">
-                    <a asp-controller="Course" asp-action="Index" class="text-decoration-none">Danh mục môn học</a>
-                </li>
-
-                <li class="breadcrumb-item active" aria-current="page">
-                    @Model.CourseName
-                </li>
-
-            </ol>
-        </nav>
 
         @* Header ngành *@
         <div class="d-flex justify-content-between align-items-end">
 
             <div>
-                <h2 class="h3 mb-1 text-dark fw-bold">Môn: @Model.CourseName</h2>
+                <h2 class="h3 mb-1 text-dark fw-bold">Môn: @ViewBag.CourseName</h2>
                 <p class="text-muted mb-0">
-                    Thuộc khoa: @Model.Department
+                    Thuộc khoa: @ViewBag.Department
                 </p>
             </div>
 
             <div class="text-end d-none d-md-block">
-                <span class="badge bg-primary fs-6 py-2 px-3">@Model.Documents?.Count() Tài liệu</span>
+                <span class="badge bg-primary fs-6 py-2 px-3">@ViewBag.TotalDocuments Tài liệu</span>
             </div>
 
         </div>
@@ -50,27 +31,51 @@
 <div class="container mb-5 flex-grow-1">
     <div class="row">
 
-        @* === Sidebar trái lọc môn học === *@
+        @* === Sidebar TRÁI lọc môn học === *@
         <div class="col-lg-3 mb-4">
             <vc:course-sidebar></vc:course-sidebar>
         </div>
 
-        @* === Các tài liệu thuộc môn học đó === *@
+        @* === Khu vực các tài liệu thuộc môn học đó hiển thị (PHẢI) === *@
         <div class="col-lg-9">
 
-            @if(Model.Documents != null && Model.Documents.Any())
+            @if (Model != null && Model.Any())
             {
-                foreach (var doc in Model.Documents)
+                @* Khu vực các tài liệu đc hiển thị *@
+                foreach (var doc in Model)
                 {
                     <partial name="_DocumentCardPartial" model="doc" />
                 }
+
+                @* Thanh phân trang *@
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+
+                        @* Nút Previous *@
+                        <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                            <a class="page-link" asp-action="Detail" asp-route-id="@ViewBag.CourseId" asp-route-page="@(ViewBag.CurrentPage - 1)">Trước</a>
+                        </li>
+
+                        @* In số trang *@
+                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                <a class="page-link" asp-action="Detail" asp-route-id="@ViewBag.CourseId" asp-route-page="@i">@i</a>
+                            </li>
+                        }
+
+                        @* Nút Next *@
+                        <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                            <a class="page-link" asp-action="Detail" asp-route-id="@ViewBag.CourseId" asp-route-page="@(ViewBag.CurrentPage + 1)">Sau</a>
+                        </li>
+
+                    </ul>
+                </nav>
+
             }
             else
             {
-                <div class="alert alert-info text-center py-5">
-                    <i class="bi bi-folder-x fs-1 d-block mb-3"></i>
-                    Chưa có tài liệu nào cho môn học này! Trở thành người đầu tiên đóng góp ngay nhé.
-                </div>
+                <div class="alert alert-info text-center py-5">Chưa có tài liệu nào cho môn học này!</div>
             }
 
         </div>
