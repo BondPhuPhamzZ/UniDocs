@@ -28,7 +28,7 @@
 </div>
 
 
-<!-- KQUA Tìm kiếm (Chèn ngay dưới cái Form) -->
+@* KQua tìm kiếm (nhỏ) -> Chèn dưới Form *@
 @if (!string.IsNullOrEmpty(ViewBag.SearchQuery))
 {
     <div class="mt-4 alert alert-success text-center shadow-sm">
@@ -36,8 +36,6 @@
         <a asp-controller="Home" asp-action="Index" class="btn btn-sm btn-outline-secondary ms-3">Hủy tìm kiếm</a>
     </div>
 }
-
-
 
 @* BODY CHÍNH *@
 <div class="container mb-5 flex-grow-1">

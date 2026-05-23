@@ -34,10 +34,8 @@ namespace UniDocs.Controllers
             // Nếu người dùng nhập vào Thanh tìm kiếm
             if (!string.IsNullOrEmpty(query))
             {
-                // Tiếp tục lọc -> Lấy những tài liệu mà Tên tài liệu hoặc Tên môn học có chứa chữ mà người dùng gõ
                 documentsQuery = documentsQuery.Where(d => d.Title.Contains(query) || d.Course.CourseName.Contains(query));
 
-                // Hiển thị từ khóa tìm kiếm sang View
                 ViewBag.SearchQuery = query;
             }
 
