@@ -69,7 +69,7 @@ namespace UniDocs.Controllers
             ViewBag.TotalPages = (int)Math.Ceiling((double)totalDocs / pageSize);
             ViewBag.CurrentPage = page;
 
-            // Truy vấn bảng Documents (phân trang)
+            // Phân trang
             var documents = _context.Documents
                 .Include(d => d.User)
                 .Include(d => d.Course) // Partial-View in ra tên môn
