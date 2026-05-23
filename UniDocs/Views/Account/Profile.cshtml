@@ -1,77 +1,107 @@
-﻿@{
-    ViewData["Title"] = "Thông tin cá nhân";
+﻿@model UniDocs.Models.User
+
+@{
+    ViewData["Title"] = "Trang cá nhân";
 }
-<!-- Nội dung chính -->
+
+
 <div class="container py-5 flex-grow-1">
     <div class="row">
-        <!-- Cột trái: Thông tin cá nhân -->
+
+        @* TRÁI -> Thông tin cá nhân *@
         <div class="col-lg-4 mb-4">
             <div class="card border-0 shadow-sm">
+
                 <div class="card-body text-center p-4">
                     <i class="bi bi-person-circle text-secondary"
                        style="font-size: 5rem"></i>
-                    <h4 class="fw-bold mt-3 mb-1">Nam Nguyễn</h4>
-                    <p class="text-muted small mb-3">namnguyen@student.edu.vn</p>
+
+                    <h4 class="fw-bold mt-3 mb-1">@Model.LastName @Model.FirstName</h4>
+                    <p class="text-muted small mb-3">@Model.Email</p>
 
                     <div class="d-flex justify-content-center gap-2 mb-4">
-                        <span class="badge bg-primary-subtle text-primary border"><i class="bi bi-building"></i> ĐH Bách Khoa HN</span>
-                        <span class="badge bg-success-subtle text-success border"><i class="bi bi-star-fill"></i> Thành viên tích cực</span>
+                        <span class="badge bg-primary-subtle text-primary border"><i class="bi bi-building"></i>@Model.University</span>
                     </div>
 
                     <div class="d-flex justify-content-between text-center border-top pt-3">
                         <div>
-                            <h5 class="fw-bold text-primary mb-0">12</h5>
+                            <h5 class="fw-bold text-primary mb-0">@Model.Documents?.Count()</h5>
                             <span class="small text-muted">Tài liệu đã đăng</span>
                         </div>
                         <div>
-                            <h5 class="fw-bold text-success mb-0">450</h5>
-                            <span class="small text-muted">Lượt tải về</span>
+                            <h5 class="fw-bold text-success mb-0">@(Model.Documents?.Sum(d => d.DownloadCount) ?? 0)</h5>
+                            <span class="small text-muted">Tổng lượt tải</span>
                         </div>
                     </div>
+
                 </div>
+
             </div>
         </div>
 
-        <!-- Cột phải: Quản lý tài liệu đã đăng -->
+        @* PHẢI -> Các tài liệu đã đăng *@
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm">
 
                 <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
-                    <!-- Bootstrap Nav Tabs -->
-                    <ul class="nav nav-tabs fw-bold" id="profileTabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active text-primary" id="my-docs-tab" data-bs-toggle="tab" data-bs-target="#my-docs" type="button" role="tab">
-                                <i class="bi bi-folder2-open me-1"></i> Tài liệu của tôi
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link text-muted" id="favorites-tab" data-bs-toggle="tab" data-bs-target="#favorites" type="button" role="tab">
-                                <i class="bi bi-heart-fill text-danger me-1"></i> Đã lưu
-                            </button>
-                        </li>
-                    </ul>
+                    <h5 class="fw-bold mb-0">Tài liệu của tôi</h5>
                 </div>
 
                 <div class="card-body p-0">
-                    <div class="tab-content" id="profileTabsContent">
 
-                        <!-- TAB 1: TÀI LIỆU CỦA TÔI -->
-                        <div class="tab-pane fade show active" id="my-docs" role="tabpanel">
-                            <div class="p-4 text-center text-muted">
-                                <i class="bi bi-file-earmark-check fs-1"></i>
-                                <p class="mt-2">Danh sách tài liệu do bạn đăng tải sẽ hiện ở đây.</p>
-                            </div>
-                        </div>
+                    <table class="table table-hover align-middle mb-0">
 
-                        <!-- TAB 2: TÀI LIỆU YÊU THÍCH -->
-                        <div class="tab-pane fade" id="favorites" role="tabpanel">
-                            <div class="p-4 text-center text-muted">
-                                <i class="bi bi-bookmark-heart fs-1"></i>
-                                <p class="mt-2">Những tài liệu bạn thả tim sẽ nằm gọn ở khu vực này.</p>
-                            </div>
-                        </div>
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col" class="ps-4">Tên tài liệu</th>
+                                <th scope="col">Môn học</th>
+                                <th scope="col" class="text-center">Lượt tải</th>
+                                <th scope="col" class="text-end pe-4">Trạng thái</th>
+                            </tr>
+                        </thead>
 
-                    </div>
+                        <tbody>
+                            @if (Model.Documents != null && Model.Documents.Any())
+                            {
+                                foreach (var doc in Model.Documents)
+                                {
+                                    <tr>
+                                        <td class="ps-4">
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-file-earmark-pdf text-danger fs-4 me-3"></i>
+                                                <div>
+                                                    <a href="#" class="text-decoration-none text-dark fw-bold">@doc.Title</a>
+                                                    <div class="text-muted small" style="font-size: 0.75rem">Đăng: @doc.UploadDate.ToString("dd/MM/yyyy")</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-light text-dark border">@doc.Course?.CourseName</span>
+                                        </td>
+                                        <td class="text-center fw-bold text-primary">@doc.DownloadCount</td>
+                                        <td class="text-end pe-4">
+                                            @if (doc.IsApproved)
+                                            {
+                                                <span class="badge bg-success">Đã duyệt</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-warning text-dark">Chờ duyệt</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">Bạn chưa tải lên tài liệu nào!</td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+
                 </div>
 
             </div>

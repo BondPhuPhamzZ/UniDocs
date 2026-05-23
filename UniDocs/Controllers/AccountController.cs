@@ -4,6 +4,8 @@ using UniDocs.Data;
 using UniDocs.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace UniDocs.Controllers
 {
@@ -42,6 +44,7 @@ namespace UniDocs.Controllers
                 ModelState.AddModelError(string.Empty, "Email hoặc mật khẩu không chính xác!");
                 return View(model);
             }
+
             if (user.IsActive == false)
             {
                 /*ViewBag.Error = "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ Admin.";*/
@@ -143,9 +146,24 @@ namespace UniDocs.Controllers
 
 
         // User Profile -> Trang cá nhân
-        public ViewResult Profile()
+        [Authorize]
+        public IActionResult Profile()
         {
-            return View();
+            // Lấy id đăng nhập từ Cookie
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int userId = int.Parse(userIdStr);
+
+            // Tìm User trong db -> lấy các Documents đã upload của user đó
+            var user = _context.Users.Include(u => u.Documents)
+                // Kèm theo thông tin môn học của tài liệu đã up
+                .ThenInclude(d => d.Course).FirstOrDefault(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
         }
 
 
