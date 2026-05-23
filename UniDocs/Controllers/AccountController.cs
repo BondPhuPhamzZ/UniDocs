@@ -155,7 +155,6 @@ namespace UniDocs.Controllers
 
             // Tìm User trong db -> lấy các Documents đã upload của user đó
             var user = _context.Users.Include(u => u.Documents)
-                // Kèm theo thông tin môn học của tài liệu đã up
                 .ThenInclude(d => d.Course).FirstOrDefault(u => u.Id == userId);
 
             if (user == null)
