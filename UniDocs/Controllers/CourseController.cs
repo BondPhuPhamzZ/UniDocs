@@ -17,10 +17,32 @@ namespace UniDocs.Controllers
         }
 
         // Trang danh sách các môn học
-        public IActionResult Index()
+        public IActionResult Index(string query, int page = 1)
         {
-            var courses = _context.Courses.Include(c => c.Documents).ToList();
+            int pageSize = 6;
+
+            // AsQueryable chờ kết nối lệnh where
+            var courseQuery = _context.Courses.Include(c => c.Documents.Where(d => d.IsApproved == true)).AsQueryable();
+
+            // Nếu User gõ vào thanh tìm kiếm
+            if (!string.IsNullOrEmpty(query))
+            {
+                courseQuery = courseQuery.Where(c => c.CourseName.Contains(query));
+                ViewBag.SearchQuery = query;
+            }
+
+            // Phân trang -> Dựa trên courseQuery đã dc lọc
+            int totalCourses = courseQuery.Count();
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalCourses / pageSize);
+            ViewBag.CurrentPage = page;
+
+            var courses = courseQuery
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
             return View(courses);
+
         }
 
 
