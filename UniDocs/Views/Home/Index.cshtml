@@ -4,15 +4,29 @@
 }
 
 @* Thanh tìm kiếm ở TRÊN CÙNG *@
-<form class="d-flex gap-2" asp-controller="Home" asp-action="Index" method="get">
+<div class="bg-white border-bottom py-4 mb-4">
+    <div class="container">
+        <div class="row justify-content-center">
 
-    <input type="text" name="query" value="@ViewBag.SearchQuery" class="form-control form-control-lg shadow-sm" placeholder="Nhập tên môn học, hoặc tên tài liệu..." />
+            <div class="col-md-8 text-center">
 
-    <button class="btn btn-primary btn-lg px-4 shadow-sm" type="submit">
-        <i class="bi bi-search"></i>
-    </button>
+                <h2 class="h4 mb-3 text-dark">Tìm kiếm tài liệu học tập, giáo trình, đề thi</h2>
+                <form class="d-flex gap-2" asp-controller="Home" asp-action="Index" method="get">
 
-</form>
+                    <input type="text" name="query" value="@ViewBag.SearchQuery" class="form-control form-control-lg shadow-sm" placeholder="Nhập tên môn học, hoặc tên tài liệu..." />
+
+                    <button class="btn btn-primary btn-lg px-4 shadow-sm" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
 
 <!-- KQUA Tìm kiếm (Chèn ngay dưới cái Form) -->
 @if (!string.IsNullOrEmpty(ViewBag.SearchQuery))
