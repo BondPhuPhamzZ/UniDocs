@@ -24,17 +24,27 @@ namespace UniDocs.Controllers
         }*/
 
 
-        public IActionResult Index()
+        public IActionResult Index(string query)
         {
-            // LinQ truy vấn DB
-            var danhSachTaiLieu = _context.Documents
-                .Include(d => d.Course) 
-                .Include(d => d.User) 
-                .Where(d => d.IsApproved == true) 
-                .OrderByDescending(d => d.UploadDate) 
-                .ToList(); // Chuyển thanh danh sách List
+            var documentsQuery = _context.Documents
+                .Include(d => d.Course)
+                .Include(d => d.User)
+                .Where(d => d.IsApproved == true);
 
-            return View(danhSachTaiLieu);
+            // Nếu người dùng nhập vào Thanh tìm kiếm
+            if (!string.IsNullOrEmpty(query))
+            {
+                // Tiếp tục lọc -> Lấy những tài liệu mà Tên tài liệu hoặc Tên môn học có chứa chữ mà người dùng gõ
+                documentsQuery = documentsQuery.Where(d => d.Title.Contains(query) || d.Course.CourseName.Contains(query));
+
+                // Hiển thị từ khóa tìm kiếm sang View
+                ViewBag.SearchQuery = query;
+            }
+
+            // Sắp xếp mới nhất và chuyển thành List
+            var documents = documentsQuery.OrderByDescending(d => d.UploadDate).ToList();
+            return View(documents);
+
         }
 
         // ===== KO cần quan tâm =====
