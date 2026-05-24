@@ -6,6 +6,7 @@
 @* Thanh tìm kiếm ở TRÊN CÙNG *@
 <div class="bg-white border-bottom py-4 mb-4">
     <div class="container">
+
         <div class="row justify-content-center">
 
             <div class="col-md-8 text-center">
@@ -24,6 +25,7 @@
             </div>
 
         </div>
+
     </div>
 </div>
 
@@ -33,7 +35,6 @@
 {
     <div class="mt-4 alert alert-success text-center shadow-sm">
         Tìm thấy <strong>@Model.Count()</strong> kết quả cho từ khóa: <span class="text-danger fw-bold">"@ViewBag.SearchQuery"</span>
-        <a asp-controller="Home" asp-action="Index" class="btn btn-sm btn-outline-secondary ms-3">Hủy tìm kiếm</a>
     </div>
 }
 
