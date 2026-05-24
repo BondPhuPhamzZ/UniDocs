@@ -52,9 +52,24 @@ namespace UniDocs.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error (int? statusCode = null)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            // Lỗi 500
+            ViewBag.ErrorCode = statusCode ?? 500;
+            ViewBag.ErrorTitle = "Đã xảy ra lỗi hệ thống!";
+            ViewBag.ErrorMessage = "Chúng tôi đang khác phục sự cố. Vui lòng quay lại sau!";
+            ViewBag.ErrorIcon = "bi-exclamation-triangle text-danger";
+
+            // Lỗi 404 (Middleware báo)
+            if (statusCode == 404)
+            {
+                ViewBag.ErrorCode = 404;
+                ViewBag.ErrorTitle = "Không tìm thấy trang!";
+                ViewBag.ErrorMessage = "Đường dẫn bạn nhập không tồn tại, hoặc tài liệu đã bị xóa khỏi hệ thống.";
+                ViewBag.ErrorIcon = "bi-search text-warning";
+            }
+
+            return View();
         }
 
     }
