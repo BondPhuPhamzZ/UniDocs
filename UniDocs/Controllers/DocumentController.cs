@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using UniDocs.Data;
 using UniDocs.Models;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace UniDocs.Controllers
 {
@@ -128,6 +129,27 @@ namespace UniDocs.Controllers
             return RedirectToAction("Index", "Home");
 
         }
+
+
+        // Trang chi tiết -> khi bấm vào tài liệu
+        [AllowAnonymous]
+        public async Task<IActionResult> Detail(int id)
+        {
+            var document = await _context.Documents
+                .Include(d => d.User)
+                .Include(d => d.Course)
+                .FirstOrDefaultAsync(d => d.Id == id);
+
+            if (document == null)
+            {
+                return NotFound("Không tìm thấy tài liệu này!");
+            }
+
+            return View(document);
+
+        }
+
+
 
     }
 }

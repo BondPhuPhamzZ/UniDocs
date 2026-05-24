@@ -42,13 +42,13 @@
     <div class="row">
 
         <!-- Sidebar Lọc kết quả -> BÊN TRÁI -->
-        <div class="col-lg-3 mb-4">
+        @* <div class="col-lg-3 mb-4">
             <vc:course-sidebar></vc:course-sidebar> 
-        </div>
+        </div> *@
 
 
         @* ===== Khu vự hiển thị Tài liệu UPLOAD lên -> BÊN PHẢI ===== *@
-        <div class="col-lg-9">
+        <div class="col-12">
 
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="m-0 fw-bold">Tài liệu mới cập nhật</h5>
@@ -56,21 +56,21 @@
             </div>
 
             @* ===== Khu vực hiển thị các tài liệu dc UPLOAD ===== *@
-            @if (Model != null && Model.Any())
-            {
-                foreach (var item in Model)
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                @if (Model != null && Model.Any())
                 {
-                    <partial name="_DocumentCardPartial" model="item" />
+                    foreach (var item in Model)
+                    {
+                        <div class="col">
+                            <partial name="_DocumentCardPartial" model="item" />
+                        </div>
+                    }
                 }
-            }
-            else
-            {
-                @* Nếu DB chưa có tài liệu nào *@
-                <div class="alert alert-info text-center py-5">
-                    <i class="bi bi-emoji-frown fs-1 d-block mb-3"></i>
-                    Hiện tại chưa có tài liệu nào được hệ thống kiểm duyệt!
-                </div>
-            }
+                else
+                {
+                    <div class="col-12 alert alert-info text-center">Chưa có tài liệu nào!</div>
+                }
+            </div>
 
 
         </div>

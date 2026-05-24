@@ -41,11 +41,22 @@
 
             @if (Model != null && Model.Any())
             {
-                @* Khu vực các tài liệu đc hiển thị *@
-                foreach (var doc in Model)
-                {
-                    <partial name="_DocumentCardPartial" model="doc" />
-                }
+                @* Hiển thị các tài liệu *@
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <div class="col">
+                                <partial name="_DocumentCardPartial" model="item" />
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-12 alert alert-info text-center">Chưa có tài liệu nào!</div>
+                    }
+                </div>
 
                 @* Thanh phân trang *@
                 <nav aria-label="Page navigation" class="mt-4">
