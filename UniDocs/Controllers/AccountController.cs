@@ -32,23 +32,20 @@ namespace UniDocs.Controllers
         // === Xử lý đăng nhập ===
         [HttpPost]
         // public async Task<IActionResult> Login(string email, string password)
-        public async Task<IActionResult> Login(User model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            // Tìm user trong Database theo Email
-            /*var user = _context.Users.FirstOrDefault(u => u.Email == email);*/
+
             var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
 
             // Ktra tài khaonr có tồn tại, có bị khóa, pass có khớp ko
-            if (user == null || !BCrypt.Net.BCrypt.Verify(model.PasswordHash, user.PasswordHash))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
             {
-                /*ViewBag.Error = "Email hoặc mật khẩu không chính xác!";*/
                 ModelState.AddModelError(string.Empty, "Email hoặc mật khẩu không chính xác!");
                 return View(model);
             }
 
             if (user.IsActive == false)
             {
-                /*ViewBag.Error = "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ Admin.";*/
                 ModelState.AddModelError(string.Empty, "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ Admin!");
                 return View(model);
             }
