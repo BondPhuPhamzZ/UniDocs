@@ -4,28 +4,21 @@ namespace UniDocs.ViewModels
 {
     public class RegisterViewModel
     {
-        [Required(ErrorMessage ="Vui lòng nhập tên!")]
-        public string FirstName { get; set; } = string.Empty;
+        [Required] 
+        public string FirstName { get; set; }
 
+        [Required] 
+        public string LastName { get; set; }
 
-        [Required(ErrorMessage = "Vui lòng nhập họ!")]
-        public string LastName { get; set; } = string.Empty;
+        [Required, EmailAddress] 
+        public string Email { get; set; }
 
+        [Required, DataType(DataType.Password)] 
+        public string Password { get; set; }
 
-        [Required(ErrorMessage = "Email không được để trống!")]
-        [EmailAddress(ErrorMessage = "Email không hợp lệ")]
-        public string Email { get; set; } = string.Empty;
+        [Compare("Password")] 
+        public string ConfirmPassword { get; set; }
 
-
-        [Required(ErrorMessage = "Mật khẩu không được để trống!")]
-        [DataType(DataType.Password)]
-        public string Password { get; set; } = string.Empty;
-
-
-        [Required(ErrorMessage = "Vui lòng xác nhận mật khẩu!")]
-        [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Mật khẩu xác nhận không khớp!")] 
-        public string ConfirmPassword { get; set; } = string.Empty;
         public string? University { get; set; }
 
     }

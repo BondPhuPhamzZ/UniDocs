@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using UniDocs.ViewModels;
 
 namespace UniDocs.Controllers
 {
@@ -83,15 +84,15 @@ namespace UniDocs.Controllers
         }
         // === Xử lý đăng ký ===
         [HttpPost]
-        public IActionResult Register(User model)
+        public IActionResult Register(RegisterViewModel model)
         {
-            // Check input => [Required] trong Models
+            // Check input => [Required] 
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            // Check email tồn tại trong db chưa
+            // Check email 
             var emailTonTai = _context.Users.Any(u => u.Email == model.Email);
             if (emailTonTai)
             {
@@ -100,38 +101,26 @@ namespace UniDocs.Controllers
                 return View(model);
             }
 
-            /*var emailTonTai = _context.Users.Any(u => u.Email == email);
-            if (emailTonTai)
+            var newUser = new User
             {
-                ViewBag.Error = "Email này đã được sử dụng!";
-                return View();
-            }*/
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                University = model.University,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password),
 
-
-            // Mã hóa mật khẩu
-            /*string hashedPass = BCrypt.Net.BCrypt.HashPassword(password);*/
-            model.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
-
-
-            // Tạo Object User mới và lưu vào DB
-            /*var newUser = new User
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                Email = email,
-                PasswordHash = hashedPass,
-                University = university,
+                // Giá trị ngầm => Người dùng ko thể can thiệp
                 Role = "Student",
                 IsActive = true
-            };*/
+            };
 
-            model.Role = "Student";
-            model.IsActive = true;
-
-            // Lưu vào db
-            _context.Users.Add(model);
+            _context.Users.Add(newUser);
             _context.SaveChanges();
+
+            // Bật thông báo = TempData
+            TempData["SuccessMessage"] = "Đăng ký thành công! Vui lòng đăng nhập";
             return RedirectToAction("Login", "Account");
+
         }
 
 
