@@ -17,6 +17,8 @@ namespace UniDocs.Data
         public DbSet<Course> Courses { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<Report> Reports { get; set; }
+        public DbSet<SavedDocument> SavedDocuments { get; set; }
+
 
 
         // Hàm khắc phục lỗi vòng lặp xóa (bảng Report) vì có quá nhiều đường dẫn đến cùng 1 hành động -> Sử dụng cấu hình Fluent API
@@ -24,12 +26,20 @@ namespace UniDocs.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Xóa User thì không tự động xóa Report mà User đó đã báo cáo
+            // Report 
             modelBuilder.Entity<Report>()
                 .HasOne(r => r.Reporter)
                 .WithMany()
                 .HasForeignKey(r => r.ReporterId)
-                .OnDelete(DeleteBehavior.Restrict); // Restrict ngăn chặn xóa tự động dây chuyền -> Tắt bớt 1 đường xóa dây chuyền để giải tỏa vòng lặp
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Lưu tài liệu
+            modelBuilder.Entity<SavedDocument>()
+                .HasOne(s => s.User)
+                .WithMany()
+                .HasForeignKey(s => s.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
 
     }
