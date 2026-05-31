@@ -21,7 +21,6 @@ namespace UniDocs.Controllers
         {
             int pageSize = 6;
 
-            // AsQueryable chờ kết nối lệnh where
             var courseQuery = _context.Courses.Include(c => c.Documents.Where(d => d.IsApproved == true)).AsQueryable();
 
             // Nếu User gõ vào thanh tìm kiếm
@@ -51,7 +50,6 @@ namespace UniDocs.Controllers
         {
             int pageSize = 5; 
 
-            // Lấy thông tin môn học -> Hiển thị ra màn hình
             var course = _context.Courses.FirstOrDefault(c => c.Id == id);
             if (course == null)
             {

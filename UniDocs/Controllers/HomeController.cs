@@ -31,7 +31,7 @@ namespace UniDocs.Controllers
                 .Include(d => d.User)
                 .Where(d => d.IsApproved == true);
 
-            // Nếu người dùng nhập vào Thanh tìm kiếm
+            // Người dùng nhập thanh tìm kiếm
             if (!string.IsNullOrEmpty(query))
             {
                 documentsQuery = documentsQuery.Where(d => d.Title.Contains(query) || d.Course.CourseName.Contains(query));
@@ -39,13 +39,11 @@ namespace UniDocs.Controllers
                 ViewBag.SearchQuery = query;
             }
 
-            // Sắp xếp mới nhất và chuyển thành List
             var documents = documentsQuery.OrderByDescending(d => d.UploadDate).ToList();
             return View(documents);
 
         }
 
-        // ===== KO cần quan tâm =====
         public IActionResult Privacy()
         {
             return View();

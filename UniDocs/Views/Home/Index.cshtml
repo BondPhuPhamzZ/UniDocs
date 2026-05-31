@@ -3,7 +3,7 @@
     ViewData["Title"] = "Thư viện tài liệu sinh viên";
 }
 
-@* Thanh tìm kiếm ở TRÊN CÙNG *@
+@* ===== Thanh tìm kiếm ===== *@
 <div class="bg-white border-bottom py-4 mb-4">
     <div class="container">
 
@@ -30,7 +30,7 @@
 </div>
 
 
-@* KQua tìm kiếm (nhỏ) -> Chèn dưới Form *@
+@* ===== KQua tìm kiếm ===== *@
 @if (!string.IsNullOrEmpty(ViewBag.SearchQuery))
 {
     <div class="mt-4 alert alert-success text-center shadow-sm">
@@ -38,15 +38,9 @@
     </div>
 }
 
-@* BODY CHÍNH *@
+@* ===== BODY CHÍNH ===== *@
 <div class="container mb-5 flex-grow-1">
     <div class="row">
-
-        <!-- Sidebar Lọc kết quả -> BÊN TRÁI -->
-        @* <div class="col-lg-3 mb-4">
-            <vc:course-sidebar></vc:course-sidebar> 
-        </div> *@
-
 
         @* ===== Khu vự hiển thị Tài liệu UPLOAD lên -> BÊN PHẢI ===== *@
         <div class="col-12">

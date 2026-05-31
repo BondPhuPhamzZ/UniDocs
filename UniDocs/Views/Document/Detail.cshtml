@@ -3,46 +3,105 @@
     ViewData["Title"] = Model.Title;
 }
 
-<div class="container my-4">
+<div class="container py-5">
+    <div class="row">
 
-    @* Tiêu đề và người đăng *@
-    <div class="mb-4">
-        <h2 class="text-primary fw-bold">@Model.Title</h2>
-        <p class="text-muted">
-            Môn học: <strong>@Model.Course?.CourseName</strong> |
-            Người đăng: <strong>@Model.User?.LastName @Model.User?.FirstName</strong> |
-            Ngày tải lên: @Model.UploadDate.ToString("dd/MM/yyyy")
-        </p>
-    </div>
+        @* Cột trái -> Hiển thị PDF *@
+        <div class="col-lg-8 mb-4">
 
-    <div class="row g-4">
-        @* Cột trái -> Khung đọc PDF *@
-        <div class="col-lg-8">
-            <div class="border rounded shadow-sm" style="height: 80vh;">
-                <iframe src="@Model.FilePath" width="100%" height="100%" style="border: none;"></iframe>
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3">
+                    <h6 class="mb-0 fw-bold"><i class="bi bi-file-earmark-pdf text-danger me-2"></i>Nội dung tài liệu</h6>
+
+                    <a href="@Model.FilePath" target="_blank" class="btn btn-sm btn-outline-light rounded-pill px-3">
+                        <i class="bi bi-arrows-fullscreen"></i> Toàn màn hình
+                    </a>
+                </div>
+
+                <div class="card-body p-0">
+                    <iframe src="@Model.FilePath" width="100%" height="800px" style="border: none;">
+                        Trình duyệt của bạn không hỗ trợ xem PDF trực tiếp.
+                    </iframe>
+                </div>
+
             </div>
+
         </div>
 
-        @* Cột phải -> Các nút tương tác *@
+        @* ===== Cột PHẢI -> Thông tin và tương tác ===== *@
         <div class="col-lg-4">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h5 class="card-title fw-bold">Tương tác</h5>
-                    <hr />
-                    <p>Lượt tải: <strong>@Model.DownloadCount</strong></p>
-                    <p>Mô tả: @Model.Description</p>
+            <div class="card border-0 shadow-sm rounded-4 p-4 sticky-top" style="top: 2rem;">
 
-                    <div class="d-grid gap-2 mt-4">
-                        <a asp-controller="Document" asp-action="Download" asp-route-id="@Model.Id" class="btn btn-primary btn-lg fw-bold">
-                            <i class="bi bi-download"></i> Tải tài liệu về
+                <h3 class="fw-bold text-primary mb-3">@Model.Title</h3>
+
+                <div class="mb-4">
+                    <span class="badge bg-light text-dark border p-2 me-2 mb-2">
+                        <i class="bi bi-book me-1 text-primary"></i> @Model.Course?.CourseName
+                    </span>
+
+                    <span class="badge bg-light text-dark border p-2 mb-2">
+                        <i class="bi bi-calendar-event me-1 text-warning"></i> Năm học: @Model.AcademicYear
+                    </span>
+
+                    <span class="badge bg-light text-dark border p-2 mb-2">
+                        <i class="bi bi-file-earmark-text me-1 text-success"></i> Loại: @Model.DocType
+                    </span>
+                </div>
+
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                        <span class="text-muted"><i class="bi bi-person-circle me-2"></i>Người đăng</span>
+                        <span class="fw-bold">@Model.User?.LastName @Model.User?.FirstName</span>
+                    </li>
+
+                    <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                        <span class="text-muted"><i class="bi bi-clock me-2"></i>Ngày tải lên</span>
+                        <span>@Model.UploadDate.ToString("dd/MM/yyyy")</span>
+                    </li>
+
+                    <li class="list-group-item px-0 d-flex justify-content-between align-items-center border-bottom-0">
+                        <span class="text-muted"><i class="bi bi-cloud-download me-2"></i>Lượt tải</span>
+                        <span class="badge bg-success rounded-pill px-3 py-2">@Model.DownloadCount</span>
+                    </li>
+                </ul>
+
+                @if (!string.IsNullOrEmpty(Model.Description))
+                {
+                    <div class="mb-4 bg-light p-3 rounded-3">
+                        <h6 class="fw-bold text-muted mb-2">Mô tả thêm:</h6>
+                        <p class="small mb-0 text-dark">@Model.Description</p>
+                    </div>
+                }
+
+                <hr class="text-muted my-4" />
+
+                @* Các nút tương tác *@
+                <div class="d-grid gap-3">
+                    <a href="@Model.FilePath" download class="btn btn-primary btn-lg rounded-pill shadow-sm fw-bold">
+                        <i class="bi bi-cloud-arrow-down fs-5 me-2"></i> Tải tài liệu
+                    </a>
+
+                    <button class="btn btn-outline-danger btn-lg rounded-pill shadow-sm fw-bold">
+                        <i class="bi bi-heart fs-5 me-2"></i> Lưu vào Yêu thích
+                    </button>
+
+                    <div class="text-center mt-2">
+                        <a href="#" class="text-muted text-decoration-none small hover-primary">
+                            <i class="bi bi-flag me-1"></i>Báo cáo vi phạm
                         </a>
-
-                        <button class="btn btn-outline-danger fw-bold">
-                            <i class="bi bi-bookmark-heart"></i> Lưu vào Yêu thích
-                        </button>
                     </div>
                 </div>
+
             </div>
         </div>
+
     </div>
 </div>
+
+<style>
+    .hover-primary:hover {
+        color: #0d6efd !important;
+        text-decoration: underline !important;
+    }
+</style>

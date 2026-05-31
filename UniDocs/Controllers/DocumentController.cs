@@ -103,15 +103,7 @@ namespace UniDocs.Controllers
                 await uploadedFile.CopyToAsync(fileStream);
             }
 
-            /*string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-            // Copy file (Bơm file vào ổ cứng) từ trình duyệt của người dùng vào ổ cứng máy chủ
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await uploadedFile.CopyToAsync(fileStream);
-            }*/
-
-            // Cập nhật các thông tin còn thiếu cho Object Document => Lưu vào DB
+            // Cập nhật các thông tin còn thiếu cho Object Document
             model.FilePath = "/uploads/" + uniqueFileName; 
             model.UploadDate = DateTime.Now;
             model.DownloadCount = 0;
