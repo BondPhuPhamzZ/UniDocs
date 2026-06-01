@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using UniDocs.Models;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +24,7 @@ namespace UniDocs.Controllers
         }*/
 
 
-        public IActionResult Index(string query)
+        public async Task<IActionResult> Index(string query)
         {
             var documentsQuery = _context.Documents
                 .Include(d => d.Course)
@@ -39,7 +39,7 @@ namespace UniDocs.Controllers
                 ViewBag.SearchQuery = query;
             }
 
-            var documents = documentsQuery.OrderByDescending(d => d.UploadDate).ToList();
+            var documents = await documentsQuery.OrderByDescending(d => d.UploadDate).ToListAsync();
             return View(documents);
 
         }

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using UniDocs.Data;
 using UniDocs.Models;
@@ -35,7 +35,7 @@ namespace UniDocs.Controllers
         public async Task<IActionResult> Login(LoginViewModel model)
         {
 
-            var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
 
             // Ktra tài khaonr có tồn tại, có bị khóa, pass có khớp ko
             if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
@@ -81,7 +81,7 @@ namespace UniDocs.Controllers
         }
         // === Xử lý đăng ký ===
         [HttpPost]
-        public IActionResult Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
             // Check input => [Required] 
             if (!ModelState.IsValid)
@@ -90,7 +90,7 @@ namespace UniDocs.Controllers
             }
 
             // Check email 
-            var emailTonTai = _context.Users.Any(u => u.Email == model.Email);
+            var emailTonTai = await _context.Users.AnyAsync(u => u.Email == model.Email);
             if (emailTonTai)
             {
                 /*ViewBag.Error = "Email này đã được sử dụng!";*/
@@ -112,7 +112,7 @@ namespace UniDocs.Controllers
             };
 
             _context.Users.Add(newUser);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             // Bật thông báo = TempData
             TempData["SuccessMessage"] = "Đăng ký thành công! Vui lòng đăng nhập";
@@ -132,15 +132,15 @@ namespace UniDocs.Controllers
 
         // User Profile -> Trang cá nhân
         [Authorize]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
             // Lấy id đăng nhập từ Cookie
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int userId = int.Parse(userIdStr);
 
             // Tìm User trong db -> lấy các Documents đã upload của user đó
-            var user = _context.Users.Include(u => u.Documents)
-                .ThenInclude(d => d.Course).FirstOrDefault(u => u.Id == userId);
+            var user = await _context.Users.Include(u => u.Documents)
+                .ThenInclude(d => d.Course).FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
             {

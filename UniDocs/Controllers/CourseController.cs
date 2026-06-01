@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Net.WebSockets;
@@ -17,7 +17,7 @@ namespace UniDocs.Controllers
         }
 
         // Trang danh sách các môn học
-        public IActionResult Index(string query, int page = 1)
+        public async Task<IActionResult> Index(string query, int page = 1)
         {
             int pageSize = 6;
 
@@ -31,14 +31,14 @@ namespace UniDocs.Controllers
             }
 
             // Phân trang -> Dựa trên courseQuery đã dc lọc
-            int totalCourses = courseQuery.Count();
+            int totalCourses = await courseQuery.CountAsync();
             ViewBag.TotalPages = (int)Math.Ceiling((double)totalCourses / pageSize);
             ViewBag.CurrentPage = page;
 
-            var courses = courseQuery
+            var courses = await courseQuery
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .ToList();
+                .ToListAsync();
 
             return View(courses);
 
@@ -46,11 +46,11 @@ namespace UniDocs.Controllers
 
 
         // Trang chi tiết tài liệu của 1 môn (major.html)
-        public IActionResult Detail(int id, int page = 1)
+        public async Task<IActionResult> Detail(int id, int page = 1)
         {
             int pageSize = 5; 
 
-            var course = _context.Courses.FirstOrDefault(c => c.Id == id);
+            var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == id);
             if (course == null)
             {
                 return NotFound("Không tìm thấy môn học!");
@@ -62,19 +62,19 @@ namespace UniDocs.Controllers
             ViewBag.CourseId = course.Id;
 
             // Tính toán tổng số trang
-            int totalDocs = _context.Documents.Count(d => d.CourseId == id && d.IsApproved == true);
+            int totalDocs = await _context.Documents.CountAsync(d => d.CourseId == id && d.IsApproved == true);
             ViewBag.TotalDocuments = totalDocs;
             ViewBag.TotalPages = (int)Math.Ceiling((double)totalDocs / pageSize);
             ViewBag.CurrentPage = page;
 
             // Phân trang
-            var documents = _context.Documents
+            var documents = await _context.Documents
                 .Include(d => d.User)
                 .Include(d => d.Course) // Partial-View in ra tên môn
                 .Where(d => d.CourseId == id && d.IsApproved == true)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .ToList();
+                .ToListAsync();
 
             return View(documents);
 

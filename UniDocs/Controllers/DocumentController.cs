@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting; // Libary to connect wwwroot path
 using Microsoft.AspNetCore.Authorization;
 using UniDocs.Data;
@@ -97,9 +97,9 @@ namespace UniDocs.Controllers
 
 
         // ===== Giao diện trang UPLOAD (Get) =====
-        public ViewResult Upload()
+        public async Task<IActionResult> Upload()
         {
-            ViewBag.Courses = _context.Courses.ToList();
+            ViewBag.Courses = await _context.Courses.ToListAsync();
             return View();
         }
 
@@ -112,7 +112,7 @@ namespace UniDocs.Controllers
             if (uploadedFile == null || uploadedFile.Length == 0)
             {
                 ModelState.AddModelError(string.Empty, "Vui lòng chọn 1 file để tải lên!");
-                ViewBag.Courses = _context.Courses.ToList();
+                ViewBag.Courses = await _context.Courses.ToListAsync();
                 return View(model);
             }
 
@@ -123,7 +123,7 @@ namespace UniDocs.Controllers
             if (!allowedExtensions.Contains(extension))
             {
                 ModelState.AddModelError(string.Empty, "Chỉ cho phép tải lên file PDF, Word, PowerPoint hoặc Zip/ Rar!");
-                ViewBag.Courses = _context.Courses.ToList();
+                ViewBag.Courses = await _context.Courses.ToListAsync();
                 return View(model);
             }
 
