@@ -4,15 +4,13 @@ using UniDocs.Models;
 namespace UniDocs.Data
 {
     // ========== DATABASE CHÍNH ==========
-
-    // ===== Cây cầu nối -> Lấy 4 class trong thư mục Data tạo thành 4 cái bảng trong CSDL =====
+    
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
-        // Khai báo 4 bảng Database (Tên các thuộc tính là tên bảng: VD -> Users, Courses,...)
         public DbSet<User> Users { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Document> Documents { get; set; }

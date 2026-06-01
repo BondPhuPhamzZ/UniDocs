@@ -12,8 +12,8 @@ using UniDocs.Data;
 namespace UniDocs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260531090419_AddSavedDocFinal")]
-    partial class AddSavedDocFinal
+    [Migration("20260601132758_CreateSavedDocTable")]
+    partial class CreateSavedDocTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

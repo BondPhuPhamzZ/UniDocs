@@ -22,6 +22,48 @@ namespace UniDocs.Controllers
         }
 
 
+        // ===== Lưu tài liệu ===== -> Login mới lưu đc
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> SaveDocument(int documentId)
+        {
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier); // Id User đang đăng nhập
+
+            if (string.IsNullOrEmpty(userIdString))
+                return RedirectToAction("Login", "Account");
+
+            int userId = int.Parse(userIdString);
+
+            // Check lưu chưa
+            var existingSave = await _context.SavedDocuments
+                .FirstOrDefaultAsync(s => s.UserId == userId && s.DocumentId == documentId);
+
+            if (existingSave != null)
+            {
+                // Nếu đã lưu -> Bấm lần nữa -> Hủy lưu (xóa khỏi DB)
+                _context.SavedDocuments.Remove(existingSave);
+                TempData["SuccessMessage"] = "Đã bỏ lưu tài liệu khỏi danh sách yêu thích!";
+            }
+            else
+            {
+                var newSave = new SavedDocument()
+                {
+                    UserId = userId,
+                    DocumentId = documentId,
+                    SavedDate = DateTime.Now
+                };
+                _context.SavedDocuments.Add(newSave);
+                TempData["SuccessMessage"] = "Đã lưu tài liệu vào danh sách yêu thích thành công! ";
+            }
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Detail", new { id = documentId }); // Load lại trang hiện tại
+
+        }
+
+
+
+
         // Tải file và lượt tải => ===== DOWNLOAD =====
         [AllowAnonymous]
         public async Task<IActionResult> Download(int id)
