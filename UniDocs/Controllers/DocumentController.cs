@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace UniDocs.Controllers
 {
-    // Must login to join in this Controller
     [Authorize]
     public class DocumentController : Controller
     {
