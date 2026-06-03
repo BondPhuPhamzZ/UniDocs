@@ -274,8 +274,8 @@ namespace UniDocs.Controllers
                     if ((int)response.StatusCode == 401 || (int)response.StatusCode == 403)
                         return Json(new { summary = "❌ API Key không hợp lệ. Vui lòng kiểm tra lại cấu hình." });
 
-                    // Các lỗi khác
-                    return Json(new { summary = $"❌ Không thể kết nối AI lúc này. Vui lòng thử lại sau." });
+                    // Các lỗi khác - hiện tạm mã lỗi để debug
+                    return Json(new { summary = $"❌ Lỗi {(int)response.StatusCode}: Không thể kết nối AI lúc này." });
                 }
 
                 var json = System.Text.Json.JsonDocument.Parse(rawJson).RootElement;
