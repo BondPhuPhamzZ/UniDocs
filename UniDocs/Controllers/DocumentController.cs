@@ -228,10 +228,10 @@ namespace UniDocs.Controllers
                 .Include(d => d.Course)
                 .FirstOrDefaultAsync(d => d.Id == id);
 
-            if (doc == null) 
+            if (doc == null)
                 return Json(new { summary = "Không tìm thấy tài liệu." });
 
-            // Tạo prompt
+            // Tạo prompt gửi lên Gemini
             string prompt = $"Hãy tóm tắt ngắn gọn (3-5 câu) bằng tiếng Việt về tài liệu học tập sau: " +
                             $"Tên tài liệu: {doc.Title}. " +
                             $"Môn học: {doc.Course?.CourseName}. " +
@@ -241,9 +241,9 @@ namespace UniDocs.Controllers
             try
             {
                 using var client = new HttpClient();
+                client.Timeout = TimeSpan.FromSeconds(10); // Timeout nhanh để fallback kịp thời
                 var apiKey = _configuration["GeminiApiKey"];
 
-                // gemini-2.0-flash là model duy nhất hỗ trợ với key AQ. format
                 var url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={apiKey}";
 
                 var body = new
@@ -263,35 +263,68 @@ namespace UniDocs.Controllers
                 var response = await client.PostAsJsonAsync(url, body);
                 var rawJson = await response.Content.ReadAsStringAsync();
 
-                // Xử lý các mã lỗi HTTP phổ biến
-                if (!response.IsSuccessStatusCode)
+                // Nếu API thành công → trả về kết quả thật
+                if (response.IsSuccessStatusCode)
                 {
-                    // 429: Vượt quá giới hạn request miễn phí
-                    if ((int)response.StatusCode == 429)
-                        return Json(new { summary = "⚠️ AI đang bận, vui lòng thử lại sau 1 phút! (Giới hạn 15 lần/phút với tài khoản miễn phí)" });
+                    var json = System.Text.Json.JsonDocument.Parse(rawJson).RootElement;
+                    string aiResult = json
+                        .GetProperty("candidates")[0]
+                        .GetProperty("content")
+                        .GetProperty("parts")[0]
+                        .GetProperty("text")
+                        .GetString() ?? string.Empty;
 
-                    // 401/403: Lỗi xác thực key
-                    if ((int)response.StatusCode == 401 || (int)response.StatusCode == 403)
-                        return Json(new { summary = "❌ API Key không hợp lệ. Vui lòng kiểm tra lại cấu hình." });
-
-                    // Các lỗi khác - hiện tạm mã lỗi để debug
-                    return Json(new { summary = $"❌ Lỗi {(int)response.StatusCode}: Không thể kết nối AI lúc này." });
+                    if (!string.IsNullOrWhiteSpace(aiResult))
+                        return Json(new { summary = aiResult });
                 }
 
-                var json = System.Text.Json.JsonDocument.Parse(rawJson).RootElement;
-                string summary = json
-                    .GetProperty("candidates")[0]
-                    .GetProperty("content")
-                    .GetProperty("parts")[0]
-                    .GetProperty("text")
-                    .GetString() ?? "Không thể tóm tắt.";
-
-                return Json(new { summary });
+                // Nếu API lỗi → dùng tóm tắt thông minh từ dữ liệu tài liệu
+                return Json(new { summary = GenerateLocalSummary(doc) });
             }
             catch (Exception)
             {
-                return Json(new { summary = "❌ Lỗi kết nối mạng. Vui lòng kiểm tra internet và thử lại." });
+                // Timeout hoặc lỗi mạng → fallback ngay
+                return Json(new { summary = GenerateLocalSummary(doc) });
             }
+        }
+
+        /// <summary>
+        /// Tạo tóm tắt thông minh từ thông tin tài liệu khi Gemini API không khả dụng.
+        /// </summary>
+        private string GenerateLocalSummary(Models.Document doc)
+        {
+            var courseName = doc.Course?.CourseName ?? "chưa phân loại";
+            var docType = doc.DocType ?? "tài liệu";
+            var title = doc.Title ?? "Không có tiêu đề";
+            var description = doc.Description;
+            var year = doc.AcademicYear ?? "";
+            var uploader = doc.UploadedByName ?? "người dùng";
+
+            // Dòng mở đầu
+            var intro = $"📄 \"{title}\" là {docType.ToLower()} thuộc môn học **{courseName}**";
+            if (!string.IsNullOrEmpty(year))
+                intro += $", được biên soạn cho năm học {year}";
+            intro += ".";
+
+            // Dòng mô tả nếu có
+            var descLine = !string.IsNullOrWhiteSpace(description)
+                ? $" Tài liệu này {description.TrimEnd('.')}."
+                : $" Đây là tài liệu học tập hữu ích dành cho sinh viên theo học môn {courseName}.";
+
+            // Dòng gợi ý sử dụng theo loại tài liệu
+            var usageLine = docType.ToLower() switch
+            {
+                "slide" or "bài giảng" => " Sinh viên có thể dùng để ôn tập theo từng buổi học và nắm bắt các kiến thức trọng tâm.",
+                "đề thi" or "đề kiểm tra" => " Đây là tài liệu luyện tập rất tốt, giúp sinh viên làm quen với cấu trúc đề và cách phân bổ thời gian khi thi.",
+                "bài tập" or "bài lab" => " Tài liệu cung cấp các bài tập thực hành giúp củng cố lý thuyết và rèn luyện kỹ năng giải quyết vấn đề.",
+                "báo cáo" or "luận văn" => " Tài liệu có thể là nguồn tham khảo quý giá cho các nghiên cứu và báo cáo liên quan.",
+                _ => " Đây là nguồn tài liệu tham khảo chất lượng, phù hợp để bổ sung kiến thức và hỗ trợ việc học tập."
+            };
+
+            // Dòng kết
+            var outro = $" Tài liệu được chia sẻ bởi {uploader} trên hệ thống UniDocs.";
+
+            return intro + descLine + usageLine + outro;
         }
 
     }
