@@ -219,5 +219,61 @@ namespace UniDocs.Controllers
             return RedirectToAction("Detail", new { id = documentId });
         }
 
+
+        // ===== AI Summary (Tích hợp AI) =====
+        [AllowAnonymous]
+        public async Task<IActionResult> AiSummary(int id)
+        {
+            var doc = await _context.Documents
+                .Include(d => d.Course)
+                .FirstOrDefaultAsync(d => d.Id == id);
+
+            if (doc == null) 
+                return Json(new { summary = "Không tìm thấy tài liệu." });
+
+            // Tạo prompt
+            string prompt = $"Hãy tóm tắt ngắn gọn (3-5 câu) bằng tiếng Việt về tài liệu học tập sau: " +
+                            $"Tên tài liệu: {doc.Title}. " +
+                            $"Môn học: {doc.Course?.CourseName}. " +
+                            $"Loại tài liệu: {doc.DocType}. " +
+                            $"Mô tả: {doc.Description ?? "Không có mô tả"}. " +
+                            $"Hãy trả lời tự nhiên như một trợ lý học tập thân thiện.";
+            try
+            {
+                using var client = new HttpClient();
+                var apiKey = _configuration["GeminiApiKey"];
+                var url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={apiKey}";
+                var body = new
+                {
+                    contents = new[]
+                    {
+                        new 
+                        { 
+                            parts = new[] 
+                            { 
+                                new 
+                                { 
+                                    text = prompt 
+                                } 
+                            } 
+                        }
+                    }
+                };
+                var response = await client.PostAsJsonAsync(url, body);
+                var json = await response.Content.ReadFromJsonAsync<System.Text.Json.JsonElement>();
+                string summary = json
+                    .GetProperty("candidates")[0]
+                    .GetProperty("content")
+                    .GetProperty("parts")[0]
+                    .GetProperty("text")
+                    .GetString() ?? "Không thể tóm tắt.";
+                return Json(new { summary });
+            }
+            catch
+            {
+                return Json(new { summary = "Lỗi kết nối AI. Vui lòng thử lại sau." });
+            }
+        }
+
     }
 }
