@@ -242,36 +242,49 @@ namespace UniDocs.Controllers
             {
                 using var client = new HttpClient();
                 var apiKey = _configuration["GeminiApiKey"];
-                var url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={apiKey}";
+
+                // Dùng gemini-1.5-flash - ổn định nhất trên v1beta
+                var url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={apiKey}";
+
                 var body = new
                 {
                     contents = new[]
                     {
-                        new 
-                        { 
-                            parts = new[] 
-                            { 
-                                new 
-                                { 
-                                    text = prompt 
-                                } 
-                            } 
+                        new
+                        {
+                            parts = new[]
+                            {
+                                new { text = prompt }
+                            }
                         }
                     }
                 };
+
                 var response = await client.PostAsJsonAsync(url, body);
-                var json = await response.Content.ReadFromJsonAsync<System.Text.Json.JsonElement>();
+
+                // Đọc raw response để debug nếu cần
+                var rawJson = await response.Content.ReadAsStringAsync();
+
+                // Nếu API trả lỗi (4xx/5xx) → hiển thị lỗi thật ra để debug
+                if (!response.IsSuccessStatusCode)
+                {
+                    return Json(new { summary = $"[API Error {(int)response.StatusCode}]: {rawJson}" });
+                }
+
+                var json = System.Text.Json.JsonDocument.Parse(rawJson).RootElement;
                 string summary = json
                     .GetProperty("candidates")[0]
                     .GetProperty("content")
                     .GetProperty("parts")[0]
                     .GetProperty("text")
                     .GetString() ?? "Không thể tóm tắt.";
+
                 return Json(new { summary });
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { summary = "Lỗi kết nối AI. Vui lòng thử lại sau." });
+                // Hiển thị lỗi thật để debug - sau khi xong thì đổi lại thành thông báo thân thiện
+                return Json(new { summary = $"[Exception]: {ex.Message}" });
             }
         }
 
