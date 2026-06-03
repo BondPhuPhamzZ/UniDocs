@@ -482,3 +482,9 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Upload files của người dùng - không commit lên GitHub
+UniDocs/wwwroot/uploads/
+
+# User Secrets - đã lưu ngoài project, không commit
+# (ASP.NET Core tự động đọc từ AppData\Roaming\Microsoft\UserSecrets)
