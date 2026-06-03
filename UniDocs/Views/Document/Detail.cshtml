@@ -113,6 +113,20 @@
                         </div>
                     }
 
+                    
+                    @* ===== AI tóm tắt và hiển thị ===== *@
+                    @* Nút AI tóm tắt *@
+                    <button id="btnAiSummary" onclick="loadAiSummary(@Model.Id)"
+                            class="btn btn-outline-success btn-lg rounded-pill shadow-sm fw-bold w-100">
+                        <i class="bi bi-robot fs-5 me-2"></i> Tóm tắt bằng AI
+                    </button>
+
+                    @* Khu vực hiển thị kết quả AI *@
+                    <div id="aiResult" class="d-none mt-3 p-3 bg-light rounded-3 border border-success">
+                        <h6 class="fw-bold text-success mb-2"><i class="bi bi-robot me-1"></i>AI tóm tắt:</h6>
+                        <p id="aiText" class="small mb-0 text-dark"></p>
+                    </div>
+
 
                 </div>
 
@@ -128,3 +142,22 @@
         text-decoration: underline !important;
     }
 </style>
+
+@* Tích hợp AI *@
+@section Scripts {
+    <script>
+        async function loadAiSummary(id) {
+            const btn = document.getElementById('btnAiSummary');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang phân tích...';
+
+            const res = await fetch(`/Document/AiSummary/${id}`);
+            const data = await res.json();
+
+            document.getElementById('aiText').innerText = data.summary;
+            document.getElementById('aiResult').classList.remove('d-none');
+            btn.innerHTML = '<i class="bi bi-robot fs-5 me-2"></i>Tóm tắt lại';
+            btn.disabled = false;
+        }
+    </script>
+}
