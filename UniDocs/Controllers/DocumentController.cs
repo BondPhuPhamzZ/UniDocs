@@ -238,7 +238,11 @@ namespace UniDocs.Controllers
             try
             {
                 using var client = new HttpClient();
+
                 var apiKey = _configuration["GeminiApiKey"];
+                if (string.IsNullOrEmpty(apiKey))
+                    return Json(new { summary = "Chưa cấu hình API Key. Vui lòng liên hệ Admin." });
+
                 var url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={apiKey}";
 
                 var body = new
