@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using UniDocs.Data;
+using UniDocs.Models;
 
 namespace UniDocs.Controllers
 {
@@ -94,13 +95,44 @@ namespace UniDocs.Controllers
             return RedirectToAction("Users");
         }
 
-        // Quản lý môn học => Thêm/ Xóa/ Sửa -> danh mục môn
+
+        // Quản lý môn học
         public async Task<IActionResult> Courses()
         {
             var courses = await _context.Courses
                 .Include(c => c.Documents)
                 .ToListAsync();
             return View(courses);
+        }
+        // ===== Thêm môn học mới =====
+        [HttpPost]
+        public async Task<IActionResult> AddCourse(Course model)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Courses.Add(model);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = $"Đã thêm môn học \"{model.CourseName}\" thành công!";
+            }
+            return RedirectToAction("Courses");
+        }
+        // ===== Xóa môn học (chỉ xóa được nếu không có tài liệu) =====
+        [HttpPost]
+        public async Task<IActionResult> DeleteCourse(int id)
+        {
+            var course = await _context.Courses
+                .Include(c => c.Documents)
+                .FirstOrDefaultAsync(c => c.Id == id);
+            if (course == null) return NotFound();
+            if (course.Documents.Count > 0)
+            {
+                TempData["ErrorMessage"] = "Không thể xóa môn học đang có tài liệu!";
+                return RedirectToAction("Courses");
+            }
+            _context.Courses.Remove(course);
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = $"Đã xóa môn học \"{course.CourseName}\"!";
+            return RedirectToAction("Courses");
         }
     }
 }
