@@ -46,7 +46,7 @@ namespace UniDocs
             app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseStaticFiles(); // Phải được kích hoạt để có thể đọc được style.css và main.js trong thư mục wwwroot
 

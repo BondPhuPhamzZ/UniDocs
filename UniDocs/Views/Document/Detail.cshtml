@@ -146,18 +146,30 @@
 @* Tích hợp AI *@
 @section Scripts {
     <script>
-        async function loadAiSummary(id) {
+            async function loadAiSummary(id) {
             const btn = document.getElementById('btnAiSummary');
             btn.disabled = true;
             btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang phân tích...';
 
-            const res = await fetch(`/Document/AiSummary/${id}`);
-            const data = await res.json();
+            try {
+                const res = await fetch(`/Document/AiSummary/${id}`);
 
-            document.getElementById('aiText').innerText = data.summary;
-            document.getElementById('aiResult').classList.remove('d-none');
-            btn.innerHTML = '<i class="bi bi-robot fs-5 me-2"></i>Tóm tắt lại';
-            btn.disabled = false;
+                // Thêm dòng debug
+                if (!res.ok) {
+                    throw new Error(`HTTP ${res.status}`);
+                }
+
+                const data = await res.json();
+                document.getElementById('aiText').innerText = data.summary;
+                document.getElementById('aiResult').classList.remove('d-none');
+            } catch (err) {
+                document.getElementById('aiText').innerText =
+                    `Lỗi kết nối: ${err.message}. Vui lòng thử lại.`;
+                document.getElementById('aiResult').classList.remove('d-none');
+            } finally {
+                btn.innerHTML = '<i class="bi bi-robot fs-5 me-2"></i>Tóm tắt lại';
+                btn.disabled = false;
+            }
         }
     </script>
 }
