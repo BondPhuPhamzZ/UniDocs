@@ -243,8 +243,8 @@ namespace UniDocs.Controllers
                 using var client = new HttpClient();
                 var apiKey = _configuration["GeminiApiKey"];
 
-                // Dùng gemini-1.5-flash - ổn định nhất trên v1beta
-                var url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={apiKey}";
+                // Dùng v1 + gemini-1.5-flash (key AQ. format của Google AI Studio mới)
+                var url = $"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key={apiKey}";
 
                 var body = new
                 {
