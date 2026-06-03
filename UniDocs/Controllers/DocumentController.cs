@@ -56,7 +56,10 @@ namespace UniDocs.Controllers
             }
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Detail", new { id = documentId }); // Load lại trang hiện tại
+            var referer = Request.Headers["Referer"].ToString();
+            if (referer.Contains("Profile"))
+                return RedirectToAction("Profile", "Account");
+            return RedirectToAction("Detail", new { id = documentId });
 
         }
 

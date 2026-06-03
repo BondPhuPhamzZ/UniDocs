@@ -47,5 +47,8 @@ namespace UniDocs.Models
         // 9. 1 User có thể đăng nhiều document
         public ICollection<Document>? Documents { get; set; } 
 
+        // 10. Danh sách tài liệu đã lưu vào yêu thích
+        public ICollection<SavedDocument>? SavedDocuments { get; set; }
+
     }
 }
