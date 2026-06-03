@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -57,7 +57,8 @@ namespace UniDocs.Models
         [ForeignKey("CourseId")]
         public Course? Course { get; set; }
 
-
+        // 12. Danh sách người đã lưu tài liệu này (quan hệ ngược lại với SavedDocument)
+        public ICollection<SavedDocument> SavedDocuments { get; set; } = new List<SavedDocument>();
 
     }
 }

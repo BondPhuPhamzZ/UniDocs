@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace UniDocs.Models
 {
@@ -27,7 +27,7 @@ namespace UniDocs.Models
 
 
         // 1 mon hoc có nhiều tai lieu
-        public ICollection<Document>? Documents { get; set; }
+        public ICollection<Document> Documents { get; set; } = new List<Document>();
 
 
     }

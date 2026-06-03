@@ -140,10 +140,10 @@ namespace UniDocs.Controllers
 
             // Tìm User trong db -> lấy các Documents đã upload của user đó
             var user = await _context.Users
-                .Include(u => u.Documents)
+                .Include(u => u.Documents!)
                     .ThenInclude(d => d.Course)
-                .Include(u => u.SavedDocuments)
-                    .ThenInclude(sd => sd.Document)
+                .Include(u => u.SavedDocuments!)
+                    .ThenInclude(sd => sd.Document!)
                         .ThenInclude(d => d.Course)
                 .FirstOrDefaultAsync(u => u.Id == userId);
 

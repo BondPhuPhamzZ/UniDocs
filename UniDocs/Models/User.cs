@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace UniDocs.Models
 {
@@ -45,10 +45,10 @@ namespace UniDocs.Models
 
 
         // 9. 1 User có thể đăng nhiều document
-        public ICollection<Document>? Documents { get; set; } 
+        public ICollection<Document> Documents { get; set; } = new List<Document>();
 
         // 10. Danh sách tài liệu đã lưu vào yêu thích
-        public ICollection<SavedDocument>? SavedDocuments { get; set; }
+        public ICollection<SavedDocument> SavedDocuments { get; set; } = new List<SavedDocument>();
 
     }
 }

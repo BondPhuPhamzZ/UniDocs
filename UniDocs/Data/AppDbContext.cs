@@ -34,7 +34,7 @@ namespace UniDocs.Data
             // Lưu tài liệu
             modelBuilder.Entity<SavedDocument>()
                 .HasOne(s => s.User)
-                .WithMany()
+                .WithMany(u => u.SavedDocuments)
                 .HasForeignKey(s => s.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
