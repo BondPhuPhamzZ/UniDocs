@@ -243,7 +243,7 @@ namespace UniDocs.Controllers
                 using var client = new HttpClient();
                 var apiKey = _configuration["GeminiApiKey"];
 
-                // Gemini 2.0 Flash - dùng ?key= query string (key AQ. hoạt động với cả 2 cách)
+                // Gemini 2.0 Flash - key AQ. từ Google AI Studio
                 var url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={apiKey}";
 
                 var body = new
@@ -263,10 +263,19 @@ namespace UniDocs.Controllers
                 var response = await client.PostAsJsonAsync(url, body);
                 var rawJson = await response.Content.ReadAsStringAsync();
 
+                // Xử lý các mã lỗi HTTP phổ biến
                 if (!response.IsSuccessStatusCode)
                 {
-                    // Giữ debug tạm để kiểm tra - sau khi ok thì đổi thành thông báo thân thiện
-                    return Json(new { summary = $"[Lỗi {(int)response.StatusCode}]: {rawJson}" });
+                    // 429: Vượt quá giới hạn request miễn phí
+                    if ((int)response.StatusCode == 429)
+                        return Json(new { summary = "⚠️ AI đang bận, vui lòng thử lại sau 1 phút! (Giới hạn 15 lần/phút với tài khoản miễn phí)" });
+
+                    // 401/403: Lỗi xác thực key
+                    if ((int)response.StatusCode == 401 || (int)response.StatusCode == 403)
+                        return Json(new { summary = "❌ API Key không hợp lệ. Vui lòng kiểm tra lại cấu hình." });
+
+                    // Các lỗi khác
+                    return Json(new { summary = $"❌ Không thể kết nối AI lúc này. Vui lòng thử lại sau." });
                 }
 
                 var json = System.Text.Json.JsonDocument.Parse(rawJson).RootElement;
@@ -279,9 +288,9 @@ namespace UniDocs.Controllers
 
                 return Json(new { summary });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return Json(new { summary = $"[Exception]: {ex.Message}" });
+                return Json(new { summary = "❌ Lỗi kết nối mạng. Vui lòng kiểm tra internet và thử lại." });
             }
         }
 
