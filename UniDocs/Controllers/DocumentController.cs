@@ -243,8 +243,8 @@ namespace UniDocs.Controllers
                 using var client = new HttpClient();
                 var apiKey = _configuration["GeminiApiKey"];
 
-                // Dùng v1 + gemini-1.5-flash (key AQ. format của Google AI Studio mới)
-                var url = $"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key={apiKey}";
+                // Gemini 2.0 Flash - dùng ?key= query string (key AQ. hoạt động với cả 2 cách)
+                var url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={apiKey}";
 
                 var body = new
                 {
@@ -261,14 +261,12 @@ namespace UniDocs.Controllers
                 };
 
                 var response = await client.PostAsJsonAsync(url, body);
-
-                // Đọc raw response để debug nếu cần
                 var rawJson = await response.Content.ReadAsStringAsync();
 
-                // Nếu API trả lỗi (4xx/5xx) → hiển thị lỗi thật ra để debug
                 if (!response.IsSuccessStatusCode)
                 {
-                    return Json(new { summary = $"[API Error {(int)response.StatusCode}]: {rawJson}" });
+                    // Giữ debug tạm để kiểm tra - sau khi ok thì đổi thành thông báo thân thiện
+                    return Json(new { summary = $"[Lỗi {(int)response.StatusCode}]: {rawJson}" });
                 }
 
                 var json = System.Text.Json.JsonDocument.Parse(rawJson).RootElement;
@@ -283,7 +281,6 @@ namespace UniDocs.Controllers
             }
             catch (Exception ex)
             {
-                // Hiển thị lỗi thật để debug - sau khi xong thì đổi lại thành thông báo thân thiện
                 return Json(new { summary = $"[Exception]: {ex.Message}" });
             }
         }
