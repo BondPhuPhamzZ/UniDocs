@@ -13,11 +13,13 @@ namespace UniDocs.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _env; // Biến này giúp tìm ra thư mục root
+        private readonly IConfiguration _configuration; // AI
 
-        public DocumentController(AppDbContext context, IWebHostEnvironment env)
+        public DocumentController(AppDbContext context, IWebHostEnvironment env, IConfiguration configuration)
         {
             _context = context;
             _env = env;
+            _configuration = configuration;
         }
 
 
