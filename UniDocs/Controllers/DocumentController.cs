@@ -161,8 +161,8 @@ namespace UniDocs.Controllers
             _context.Documents.Add(model);
             await _context.SaveChangesAsync();
 
-            // Tạm thời quay về trang chủ (Dự định tạo thêm 1 trang thông báo "Thành Công!"
-            return RedirectToAction("Index", "Home");
+            TempData["SuccessMessage"] = "Tải tài liệu lên thành công!";
+            return RedirectToAction("Profile", "Account");
 
         }
 
@@ -185,7 +185,37 @@ namespace UniDocs.Controllers
 
         }
 
+        // ===== Báo cáo vi phạm =====
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Report(int documentId, string reason)
+        {
+            if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+                return RedirectToAction("Login", "Account");
 
+            // Kiểm tra đã báo cáo tài liệu này chưa
+            var existed = await _context.Reports
+                .AnyAsync(r => r.DocumentId == documentId && r.ReporterId == userId);
+            if (existed)
+            {
+                TempData["ErrorMessage"] = "Bạn đã báo cáo tài liệu này rồi!";
+                return RedirectToAction("Detail", new { id = documentId });
+            }
+
+            var report = new Report
+            {
+                DocumentId = documentId,
+                ReporterId = userId,
+                Reason = reason,
+                ReportDate = DateTime.Now,
+                Status = "Đang xử lý"
+            };
+            _context.Reports.Add(report);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Đã gửi báo cáo thành công! Admin sẽ xem xét sớm.";
+            return RedirectToAction("Detail", new { id = documentId });
+        }
 
     }
 }
