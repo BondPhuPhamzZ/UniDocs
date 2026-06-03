@@ -243,8 +243,8 @@ namespace UniDocs.Controllers
                 using var client = new HttpClient();
                 var apiKey = _configuration["GeminiApiKey"];
 
-                // Dùng gemini-1.5-flash: quota ngày cao hơn (1500 RPD), ổn định hơn cho free tier
-                var url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={apiKey}";
+                // gemini-2.0-flash là model duy nhất hỗ trợ với key AQ. format
+                var url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={apiKey}";
 
                 var body = new
                 {
