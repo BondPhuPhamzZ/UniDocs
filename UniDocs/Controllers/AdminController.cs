@@ -54,7 +54,7 @@ namespace UniDocs.Controllers
 
         // Bỏ qua báo cáo (đánh dấu đã xử lý nếu ko có vi phạm)
         [HttpPost]
-        public async Task<IActionResult> DimissReport(int id)
+        public async Task<IActionResult> DismissReport(int id)
         {
             var report = await _context.Reports.FindAsync(id);
             if (report == null)
