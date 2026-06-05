@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="~/css/style.css" />
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
-    <!-- Navbar Admin -->
+    @* Navbar Admin *@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
         <div class="container-fluid px-4">
             <a class="navbar-brand d-flex align-items-center text-warning" asp-controller="Admin" asp-action="Dashboard">
@@ -33,7 +33,7 @@
                 </ul>
                 <div class="d-flex align-items-center gap-3">
                     <span class="text-light small">Xin chào, <strong>Admin</strong>!</span>
-                    <!-- Nút về trang web chính (Trang chủ sinh viên) -->
+
                     <a asp-controller="Home" asp-action="Index" class="btn btn-outline-light btn-sm px-3">
                         <i class="bi bi-box-arrow-right"></i> Về trang chủ
                     </a>
@@ -42,10 +42,11 @@
         </div>
     </nav>
 
-    <!-- Layout chính -->
+    @* Layout chính *@
     <div class="container-fluid px-4 py-4 flex-grow-1">
         <div class="row">
-            <!-- Sidebar Quản trị (Dùng chung) -->
+
+           @* Tái sử dụng Sidebar quản trị *@
             <div class="col-lg-2 mb-4">
                 <div class="list-group shadow-sm">
                     <a asp-controller="Admin" asp-action="Dashboard" class="list-group-item list-group-item-action">
@@ -60,10 +61,10 @@
                 </div>
             </div>
 
-            <!-- Nội dung chính của từng trang Admin sẽ được nhét vào đây -->
             <div class="col-lg-10">
                 @RenderBody()
             </div>
+
         </div>
     </div>
 

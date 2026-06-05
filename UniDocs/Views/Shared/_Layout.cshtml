@@ -50,15 +50,14 @@
                 <div class="d-flex align-items-center gap-2">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <!-- Nếu đã đăng nhập -->
                         <span class="text-light small me-2 d-none d-md-inline">Chào, <strong>@User.Identity.Name</strong></span>
 
-                        <!-- Nút Profile -->
+                        @* Xem Profile *@
                         <a asp-controller="Account" asp-action="Profile" class="btn btn-outline-light btn-sm px-2" title="Trang cá nhân">
                             <i class="bi bi-person-circle"></i>
                         </a>
 
-                        <!-- Nếu là Admin, hiện thêm nút về Dashboard -->
+                        @* Check role là Admin *@
                         @if (User.IsInRole("Admin"))
                         {
                             <a asp-controller="Admin" asp-action="Dashboard" class="btn btn-warning btn-sm fw-bold px-2 text-dark" title="Quản trị">
@@ -66,28 +65,17 @@
                             </a>
                         }
 
-                        <!-- Nút Đăng xuất -->
+                        @* Đăng xuất *@
                         <a asp-controller="Account" asp-action="Logout" class="btn btn-danger btn-sm px-2" title="Đăng xuất">
                             <i class="bi bi-box-arrow-right"></i>
                         </a>
                     }
                     else
                     {
-                        <!-- Nếu chưa đăng nhập (Khách) -->
                         <a asp-controller="Account" asp-action="Login" class="btn btn-light btn-sm text-primary fw-bold px-3">Đăng nhập</a>
                         <a asp-controller="Account" asp-action="Register" class="btn btn-outline-light btn-sm px-3">Đăng ký</a>
                     }
                 </div>
-
-                @* ===== Xem tạm Profile ===== *@
-                @* <div class="d-flex align-items-center gap-2">
-                    
-                    <a asp-controller="Account" asp-action="Profile" class="btn btn-warning btn-sm fw-bold px-3 text-dark">
-                        <i class="bi bi-person-circle"></i> Xem Profile
-                    </a>
-                    <a asp-controller="Account" asp-action="Login" class="btn btn-light btn-sm text-primary fw-bold px-3">Đăng nhập</a>
-                    <a asp-controller="Account" asp-action="Register" class="btn btn-light btn-sm text-primary fw-bold px-3">Đăng ký</a>
-                </div> *@
 
             </div>
 

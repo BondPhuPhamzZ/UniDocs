@@ -17,21 +17,11 @@
             @* Hiển thị lỗi *@
             <div asp-validation-summary="All" class="text-danger small fw-bold text-center mb-3"></div>
 
-
-            @* @if (ViewBag.Error != null)
-            {
-                <div class="alert alert-danger text-center small fw-bold">@ViewBag.Error</div>
-            } *@
-
-
             @* ===== Form Đăng nhập ===== *@
             <form asp-controller="Account" asp-action="Login" method="post">
 
                 <div class="mb-3">
                     <label class="form-label fw-bold small">Email đăng nhập</label>
-
-                    @* .NET thuần *@
-                    @* <input type="email" name="email" class="form-control" placeholder="Ví dụ: admin@unidoc.com" required /> *@
 
                     @* ===== ASP.NET Core ===== *@
                     <input asp-for="Email" class="form-control" placeholder="Ví dụ: phupham@gmail.com" required />
