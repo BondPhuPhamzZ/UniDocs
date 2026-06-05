@@ -176,6 +176,7 @@ namespace UniDocs.Controllers
             var document = await _context.Documents
                 .Include(d => d.User)
                 .Include(d => d.Course)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(d => d.Id == id);
 
             if (document == null)
@@ -226,6 +227,7 @@ namespace UniDocs.Controllers
         {
             var doc = await _context.Documents
                 .Include(d => d.Course)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(d => d.Id == id);
 
             if (doc == null)
