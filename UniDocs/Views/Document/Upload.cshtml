@@ -3,13 +3,13 @@
     ViewData["Title"] = "Đăng tải tài liệu";
 }
 <!-- Nội dung Đóng góp tài liệu -->
-<div class="container flex-grow-1 py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
+<div class="container flex-grow-1 py-4 py-md-5 upload-page">
+    <div class="row justify-content-center g-0">
+        <div class="col-12 col-md-10 col-lg-8 col-xl-7">
 
-            <div class="d-flex align-items-center mb-4">
-                <i class="bi bi-cloud-arrow-up fs-2 text-primary me-3"></i>
-                <div>
+            <div class="d-flex align-items-start gap-3 mb-4">
+                <i class="bi bi-cloud-arrow-up fs-2 text-primary flex-shrink-0"></i>
+                <div class="min-w-0">
                     <h2 class="h3 mb-0 fw-bold">Đóng góp Tài liệu</h2>
                     <p class="text-muted mb-0 small">
                         Chia sẻ tài liệu của bạn để giúp đỡ cộng đồng sinh viên.
@@ -18,89 +18,91 @@
             </div>
 
 
-            <div class="card border-0 shadow-sm">
+            <div class="card border-0 shadow-sm upload-card">
+                <div class="card-body p-3 p-md-4">
 
-                @* Lỗi -> (nếu có) *@
-                <div asp-validation-summary="All" class="text-danger small fw-bold text-center mb-3"></div>
+                    @* Lỗi -> (nếu có) *@
+                    <div asp-validation-summary="All" class="text-danger small fw-bold text-center mb-3"></div>
 
-                @* @if (ViewBag.Error != null)
-                {
-                    <div class="alert alert-danger">@ViewBag.Error</div>
-                } *@
+                    @* @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger">@ViewBag.Error</div>
+                    } *@
 
 
-                @* ===== Form Upload tài liệu ===== *@
-                <form asp-controller="Document" asp-action="Upload" method="post" enctype="multipart/form-data">
+                    @* ===== Form Upload tài liệu ===== *@
+                    <form asp-controller="Document" asp-action="Upload" method="post" enctype="multipart/form-data">
 
-                    @* Chọn file muốn up có định dạng phù hợp *@
-                    <div class="mb-4">
-                        <label class="form-label fw-bold small">Chọn file tải lên <span class="text-danger">*</span></label>
-                        <div class="border border-2 border-dashed rounded bg-light text-center p-5">
-                            <i class="bi bi-file-earmark-arrow-up fs-1 text-muted mb-2"></i>
-                            <h5>Click để chọn file</h5>
-                            <p class="text-muted small mb-3">Hỗ trợ định dạng: PDF, DOCX, PPTX, ZIP (Tối đa 50MB)</p>
+                        @* Chọn file muốn up có định dạng phù hợp *@
+                        <div class="mb-4">
+                            <label class="form-label fw-bold small">Chọn file tải lên <span class="text-danger">*</span></label>
+                            <div class="border border-2 border-dashed rounded bg-light text-center upload-dropzone">
+                                <i class="bi bi-file-earmark-arrow-up fs-1 text-muted mb-2"></i>
+                                <h5 class="mb-1">Click để chọn file</h5>
+                                <p class="text-muted small mb-3">Hỗ trợ định dạng: PDF, DOCX, PPTX, ZIP, RAR (Tối đa 50MB)</p>
 
-                            <input type="file" name="uploadedFile" class="form-control" required />
+                                <input type="file" name="uploadedFile" class="form-control" accept=".pdf,.doc,.docx,.ppt,.pptx,.zip,.rar" required />
+                            </div>
                         </div>
-                    </div>
 
-                    @* Nhập tên tài liệu *@
-                    <div class="mb-3">
-                        <label class="form-label fw-bold small">Tên tài liệu <span class="text-danger">*</span></label>
-                        @* <input type="text" name="Title" class="form-control" placeholder="Ví dụ: Đề thi giữa kỳ môn Cơ sở dữ liệu 2023" required /> *@
-                        <input asp-for="Title" class="form-control" placeholder="VD: Đề thi giữa kỳ môn CSDL" required />
-                    </div>
+                        @* Nhập tên tài liệu *@
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Tên tài liệu <span class="text-danger">*</span></label>
+                            @* <input type="text" name="Title" class="form-control" placeholder="Ví dụ: Đề thi giữa kỳ môn Cơ sở dữ liệu 2023" required /> *@
+                            <input asp-for="Title" class="form-control" placeholder="VD: Đề thi giữa kỳ môn CSDL" required />
+                        </div>
 
-                    @* Chọn môn *@
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold small">Môn học <span class="text-danger">*</span></label>
-                            <select asp-for="CourseId" class="form-select" required>
-                                <option value="">Chọn môn học...</option>
-                                @if (ViewBag.Courses != null)
-                                {
-                                    foreach (var course in ViewBag.Courses)
+                        @* Chọn môn *@
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-bold small">Môn học <span class="text-danger">*</span></label>
+                                <select asp-for="CourseId" class="form-select" required>
+                                    <option value="">Chọn môn học...</option>
+                                    @if (ViewBag.Courses != null)
                                     {
-                                        <option value="@course.Id">@course.CourseName (@course.CourseCode)</option>
+                                        foreach (var course in ViewBag.Courses)
+                                        {
+                                            <option value="@course.Id">@course.CourseName (@course.CourseCode)</option>
+                                        }
                                     }
-                                }
-                            </select>
+                                </select>
+                            </div>
+
+                            @* Chọn loại tài liệu *@
+                            <div class="col-12 col-md-6">
+                                <label class="form-label fw-bold small">Loại tài liệu</label>
+                                <select asp-for="DocType" class="form-select">
+                                    <option value="Đề thi / Kiểm tra">Đề thi / Kiểm tra</option>
+                                    <option value="Bài giảng / Slide">Bài giảng / Slide</option>
+                                    <option value="Bài tập lớn">Bài tập lớn</option>
+                                    <option value="Khác">Khác</option>
+                                </select>
+                            </div>
+
                         </div>
 
-                        @* Chọn loại tài liệu *@
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold small">Loại tài liệu</label>
-                            <select asp-for="DocType" class="form-select">
-                                <option value="Đề thi / Kiểm tra">Đề thi / Kiểm tra</option>
-                                <option value="Bài giảng / Slide">Bài giảng / Slide</option>
-                                <option value="Bài tập lớn">Bài tập lớn</option>
-                                <option value="Khác">Khác</option>
-                            </select>
+                        @* Năm học *@
+                        <div class="mt-3 mb-3">
+                            <label class="form-label fw-bold small">Năm học</label>
+                            <input asp-for="AcademicYear" class="form-control" placeholder="Ví dụ: 2023-2024" />
                         </div>
 
-                    </div>
+                        @* Mô tả thêm cho tài liệu *@
+                        <div class="mb-4">
+                            <label class="form-label fw-bold small">Mô tả thêm (Tùy chọn)</label>
+                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Ghi chú thêm về tài liệu..."></textarea>
+                        </div>
 
-                    @* Năm học *@
-                    <div class="mb-3">
-                        <label class="form-label fw-bold small">Năm học</label>
-                        <input asp-for="AcademicYear" class="form-control" placeholder="Ví dụ: 2023-2024" />
-                    </div>
+                        @* Button gửi tlieu *@
+                        <div class="d-grid d-sm-flex justify-content-sm-end">
+                            <button type="submit" class="btn btn-primary px-4 fw-bold">
+                                <i class="bi bi-cloud-upload me-1"></i> Gửi Tài Liệu
+                            </button>
+                        </div>
 
-                    @* Mô tả thêm cho tài liệu *@
-                    <div class="mb-4">
-                        <label class="form-label fw-bold small">Mô tả thêm (Tùy chọn)</label>
-                        <textarea asp-for="Description" class="form-control" rows="3" placeholder="Ghi chú thêm về tài liệu..."></textarea>
-                    </div>
+                    </form>
 
-                    @* Button gửi tlieu *@
-                    <div class="text-end">
-                        <button type="submit" class="btn btn-primary px-4 fw-bold">
-                            <i class="bi bi-cloud-upload me-1"></i> Gửi Tài Liệu
-                        </button>
-                    </div>
-
-                </form>
-
+                </div>
 
             </div>
         </div>

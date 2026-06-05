@@ -121,7 +121,7 @@ namespace UniDocs.Controllers
             }
 
             // Check đuôi file đúng định dạng
-            var allowedExtensions = new[] { ".pdf", ".doc", ".docx", ".ppt", ".zip", ".rar" };
+            var allowedExtensions = new[] { ".pdf", ".doc", ".docx", ".ppt", ".pptx", ".zip", ".rar" };
             var extension = Path.GetExtension(uploadedFile.FileName).ToLower();
 
             if (!allowedExtensions.Contains(extension))
@@ -243,7 +243,9 @@ namespace UniDocs.Controllers
                 if (string.IsNullOrEmpty(apiKey))
                     return Json(new { summary = "Chưa cấu hình API Key. Vui lòng liên hệ Admin." });
 
-                var url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={apiKey}";
+                client.DefaultRequestHeaders.Add("x-goog-api-key", apiKey);
+
+                var url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 
                 var body = new
                 {

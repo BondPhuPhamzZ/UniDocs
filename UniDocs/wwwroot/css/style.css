@@ -1,44 +1,77 @@
-/* Chỉ giữ lại các CSS custom tối thiểu, ưu tiên dùng class của Bootstrap 5 */
-
 body {
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* Hiệu ứng hover nhẹ cho danh sách tài liệu */
 .list-item-hover {
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
-  border: 1px solid #e9ecef !important;
+    border: 1px solid #e9ecef !important;
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .list-item-hover:hover {
-  background-color: #f8f9fa;
-  transform: translateX(5px); /* Trượt nhẹ sang phải thay vì bay lên bóng bẩy */
-  border-color: #dee2e6 !important;
+    background-color: #f8f9fa;
+    border-color: #dee2e6 !important;
+    transform: translateX(5px);
 }
 
-/* Tùy chỉnh icon file cho đẹp mắt hơn */
 .bi-file-earmark-pdf,
 .bi-file-earmark-word {
-  opacity: 0.8;
+    opacity: 0.8;
 }
 
-/* Form check cho bộ lọc */
 .form-check-label {
-  cursor: pointer;
+    cursor: pointer;
 }
 
-/* Nút thêm vào yêu thích (user) -> nằm trên card tài liệu */
-/* Hiệu ứng khi bấm nút Yêu thích */
 .btn-favorite-active {
     background-color: #dc3545 !important;
-    color: white !important;
+    color: #fff !important;
 }
 
 .btn-favorite-active i::before {
-    content: "\F415"; /* Chuyển icon bi-heart thành bi-heart-fill */
+    content: "\F415";
 }
 
+.min-w-0 {
+    min-width: 0;
+}
+
+.upload-card {
+    overflow: hidden;
+}
+
+.upload-page .form-control,
+.upload-page .form-select,
+.upload-page textarea {
+    max-width: 100%;
+}
+
+.upload-dropzone {
+    padding: 1.25rem;
+}
+
+@media (min-width: 768px) {
+    .upload-dropzone {
+        padding: 2rem;
+    }
+}
+
+.course-sidebar-link {
+    margin-bottom: 0.25rem;
+    transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.course-sidebar-link:hover {
+    background-color: #f8f9fa;
+    transform: translateX(2px);
+}
+
+.course-sidebar-link.active-course-link {
+    background-color: #0d6efd;
+    color: #fff;
+    font-weight: 700;
+}
+
+.course-sidebar-link.active-course-link:hover {
+    background-color: #0b5ed7;
+    color: #fff;
+}
