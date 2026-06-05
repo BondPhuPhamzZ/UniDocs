@@ -13,10 +13,6 @@ namespace UniDocs
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            //builder.Services.AddControllersWithViews();
-
-
             // ===== -> Khai báo Database =====
             builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -35,30 +31,33 @@ namespace UniDocs
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline. -> Catch 500
+           // ===== Cấu hình Middleware =====
             if (!app.Environment.IsDevelopment())
             {
+                // Catch 500
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            // -> Catch 404, 404,...
+            else
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            // Status code != truyền vào
             app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 
 
-            //app.UseHttpsRedirection();
+            // Phải được kích hoạt để có thể đọc được style.css và main.js trong thư mục wwwroot
+            app.UseStaticFiles(); 
 
-            app.UseStaticFiles(); // Phải được kích hoạt để có thể đọc được style.css và main.js trong thư mục wwwroot
 
             app.UseRouting();
-
 
             // Kích hoạt xác thực và phân quyền
             app.UseAuthentication();
 
-
             app.UseAuthorization();
 
+            // Default khi chạy Web
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
