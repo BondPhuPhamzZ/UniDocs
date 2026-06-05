@@ -259,7 +259,7 @@ namespace UniDocs.Controllers
                 var rawJson = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
-                    return Json(new { summary = "⚠️ Tính năng AI tóm tắt hiện không khả dụng. Vui lòng thử lại sau." });
+                    return Json(new { summary = "Tính năng AI tóm tắt hiện không khả dụng. Vui lòng thử lại sau." });
 
                 var json = System.Text.Json.JsonDocument.Parse(rawJson).RootElement;
                 string summary = json
@@ -273,7 +273,7 @@ namespace UniDocs.Controllers
             }
             catch (Exception)
             {
-                return Json(new { summary = "⚠️ Tính năng AI tóm tắt hiện không khả dụng. Vui lòng thử lại sau." });
+                return Json(new { summary = "Tính năng AI tóm tắt hiện không khả dụng. Vui lòng thử lại sau." });
             }
         }
 
