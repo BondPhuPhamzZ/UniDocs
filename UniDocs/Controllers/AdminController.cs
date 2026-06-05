@@ -19,7 +19,7 @@ namespace UniDocs.Controllers
             _env = env;
         }
 
-        // Trang chủ Admin (Quản lý danh sách các báo cáo vi phạm)
+        // ============ Index của Admin -> Các tài liệu bị báo cáo ==========
         public async Task<IActionResult> Dashboard()
         {
             var reports = await _context.Reports
@@ -51,12 +51,12 @@ namespace UniDocs.Controllers
             return RedirectToAction("Dashboard");
 
         }
-
-        // Bỏ qua báo cáo (đánh dấu đã xử lý nếu ko có vi phạm)
+        // Bỏ qua báo cáo (ko có vi phạm) -> đánh dấu "đã xử lý"
         [HttpPost]
         public async Task<IActionResult> DismissReport(int id)
         {
             var report = await _context.Reports.FindAsync(id);
+
             if (report == null)
                 return NotFound();
 
@@ -67,7 +67,8 @@ namespace UniDocs.Controllers
             return RedirectToAction("Dashboard");
         }
 
-        // Quản lý người dùng 
+
+        // ========== Quản lý người dùng ==========
         public async Task<IActionResult> Users()
         {
             var users = await _context.Users
@@ -85,7 +86,6 @@ namespace UniDocs.Controllers
             if (user == null)
                 return NotFound();
 
-            // Hoạt động -> Khóa - Khóa -> Hoạt động
             user.IsActive = !user.IsActive;
             await _context.SaveChangesAsync();
 
@@ -96,7 +96,7 @@ namespace UniDocs.Controllers
         }
 
 
-        // Quản lý môn học
+        // ========== Tab Quản lý môn học ==========
         public async Task<IActionResult> Courses()
         {
             var courses = await _context.Courses
@@ -104,7 +104,7 @@ namespace UniDocs.Controllers
                 .ToListAsync();
             return View(courses);
         }
-        // ===== Thêm môn học mới =====
+        // Thêm môn học mới 
         [HttpPost]
         public async Task<IActionResult> AddCourse(Course model)
         {
@@ -116,14 +116,17 @@ namespace UniDocs.Controllers
             }
             return RedirectToAction("Courses");
         }
-        // ===== Xóa môn học (chỉ xóa được nếu không có tài liệu) =====
+        // Xóa môn học
         [HttpPost]
         public async Task<IActionResult> DeleteCourse(int id)
         {
             var course = await _context.Courses
                 .Include(c => c.Documents)
                 .FirstOrDefaultAsync(c => c.Id == id);
-            if (course == null) return NotFound();
+
+            if (course == null) 
+                return NotFound();
+
             if (course.Documents.Count > 0)
             {
                 TempData["ErrorMessage"] = "Không thể xóa môn học đang có tài liệu!";
@@ -131,6 +134,7 @@ namespace UniDocs.Controllers
             }
             _context.Courses.Remove(course);
             await _context.SaveChangesAsync();
+
             TempData["SuccessMessage"] = $"Đã xóa môn học \"{course.CourseName}\"!";
             return RedirectToAction("Courses");
         }

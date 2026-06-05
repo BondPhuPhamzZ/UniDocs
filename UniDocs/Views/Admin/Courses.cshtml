@@ -13,12 +13,14 @@
     </div>
 }
 
+@* Khu vực ở trên bên phải *@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="m-0 fw-bold">
         <i class="bi bi-book-fill me-2"></i>Danh sách Môn học
     </h4>
     <div class="d-flex gap-2">
         <span class="badge bg-primary fs-6">@Model.Count() môn học</span>
+
         <button class="btn btn-success btn-sm fw-bold" data-bs-toggle="modal" data-bs-target="#addCourseModal">
             <i class="bi bi-plus-circle"></i> Thêm môn học mới
         </button>
@@ -44,6 +46,7 @@
                         foreach (var course in Model)
                         {
                             <tr>
+                                @* Hiển thị thông tin của các môn học *@
                                 <td class="ps-4 fw-bold text-primary">@course.CourseCode</td>
                                 <td class="fw-bold">@course.CourseName</td>
                                 <td>
@@ -51,11 +54,13 @@
                                         @(course.Department ?? "—")
                                     </span>
                                 </td>
+
                                 <td class="text-center">
                                     <span class="badge bg-primary rounded-pill">@course.Documents.Count</span>
                                 </td>
+
+                                @* Nút Xóa - chỉ cho xóa môn học nếu không có tài liệu nào *@
                                 <td class="text-end pe-4">
-                                    @* Nút Xóa - chỉ cho xóa nếu không có tài liệu nào *@
                                     @if (course.Documents.Count == 0)
                                     {
                                         <form asp-action="DeleteCourse" asp-route-id="@course.Id"
@@ -93,11 +98,12 @@
 </div>
 
 
-@* ===== Modal Thêm môn học ===== *@
+@* ===== Modal Thêm môn học (hiển thị khi click vào nút trên) ===== *@
 <div class="modal fade" id="addCourseModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content border-0 shadow">
 
+            @* Chức năng Thêm môn học mới *@
             <div class="modal-header bg-success text-white border-0">
                 <h5 class="modal-title"><i class="bi bi-plus-circle"></i> Thêm Môn học Mới</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -105,22 +111,26 @@
 
             <form asp-action="AddCourse" method="post">
                 <div class="modal-body p-4">
+                    @* Các thông tin của Môn học *@
                     <div class="mb-3">
                         <label class="form-label fw-bold small">Mã môn học <span class="text-danger">*</span></label>
                         <input type="text" name="CourseCode" class="form-control"
                                placeholder="VD: IT202" required maxlength="20" />
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label fw-bold small">Tên môn học <span class="text-danger">*</span></label>
                         <input type="text" name="CourseName" class="form-control"
                                placeholder="VD: Trí tuệ nhân tạo" required maxlength="200" />
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label fw-bold small">Thuộc Khoa</label>
                         <input type="text" name="Department" class="form-control"
                                placeholder="VD: Công nghệ thông tin" maxlength="100" />
                     </div>
                 </div>
+
                 <div class="modal-footer border-0">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
                     <button type="submit" class="btn btn-success fw-bold">

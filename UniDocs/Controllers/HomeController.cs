@@ -11,17 +11,11 @@ namespace UniDocs.Controllers
         private readonly AppDbContext _context; 
         private readonly ILogger<HomeController> _logger;
 
-        // Inject database vào Controller
         public HomeController(AppDbContext context, ILogger<HomeController> logger)
         {
             _context = context;
             _logger = logger;
         }
-
-        /*public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }*/
 
 
         public async Task<IActionResult> Index(string query)
@@ -31,7 +25,6 @@ namespace UniDocs.Controllers
                 .Include(d => d.User)
                 .Where(d => d.IsApproved == true);
 
-            // Người dùng nhập thanh tìm kiếm
             if (!string.IsNullOrEmpty(query))
             {
                 documentsQuery = documentsQuery.Where(d => d.Title.Contains(query) || d.Course.CourseName.Contains(query));
@@ -41,24 +34,23 @@ namespace UniDocs.Controllers
 
             var documents = await documentsQuery.OrderByDescending(d => d.UploadDate).ToListAsync();
             return View(documents);
-
         }
+
 
         public IActionResult Privacy()
         {
             return View();
         }
 
+        // UI xử lý lỗi ko mong muốn
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error (int? statusCode = null)
         {
-            // Lỗi 500
             ViewBag.ErrorCode = statusCode ?? 500;
             ViewBag.ErrorTitle = "Đã xảy ra lỗi hệ thống!";
             ViewBag.ErrorMessage = "Chúng tôi đang khác phục sự cố. Vui lòng quay lại sau!";
             ViewBag.ErrorIcon = "bi-exclamation-triangle text-danger";
 
-            // Lỗi 404 (Middleware báo)
             if (statusCode == 404)
             {
                 ViewBag.ErrorCode = 404;

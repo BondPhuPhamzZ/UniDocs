@@ -37,6 +37,7 @@
                     @foreach (var user in Model)
                     {
                         <tr>
+                            @* Các thông tin của tài khoản *@
                             <td class="ps-4 fw-bold">
                                 @user.LastName @user.FirstName
                                 @if (user.Role == "Admin")
@@ -49,6 +50,8 @@
                             <td class="text-center">
                                 <span class="badge bg-primary rounded-pill">@user.Documents.Count</span>
                             </td>
+
+                            @* Hiển thị trạng thái tài khoản *@
                             <td>
                                 @if (user.IsActive)
                                 {
@@ -59,8 +62,9 @@
                                     <span class="badge bg-danger-subtle text-danger border border-danger">Bị khóa</span>
                                 }
                             </td>
+
+                            @* Thực hiện khóa/ mở khóa tài khoản cho User *@
                             <td class="text-end pe-4">
-                                @* Không cho khóa tài khoản Admin *@
                                 @if (user.Role != "Admin")
                                 {
                                     <form asp-action="ToggleLock" asp-route-id="@user.Id" method="post" class="d-inline">

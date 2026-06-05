@@ -40,18 +40,24 @@
                         foreach (var report in Model)
                         {
                             <tr>
+                                @* Các thông tin của tài liệu bị report *@
                                 <td class="ps-4">
                                     <div class="fw-bold">@report.Document?.Title</div>
                                     <div class="text-muted small">ID: #@report.DocumentId</div>
                                 </td>
+
                                 <td>
                                     <div>@report.Reporter?.LastName @report.Reporter?.FirstName</div>
                                     <div class="text-muted small">@report.Reporter?.Email</div>
                                 </td>
+
                                 <td>
                                     <span class="badge bg-danger-subtle text-danger">@report.Reason</span>
                                 </td>
+
                                 <td class="text-muted small">@report.ReportDate.ToString("dd/MM/yyyy HH:mm")</td>
+
+                                @* Hiển thị trạng thái Report *@
                                 <td>
                                     @if (report.Status == "Đã xử lý")
                                     {
@@ -62,7 +68,10 @@
                                         <span class="badge bg-warning text-dark">Đang xử lý</span>
                                     }
                                 </td>
+
+                                @* Thực hiện các chức năng *@
                                 <td class="text-end pe-4">
+
                                     @* Nút Xóa tài liệu *@
                                     <form asp-action="DeleteDocument" asp-route-id="@report.DocumentId"
                                           method="post" class="d-inline"
@@ -71,6 +80,7 @@
                                             <i class="bi bi-trash"></i> Xóa
                                         </button>
                                     </form>
+
                                     @* Nút Bỏ qua *@
                                     <form asp-action="DismissReport" asp-route-id="@report.Id"
                                           method="post" class="d-inline ms-1">

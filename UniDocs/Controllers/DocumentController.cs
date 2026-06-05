@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Hosting; // Libary to connect wwwroot path
+using Microsoft.AspNetCore.Hosting; 
 using Microsoft.AspNetCore.Authorization;
 using UniDocs.Data;
 using UniDocs.Models;
@@ -12,8 +12,8 @@ namespace UniDocs.Controllers
     public class DocumentController : Controller
     {
         private readonly AppDbContext _context;
-        private readonly IWebHostEnvironment _env; // Biến này giúp tìm ra thư mục root
-        private readonly IConfiguration _configuration; // AI
+        private readonly IWebHostEnvironment _env; // Trỏ tới thư mục wwwroot (xử lý upload và get)
+        private readonly IConfiguration _configuration; // Tích hợp call API
 
         public DocumentController(AppDbContext context, IWebHostEnvironment env, IConfiguration configuration)
         {
@@ -23,7 +23,7 @@ namespace UniDocs.Controllers
         }
 
 
-        // ===== Lưu tài liệu ===== -> Login mới lưu đc
+        // ===== Lưu tài liệu =====
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> SaveDocument(int documentId)
@@ -41,7 +41,6 @@ namespace UniDocs.Controllers
 
             if (existingSave != null)
             {
-                // Nếu đã lưu -> Bấm lần nữa -> Hủy lưu (xóa khỏi DB)
                 _context.SavedDocuments.Remove(existingSave);
                 TempData["SuccessMessage"] = "Đã bỏ lưu tài liệu khỏi danh sách yêu thích!";
             }
@@ -66,9 +65,7 @@ namespace UniDocs.Controllers
         }
 
 
-
-
-        // Tải file và lượt tải => ===== DOWNLOAD =====
+        // ===== DOWNLOAD =====
         [AllowAnonymous]
         public async Task<IActionResult> Download(int id)
         {
@@ -83,7 +80,7 @@ namespace UniDocs.Controllers
             document.DownloadCount += 1;
             await _context.SaveChangesAsync();
 
-            // Tìm file vật lý trong ổ cứng
+            // Khi tải -> Dựa theo đường dẫn này để lấy file ra
             string physicalPath = Path.Combine(_env.WebRootPath, document.FilePath.TrimStart('/'));
 
             if (!System.IO.File.Exists(physicalPath))
@@ -100,7 +97,7 @@ namespace UniDocs.Controllers
         }
 
 
-        // ===== Giao diện trang UPLOAD (Get) =====
+        // ===== UI UPLOAD (Get) =====
         public async Task<IActionResult> Upload()
         {
             ViewBag.Courses = await _context.Courses.ToListAsync();
@@ -108,7 +105,7 @@ namespace UniDocs.Controllers
         }
 
 
-        // Khi người dùng bấm Submit (Post) => ===== UPLOAD =====
+        // ===== UPLOAD =====
         [HttpPost]
         public async Task<IActionResult> Upload(Document model, IFormFile uploadedFile)
         {
@@ -133,7 +130,7 @@ namespace UniDocs.Controllers
 
             string uniqueFileName = DateTime.Now.Ticks.ToString() + "_" + uploadedFile.FileName;
 
-            // Đường dẫn tới thư mục cần lưu (wwwroot/ uploads)
+            // Thư mục lưu những tài liệu được User upload lên
             string uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");
 
             // Check thư mục uploads cos tồn tại

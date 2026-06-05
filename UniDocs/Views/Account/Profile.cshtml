@@ -42,19 +42,21 @@
             </div>
         </div>
 
-        @* ===== PHẢI: 2 Tab ===== *@
+        @* ===== PHẢI: 2 Tab (Tài liệu đăng và Tài liệu yêu thích) ===== *@
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm">
 
                 @* Nav Tabs *@
                 <div class="card-header bg-white border-bottom pt-4 pb-0">
                     <ul class="nav nav-tabs card-header-tabs" id="profileTabs">
+
                         <li class="nav-item">
                             <button class="nav-link active fw-bold" data-bs-toggle="tab" data-bs-target="#tab-uploaded">
                                 <i class="bi bi-upload me-1"></i> Tài liệu của tôi
                                 <span class="badge bg-primary ms-1">@Model.Documents?.Count()</span>
                             </button>
                         </li>
+
                         <li class="nav-item">
                             <button class="nav-link fw-bold" data-bs-toggle="tab" data-bs-target="#tab-saved">
                                 <i class="bi bi-heart me-1"></i> Đã lưu yêu thích
@@ -84,6 +86,7 @@
                                         foreach (var doc in Model.Documents)
                                         {
                                             <tr>
+                                                @* Hiển thị thông tin tài liệu mà User đã đăng *@
                                                 <td class="ps-4">
                                                     <div class="d-flex align-items-center">
                                                         <i class="bi bi-file-earmark-pdf text-danger fs-4 me-3"></i>
@@ -94,10 +97,13 @@
                                                         </div>
                                                     </div>
                                                 </td>
+
                                                 <td>
                                                     <span class="badge bg-light text-dark border">@doc.Course?.CourseName</span>
                                                 </td>
+
                                                 <td class="text-center fw-bold text-primary">@doc.DownloadCount</td>
+
                                                 <td class="text-end pe-4">
                                                     @if (doc.IsApproved)
                                                     {
@@ -141,6 +147,7 @@
                                         foreach (var saved in Model.SavedDocuments)
                                         {
                                             <tr>
+                                                @* Hiển thị thông tin của các tài liệu mà User bấm lưu *@
                                                 <td class="ps-4">
                                                     <div class="d-flex align-items-center">
                                                         <i class="bi bi-file-earmark-pdf text-danger fs-4 me-3"></i>
@@ -155,23 +162,28 @@
                                                         </div>
                                                     </div>
                                                 </td>
+
                                                 <td>
                                                     <span class="badge bg-light text-dark border">
                                                         @saved.Document?.Course?.CourseName
                                                     </span>
                                                 </td>
+
                                                 <td class="text-muted small">@saved.SavedDate.ToString("dd/MM/yyyy")</td>
+
+                                                @* Nút bỏ lưu *@
                                                 <td class="text-end pe-4">
-                                                    @* Nút bỏ lưu (gọi lại SaveDocument để toggle) *@
                                                     <form asp-controller="Document" asp-action="SaveDocument" method="post"
                                                           class="d-inline">
                                                         <input type="hidden" name="documentId" value="@saved.DocumentId" />
+
                                                         <button type="submit" class="btn btn-sm btn-outline-danger"
                                                                 title="Bỏ lưu">
                                                             <i class="bi bi-heart-fill me-1"></i>Bỏ lưu
                                                         </button>
                                                     </form>
                                                 </td>
+
                                             </tr>
                                         }
                                     }

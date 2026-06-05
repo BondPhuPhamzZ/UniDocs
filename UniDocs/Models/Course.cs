@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UniDocs.Models
 {
-    // ===== Bang mon hoc =====
     public class Course
     {
         // ID

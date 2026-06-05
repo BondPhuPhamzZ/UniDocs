@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = "Đăng ký";
 }
-<!-- Nội dung Đăng ký -->
 <div class="container flex-grow-1 d-flex align-items-center justify-content-center py-5">
     <div class="card border-0 shadow-sm"
          style="max-width: 500px; width: 100%">
@@ -16,16 +15,8 @@
                 </p>
             </div>
 
-
             @* Thông báo lỗi (nếu có) *@
             <div asp-validation-summary="All" class="text-danger small fw-bold text-center mb-3"></div>
-
-
-            @* @if (ViewBag.Error != null)
-            {
-                <div class="alert alert-danger text-center small fw-bold">@ViewBag.Error</div>
-            } *@
-
 
             @* ===== FORM ĐĂNG KÝ ===== *@
             <form asp-controller="Account" asp-action="Register" method="post">

@@ -10,13 +10,10 @@ using UniDocs.ViewModels;
 
 namespace UniDocs.Controllers
 {
-    // ===== Quản lý đăng nhập/ đăng ký =====
     public class AccountController : Controller
     {
         private readonly AppDbContext _context;
 
-
-        // Tiêm (Inject) Database vào Controller để sử dụng
         public AccountController(AppDbContext context)
         {
             _context = context;
@@ -28,16 +25,13 @@ namespace UniDocs.Controllers
         {
             return View();
         }
-
         // === Xử lý đăng nhập ===
         [HttpPost]
-        // public async Task<IActionResult> Login(string email, string password)
         public async Task<IActionResult> Login(LoginViewModel model)
         {
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
 
-            // Ktra tài khaonr có tồn tại, có bị khóa, pass có khớp ko
             if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
             {
                 ModelState.AddModelError(string.Empty, "Email hoặc mật khẩu không chính xác!");
@@ -56,7 +50,7 @@ namespace UniDocs.Controllers
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role) // Quan trọng để phân biệt Admin/ Sinh viên
+                new Claim(ClaimTypes.Role, user.Role) 
             };
 
             // Cần xem lại
@@ -93,7 +87,6 @@ namespace UniDocs.Controllers
             var emailTonTai = await _context.Users.AnyAsync(u => u.Email == model.Email);
             if (emailTonTai)
             {
-                /*ViewBag.Error = "Email này đã được sử dụng!";*/
                 ModelState.AddModelError(string.Empty, "Email này đã được sử dụng!");
                 return View(model);
             }
@@ -106,7 +99,6 @@ namespace UniDocs.Controllers
                 University = model.University,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password),
 
-                // Giá trị ngầm => Người dùng ko thể can thiệp
                 Role = "Student",
                 IsActive = true
             };
@@ -114,7 +106,6 @@ namespace UniDocs.Controllers
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
-            // Bật thông báo = TempData
             TempData["SuccessMessage"] = "Đăng ký thành công! Vui lòng đăng nhập";
             return RedirectToAction("Login", "Account");
 
@@ -124,13 +115,12 @@ namespace UniDocs.Controllers
         // ===== Xử lý đăng xuất =====
         public async Task<IActionResult> Logout()
         {
-            // "Xé vé" -> Xóa Cookie
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
 
 
-        // User Profile -> Trang cá nhân
+        // ========== User Profile -> Trang cá nhân ==========
         [Authorize]
         public async Task<IActionResult> Profile()
         {
@@ -138,7 +128,7 @@ namespace UniDocs.Controllers
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int userId = int.Parse(userIdStr);
 
-            // Tìm User trong db -> lấy các Documents đã upload của user đó
+            // Documents mà User đã upload
             var user = await _context.Users
                 .Include(u => u.Documents!)
                     .ThenInclude(d => d.Course)

@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = "Đăng tải tài liệu";
 }
-<!-- Nội dung Đóng góp tài liệu -->
 <div class="container flex-grow-1 py-4 py-md-5 upload-page">
     <div class="row justify-content-center g-0">
         <div class="col-12 col-md-10 col-lg-8 col-xl-7">
@@ -23,12 +22,6 @@
 
                     @* Lỗi -> (nếu có) *@
                     <div asp-validation-summary="All" class="text-danger small fw-bold text-center mb-3"></div>
-
-                    @* @if (ViewBag.Error != null)
-                    {
-                        <div class="alert alert-danger">@ViewBag.Error</div>
-                    } *@
-
 
                     @* ===== Form Upload tài liệu ===== *@
                     <form asp-controller="Document" asp-action="Upload" method="post" enctype="multipart/form-data">

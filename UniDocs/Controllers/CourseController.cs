@@ -6,7 +6,6 @@ using UniDocs.Data;
 
 namespace UniDocs.Controllers
 {
-    // ===== Quản lý môn học =====
     public class CourseController : Controller
     {
         private readonly AppDbContext _context;
@@ -16,7 +15,8 @@ namespace UniDocs.Controllers
             _context = context;
         }
 
-        // Trang danh sách các môn học
+
+        // Danh sách các môn học
         public async Task<IActionResult> Index(string query, int page = 1)
         {
             int pageSize = 6;
@@ -45,7 +45,7 @@ namespace UniDocs.Controllers
         }
 
 
-        // Trang chi tiết tài liệu của 1 môn (major.html)
+        // Trang chi tiết tài liệu của 1 môn 
         public async Task<IActionResult> Detail(int id, int page = 1)
         {
             int pageSize = 5; 
@@ -70,7 +70,7 @@ namespace UniDocs.Controllers
             // Phân trang
             var documents = await _context.Documents
                 .Include(d => d.User)
-                .Include(d => d.Course) // Partial-View in ra tên môn
+                .Include(d => d.Course) 
                 .Where(d => d.CourseId == id && d.IsApproved == true)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
