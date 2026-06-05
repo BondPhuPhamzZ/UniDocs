@@ -176,6 +176,7 @@ namespace UniDocs.Controllers
             var document = await _context.Documents
                 .Include(d => d.User)
                 .Include(d => d.Course)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(d => d.Id == id);
 
             if (document == null)
@@ -226,6 +227,7 @@ namespace UniDocs.Controllers
         {
             var doc = await _context.Documents
                 .Include(d => d.Course)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(d => d.Id == id);
 
             if (doc == null)
@@ -241,7 +243,12 @@ namespace UniDocs.Controllers
 
                 var apiKey = _configuration["GeminiApiKey"];
                 if (string.IsNullOrEmpty(apiKey))
-                    return Json(new { summary = "Chưa cấu hình API Key. Vui lòng liên hệ Admin." });
+                    return Json(
+                        new 
+                        { 
+                            summary = "Chưa cấu hình API Key. Vui lòng liên hệ Admin." 
+                        }
+                    );
 
                 client.DefaultRequestHeaders.Add("x-goog-api-key", apiKey);
 
@@ -259,7 +266,12 @@ namespace UniDocs.Controllers
                 var rawJson = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
-                    return Json(new { summary = "Tính năng AI tóm tắt hiện không khả dụng. Vui lòng thử lại sau." });
+                    return Json(
+                        new 
+                        { 
+                            summary = "Tính năng AI tóm tắt hiện không khả dụng. Vui lòng thử lại sau." 
+                        }
+                    );
 
                 var json = System.Text.Json.JsonDocument.Parse(rawJson).RootElement;
                 string summary = json
@@ -273,7 +285,12 @@ namespace UniDocs.Controllers
             }
             catch (Exception)
             {
-                return Json(new { summary = "Tính năng AI tóm tắt hiện không khả dụng. Vui lòng thử lại sau." });
+                return Json(
+                    new 
+                    { 
+                        summary = "Tính năng AI tóm tắt hiện không khả dụng. Vui lòng thử lại sau." 
+                    }
+                );
             }
         }
 
