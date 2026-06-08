@@ -5,12 +5,12 @@ namespace UniDocs.Data
 {
     public class UniSeedData
     {
-        public static void Seed(AppDbContext context)
+        public static async Task Seed(AppDbContext context)
         {
             context.Database.EnsureCreated();
 
             // TK Admin 
-            if (!context.Users.Any(u => u.Email == "adminunidocs@gmail.com"))
+            if (!await context.Users.AnyAsync(u => u.Email == "adminunidocs@gmail.com"))
             {
                 var adminUser = new User()
                 {
@@ -21,18 +21,18 @@ namespace UniDocs.Data
                     Role = "Admin",
                     IsActive = true
                 };
-                context.Users.Add(adminUser);
+                await context.Users.AddAsync(adminUser);
             }
 
             // Course
-            if (!context.Courses.Any(c => c.CourseCode == "IT04"))
+            if (!await context.Courses.AnyAsync(c => c.CourseCode == "IT04"))
             {
-                context.Courses.AddRange(
+                await context.Courses.AddRangeAsync(
                     new Course { CourseCode = "IT04", CourseName = "Lập trình Web nâng cao", Department = "CNTT"}
                 );
             }
 
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
         }
     }
