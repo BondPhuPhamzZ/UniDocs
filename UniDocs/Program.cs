@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using UniDocs.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Threading.Tasks;
 
 namespace UniDocs
 {
@@ -9,7 +10,7 @@ namespace UniDocs
     // ===== Thêm kết nối Database =====
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +40,7 @@ namespace UniDocs
                 try
                 {
                     var context = services.GetRequiredService<AppDbContext>();
-                    UniSeedData.Seed(context);
+                    await UniSeedData.SeedAsync(context);
                 }
                 catch (Exception ex)
                 {

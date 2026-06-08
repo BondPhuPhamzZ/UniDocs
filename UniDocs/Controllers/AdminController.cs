@@ -31,6 +31,7 @@ namespace UniDocs.Controllers
         }
         // Xóa tài liệu vi phạm
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteDocument(int id)
         {
             var document = await _context.Documents.FindAsync(id);
@@ -53,6 +54,7 @@ namespace UniDocs.Controllers
         }
         // Bỏ qua báo cáo (ko có vi phạm) -> đánh dấu "đã xử lý"
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DismissReport(int id)
         {
             var report = await _context.Reports.FindAsync(id);
@@ -80,6 +82,7 @@ namespace UniDocs.Controllers
         }
         // Mở/ khóa tài khoản
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ToggleLock(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -106,6 +109,7 @@ namespace UniDocs.Controllers
         }
         // Thêm môn học mới 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddCourse(Course model)
         {
             if (ModelState.IsValid)
@@ -118,6 +122,7 @@ namespace UniDocs.Controllers
         }
         // Xóa môn học
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteCourse(int id)
         {
             var course = await _context.Courses

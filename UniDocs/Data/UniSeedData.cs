@@ -17,7 +17,7 @@ namespace UniDocs.Data
                     FirstName = "Admin",
                     LastName = "System",
                     Email = "adminunidocs@gmail.com",
-                    PasswordHash = "admin123", 
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"), 
                     Role = "Admin",
                     IsActive = true
                 };
