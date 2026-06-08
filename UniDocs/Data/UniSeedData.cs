@@ -5,7 +5,7 @@ namespace UniDocs.Data
 {
     public class UniSeedData
     {
-        public static async Task Seed(AppDbContext context)
+        public static async Task SeedAsync(AppDbContext context)
         {
             context.Database.EnsureCreated();
 
