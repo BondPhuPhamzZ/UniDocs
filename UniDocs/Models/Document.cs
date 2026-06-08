@@ -29,7 +29,7 @@ namespace UniDocs.Models
         public string AcademicYear { get; set; }
 
 
-        // Đường dẫn lưu file trên máy chủ (.pdf ; .docx ;...)
+        // Đường dẫn lưu file trên máy chủ 
         [Required]
         public string FilePath { get; set; } = string.Empty;
 

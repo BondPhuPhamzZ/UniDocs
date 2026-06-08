@@ -29,6 +29,11 @@ namespace UniDocs.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                model.Password = "";
+                return View(model);
+            }
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
 
@@ -77,9 +82,10 @@ namespace UniDocs.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            // Check input => [Required] 
+            // Check [Required]
             if (!ModelState.IsValid)
             {
+                model.Password = "";
                 return View(model);
             }
 
