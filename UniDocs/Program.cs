@@ -13,7 +13,7 @@ namespace UniDocs
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // ===== -> Khai báo Database =====
+            // ===== Khai báo Database =====
             builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -31,7 +31,25 @@ namespace UniDocs
 
             var app = builder.Build();
 
-           // ===== Cấu hình Middleware =====
+
+            // ===== Seed Data =====
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    var context = services.GetRequiredService<AppDbContext>();
+                    UniSeedData.Seed(context);
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "Đã xảy ra lỗi khi Seed Data!");
+                }
+            }
+
+
+            // ===== Cấu hình Middleware =====
             if (!app.Environment.IsDevelopment())
             {
                 // Catch 500
@@ -42,7 +60,6 @@ namespace UniDocs
             {
                 app.UseDeveloperExceptionPage();
             }
-            // Status code != truyền vào
             app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 
 
@@ -57,7 +74,6 @@ namespace UniDocs
 
             app.UseAuthorization();
 
-            // Default khi chạy Web
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
