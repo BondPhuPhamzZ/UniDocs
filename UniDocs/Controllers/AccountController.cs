@@ -25,8 +25,8 @@ namespace UniDocs.Controllers
         {
             return View();
         }
-        // === Xử lý đăng nhập ===
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
 
@@ -73,8 +73,8 @@ namespace UniDocs.Controllers
         {
             return View();
         }
-        // === Xử lý đăng ký ===
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             // Check input => [Required] 

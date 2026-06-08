@@ -26,9 +26,10 @@ namespace UniDocs.Controllers
         // ===== Lưu tài liệu =====
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveDocument(int documentId)
         {
-            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier); // Id User đang đăng nhập
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier); 
 
             if (string.IsNullOrEmpty(userIdString))
                 return RedirectToAction("Login", "Account");
@@ -107,6 +108,7 @@ namespace UniDocs.Controllers
 
         // ===== UPLOAD =====
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upload(Document model, IFormFile uploadedFile)
         {
             // Check người dùng đã chọn file để up lên chưa
@@ -188,6 +190,7 @@ namespace UniDocs.Controllers
         // ===== Báo cáo vi phạm =====
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Report(int documentId, string reason)
         {
             if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
