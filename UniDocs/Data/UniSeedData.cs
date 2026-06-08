@@ -7,32 +7,33 @@ namespace UniDocs.Data
     {
         public static void Seed(AppDbContext context)
         {
-            if (context.Users.Any())
+            context.Database.EnsureCreated();
+
+            // TK Admin 
+            if (!context.Users.Any(u => u.Email == "adminunidocs@gmail.com"))
             {
-                return;
+                var adminUser = new User()
+                {
+                    FirstName = "Admin",
+                    LastName = "System",
+                    Email = "adminunidocs@gmail.com",
+                    PasswordHash = "admin123", 
+                    Role = "Admin",
+                    IsActive = true
+                };
+                context.Users.Add(adminUser);
             }
 
-            var adminUser = new User()
+            // Course
+            if (!context.Courses.Any(c => c.CourseCode == "IT04"))
             {
-                FirstName = "Admin",
-                LastName = "System",
-                Email = "adminunidocs@gmail.com",
-                PasswordHash = "admin123",
-                Role = "Admin",
-                IsActive = true
-            };
-
-            var defaultCourse = new Course()
-            {
-                CourseCode = "IT04",
-                CourseName = "Công nghệ phần mềm",
-                Department = "CNTT"
-            };
-
-            context.Users.Add(adminUser);
-            context.Courses.Add(defaultCourse);
+                context.Courses.AddRange(
+                    new Course { CourseCode = "IT04", CourseName = "Lập trình Web nâng cao", Department = "CNTT"}
+                );
+            }
 
             context.SaveChanges();
+
         }
     }
 }
