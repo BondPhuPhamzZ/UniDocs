@@ -28,7 +28,9 @@ namespace UniDocs.Data
             if (!await context.Courses.AnyAsync(c => c.CourseCode == "IT04"))
             {
                 await context.Courses.AddRangeAsync(
-                    new Course { CourseCode = "IT04", CourseName = "Lập trình Web nâng cao", Department = "CNTT"}
+                    new Course { CourseCode = "IT04", CourseName = "Lập trình Web nâng cao", Department = "CNTT"},
+                    new Course { CourseCode = "IT05", CourseName = "Công nghệ phần mềm", Department = "CNTT" },
+                    new Course { CourseCode = "IT06", CourseName = "Mạng máy tính", Department = "CNTT" }
                 );
             }
 
