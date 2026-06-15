@@ -12,8 +12,8 @@ namespace UniDocs.Controllers
     public class DocumentController : Controller
     {
         private readonly AppDbContext _context;
-        private readonly IWebHostEnvironment _env; // Trỏ tới thư mục wwwroot (xử lý upload và get)
-        private readonly IConfiguration _configuration; // Tích hợp call API
+        private readonly IWebHostEnvironment _env; 
+        private readonly IConfiguration _configuration;
 
         public DocumentController(AppDbContext context, IWebHostEnvironment env, IConfiguration configuration)
         {
@@ -36,7 +36,6 @@ namespace UniDocs.Controllers
 
             int userId = int.Parse(userIdString);
 
-            // Check lưu chưa
             var existingSave = await _context.SavedDocuments
                 .FirstOrDefaultAsync(s => s.UserId == userId && s.DocumentId == documentId);
 
@@ -70,14 +69,12 @@ namespace UniDocs.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Download(int id)
         {
-            // Tìm tài liệu theo ID
             var document = await _context.Documents.FindAsync(id);
             if (document == null)
             {
                 return NotFound("Tài liệu không tồn tại!");
             }
 
-            // Số lượt tải tăng lên và lưu lại
             document.DownloadCount += 1;
             await _context.SaveChangesAsync();
 
@@ -98,20 +95,16 @@ namespace UniDocs.Controllers
         }
 
 
-        // ===== UI UPLOAD (Get) =====
+        // ===== UPLOAD =====
         public async Task<IActionResult> Upload()
         {
             ViewBag.Courses = await _context.Courses.ToListAsync();
             return View();
         }
-
-
-        // ===== UPLOAD =====
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upload(Document model, IFormFile uploadedFile)
         {
-            // Check người dùng đã chọn file để up lên chưa
             if (uploadedFile == null || uploadedFile.Length == 0)
             {
                 ModelState.AddModelError(string.Empty, "Vui lòng chọn 1 file để tải lên!");
@@ -119,7 +112,6 @@ namespace UniDocs.Controllers
                 return View(model);
             }
 
-            // Check đuôi file đúng định dạng
             var allowedExtensions = new[] { ".pdf", ".doc", ".docx", ".ppt", ".pptx", ".zip", ".rar" };
             var extension = Path.GetExtension(uploadedFile.FileName).ToLower();
 
@@ -132,10 +124,8 @@ namespace UniDocs.Controllers
 
             string uniqueFileName = DateTime.Now.Ticks.ToString() + "_" + uploadedFile.FileName;
 
-            // Thư mục lưu những tài liệu được User upload lên
             string uploadsFolder = Path.Combine(_env.WebRootPath, "uploads");
 
-            // Check thư mục uploads cos tồn tại
             if (!Directory.Exists(uploadsFolder))
             {
                 Directory.CreateDirectory(uploadsFolder);
@@ -168,7 +158,6 @@ namespace UniDocs.Controllers
         }
 
 
-        // Trang chi tiết -> khi bấm vào tài liệu
         [AllowAnonymous]
         public async Task<IActionResult> Detail(int id)
         {
@@ -187,7 +176,7 @@ namespace UniDocs.Controllers
 
         }
 
-        // ===== Báo cáo vi phạm =====
+
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -196,7 +185,6 @@ namespace UniDocs.Controllers
             if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
                 return RedirectToAction("Login", "Account");
 
-            // Kiểm tra đã báo cáo tài liệu này chưa
             var existed = await _context.Reports
                 .AnyAsync(r => r.DocumentId == documentId && r.ReporterId == userId);
             if (existed)

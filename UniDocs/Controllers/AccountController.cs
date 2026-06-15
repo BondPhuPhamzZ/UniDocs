@@ -19,7 +19,6 @@ namespace UniDocs.Controllers
             _context = context;
         }
 
-
         // ========== Đăng nhập ===========
         public ViewResult Login()
         {
@@ -49,7 +48,6 @@ namespace UniDocs.Controllers
                 return View(model);
             }
 
-            // Tạo "vé thông hành" (Cookie)
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -58,11 +56,9 @@ namespace UniDocs.Controllers
                 new Claim(ClaimTypes.Role, user.Role) 
             };
 
-            // Cần xem lại
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
 
-            // Cấp phát Cookie cho trình duyệt
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
             if (user.Role == "Admin")
@@ -130,11 +126,9 @@ namespace UniDocs.Controllers
         [Authorize]
         public async Task<IActionResult> Profile()
         {
-            // Lấy id đăng nhập từ Cookie
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int userId = int.Parse(userIdStr);
 
-            // Documents mà User đã upload
             var user = await _context.Users
                 .Include(u => u.Documents!)
                     .ThenInclude(d => d.Course)
