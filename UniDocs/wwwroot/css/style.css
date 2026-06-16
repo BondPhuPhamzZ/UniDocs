@@ -38,6 +38,13 @@ body {
     padding: 0.75rem 1.25rem;
     margin-bottom: -1px;
     border-radius: 0.25rem 0.25rem 0 0;
+    border: 1px solid transparent;
+}
+.nav-tabs .nav-link:hover {
+    border-color: #e9ecef #e9ecef #dee2e6;
+}
+.nav-tabs .nav-link.active {
+    border-color: #dee2e6 #dee2e6 #fff;
 }
 .badge.bg-primary-subtle {
     background-color: #EBF8FF !important;
@@ -107,12 +114,12 @@ body {
 }
 
 .course-sidebar-link.active-course-link {
-    background-color: #0d6efd;
+    background-color: var(--bs-primary);
     color: #fff;
     font-weight: 700;
 }
 
 .course-sidebar-link.active-course-link:hover {
-    background-color: #0b5ed7;
+    background-color: #1a2a40;
     color: #fff;
 }
