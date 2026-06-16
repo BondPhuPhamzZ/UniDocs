@@ -15,20 +15,16 @@ namespace UniDocs.Data
         public DbSet<Report> Reports { get; set; }
         public DbSet<SavedDocument> SavedDocuments { get; set; }
 
-
-        // Xử lý lỗi Handle (1 hành động mang nhiều ý nghĩa) -> Sử dụng cấu hình Fluent API
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Report 
             modelBuilder.Entity<Report>()
                 .HasOne(r => r.Reporter)
                 .WithMany()
                 .HasForeignKey(r => r.ReporterId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // SavedDocument
             modelBuilder.Entity<SavedDocument>()
                 .HasOne(s => s.User)
                 .WithMany(u => u.SavedDocuments)

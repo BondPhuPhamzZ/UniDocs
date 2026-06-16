@@ -105,6 +105,12 @@ namespace UniDocs.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upload(Document model, IFormFile uploadedFile)
         {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Courses = await _context.Courses.ToListAsync();
+                return View(model);
+            }
+
             if (uploadedFile == null || uploadedFile.Length == 0)
             {
                 ModelState.AddModelError(string.Empty, "Vui lòng chọn 1 file để tải lên!");

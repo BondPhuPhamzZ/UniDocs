@@ -1,4 +1,4 @@
-﻿@model IEnumerable<UniDocs.Models.Course>
+@model IEnumerable<UniDocs.Models.Course>
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Danh mục Môn học";
@@ -21,7 +21,7 @@
     <div class="d-flex gap-2">
         <span class="badge bg-primary fs-6">@Model.Count() môn học</span>
 
-        <button class="btn btn-success btn-sm fw-bold" data-bs-toggle="modal" data-bs-target="#addCourseModal">
+        <button class="btn btn-primary btn-sm fw-bold" data-bs-toggle="modal" data-bs-target="#addCourseModal">
             <i class="bi bi-plus-circle"></i> Thêm môn học mới
         </button>
     </div>
@@ -104,7 +104,7 @@
         <div class="modal-content border-0 shadow">
 
             @* Chức năng Thêm môn học mới *@
-            <div class="modal-header bg-success text-white border-0">
+            <div class="modal-header bg-primary text-white border-0">
                 <h5 class="modal-title"><i class="bi bi-plus-circle"></i> Thêm Môn học Mới</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
@@ -133,7 +133,7 @@
 
                 <div class="modal-footer border-0">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-success fw-bold">
+                    <button type="submit" class="btn btn-primary fw-bold">
                         <i class="bi bi-plus-circle me-1"></i>Lưu môn học
                     </button>
                 </div>
