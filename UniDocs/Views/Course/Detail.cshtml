@@ -1,4 +1,4 @@
-﻿@model IEnumerable<UniDocs.Models.Document>
+@model IEnumerable<UniDocs.Models.Document>
 
 @{
     ViewData["Title"] = "Chi tiết môn: " + ViewBag.CourseName;
@@ -39,6 +39,14 @@
         @* === Khu vực các tài liệu thuộc môn học đó hiển thị (PHẢI) === *@
         <div class="col-lg-9">
 
+            @if (!string.IsNullOrEmpty(ViewBag.DocQuery as string))
+            {
+                <div class="alert alert-success shadow-sm mb-4">
+                    Đang hiển thị tài liệu chứa từ khóa: <strong>"@ViewBag.DocQuery"</strong>
+                    <a asp-action="Detail" asp-route-id="@ViewBag.CourseId" class="text-danger text-decoration-none ms-3">Xóa lọc</a>
+                </div>
+            }
+
             @if (Model != null && Model.Any())
             {
                 @* Hiển thị các tài liệu *@
@@ -64,20 +72,20 @@
 
                         @* Nút Previous *@
                         <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
-                            <a class="page-link" asp-action="Detail" asp-route-id="@ViewBag.CourseId" asp-route-page="@(ViewBag.CurrentPage - 1)">Trước</a>
+                            <a class="page-link" asp-action="Detail" asp-route-id="@ViewBag.CourseId" asp-route-docQuery="@ViewBag.DocQuery" asp-route-page="@(ViewBag.CurrentPage - 1)">Trước</a>
                         </li>
 
                         @* In số trang *@
                         @for (int i = 1; i <= ViewBag.TotalPages; i++)
                         {
                             <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                                <a class="page-link" asp-action="Detail" asp-route-id="@ViewBag.CourseId" asp-route-page="@i">@i</a>
+                                <a class="page-link" asp-action="Detail" asp-route-id="@ViewBag.CourseId" asp-route-docQuery="@ViewBag.DocQuery" asp-route-page="@i">@i</a>
                             </li>
                         }
 
                         @* Nút Next *@
                         <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
-                            <a class="page-link" asp-action="Detail" asp-route-id="@ViewBag.CourseId" asp-route-page="@(ViewBag.CurrentPage + 1)">Sau</a>
+                            <a class="page-link" asp-action="Detail" asp-route-id="@ViewBag.CourseId" asp-route-docQuery="@ViewBag.DocQuery" asp-route-page="@(ViewBag.CurrentPage + 1)">Sau</a>
                         </li>
 
                     </ul>

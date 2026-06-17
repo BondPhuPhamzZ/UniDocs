@@ -1,5 +1,5 @@
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 :root {
@@ -41,7 +41,7 @@ body {
     border: 1px solid transparent;
 }
 .nav-tabs .nav-link:hover {
-    border-color: #e9ecef #e9ecef #dee2e6;
+    border-color: transparent;
 }
 .nav-tabs .nav-link.active {
     border-color: #dee2e6 #dee2e6 #fff;
@@ -122,4 +122,20 @@ body {
 .course-sidebar-link.active-course-link:hover {
     background-color: #1a2a40;
     color: #fff;
+}
+
+/* Card Modernization */
+.card {
+    border: none !important;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.document-card-hover {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.document-card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1) !important;
 }

@@ -46,7 +46,7 @@ namespace UniDocs.Controllers
 
 
         // Trang chi tiết tài liệu của 1 môn 
-        public async Task<IActionResult> Detail(int id, int page = 1)
+        public async Task<IActionResult> Detail(int id, string docQuery = null, int page = 1)
         {
             int pageSize = 5; 
 
@@ -60,24 +60,62 @@ namespace UniDocs.Controllers
             ViewBag.CourseName = course.CourseName;
             ViewBag.Department = course.Department;
             ViewBag.CourseId = course.Id;
+            ViewBag.DocQuery = docQuery;
+
+            var docsQuery = _context.Documents
+                .Include(d => d.User)
+                .Include(d => d.Course) 
+                .Where(d => d.CourseId == id && d.IsApproved == true);
+
+            if (!string.IsNullOrEmpty(docQuery))
+            {
+                docsQuery = docsQuery.Where(d => d.Title.Contains(docQuery));
+            }
 
             // Tính toán tổng số trang
-            int totalDocs = await _context.Documents.CountAsync(d => d.CourseId == id && d.IsApproved == true);
+            int totalDocs = await docsQuery.CountAsync();
             ViewBag.TotalDocuments = totalDocs;
             ViewBag.TotalPages = (int)Math.Ceiling((double)totalDocs / pageSize);
             ViewBag.CurrentPage = page;
 
             // Phân trang
-            var documents = await _context.Documents
-                .Include(d => d.User)
-                .Include(d => d.Course) 
-                .Where(d => d.CourseId == id && d.IsApproved == true)
+            var documents = await docsQuery
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
             return View(documents);
 
+        }
+
+        public async Task<IActionResult> SearchSidebar(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                return RedirectToAction("Index");
+
+            // 1. Tìm môn học khớp tên trước
+            var matchedCourse = await _context.Courses
+                .Where(c => c.CourseName.Contains(query))
+                .FirstOrDefaultAsync();
+
+            if (matchedCourse != null)
+            {
+                return RedirectToAction("Detail", new { id = matchedCourse.Id });
+            }
+
+            // 2. Nếu không có môn nào khớp, tìm tài liệu khớp tên
+            var matchedDoc = await _context.Documents
+                .Include(d => d.Course)
+                .Where(d => d.Title.Contains(query) && d.IsApproved)
+                .FirstOrDefaultAsync();
+
+            if (matchedDoc != null && matchedDoc.Course != null)
+            {
+                return RedirectToAction("Detail", new { id = matchedDoc.Course.Id, docQuery = query });
+            }
+
+            TempData["ErrorMessage"] = "Không tìm thấy kết quả nào phù hợp!";
+            return RedirectToAction("Index");
         }
 
 
