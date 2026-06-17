@@ -18,8 +18,9 @@ namespace UniDocs.Controllers
         }
 
 
-        public async Task<IActionResult> Index(string query)
+        public async Task<IActionResult> Index(string query, int page = 1)
         {
+            int pageSize = 8;
             var documentsQuery = _context.Documents
                 .Include(d => d.Course)
                 .Include(d => d.User)
@@ -28,11 +29,19 @@ namespace UniDocs.Controllers
             if (!string.IsNullOrEmpty(query))
             {
                 documentsQuery = documentsQuery.Where(d => d.Title.Contains(query) || d.Course.CourseName.Contains(query));
-
                 ViewBag.SearchQuery = query;
             }
 
-            var documents = await documentsQuery.OrderByDescending(d => d.UploadDate).ToListAsync();
+            int totalDocuments = await documentsQuery.CountAsync();
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalDocuments / pageSize);
+            ViewBag.CurrentPage = page;
+
+            var documents = await documentsQuery
+                .OrderByDescending(d => d.UploadDate)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
             return View(documents);
         }
 

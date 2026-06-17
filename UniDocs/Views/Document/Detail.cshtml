@@ -34,28 +34,31 @@
 
             @* Bên phải: Nút thao tác *@
             <div class="d-flex flex-column gap-2" style="min-width: 250px;">
-                <a asp-controller="Document" asp-action="Download" asp-route-id="@Model.Id" class="btn btn-primary fw-bold rounded-pill">
-                    Tải tài liệu
-                </a>
-
+                
+                @* Hàng 1: Tải tài liệu & Yêu thích (Icon) *@
                 <div class="d-flex gap-2">
-                    <form asp-controller="Document" asp-action="SaveDocument" method="post" class="flex-grow-1">
+                    <a asp-controller="Document" asp-action="Download" asp-route-id="@Model.Id" class="btn btn-primary fw-bold rounded-pill flex-grow-1">
+                        Tải tài liệu
+                    </a>
+
+                    <form asp-controller="Document" asp-action="SaveDocument" method="post" class="d-inline-block">
                         <input type="hidden" name="documentId" value="@Model.Id" />
-                        <button type="submit" class="btn btn-outline-danger w-100 fw-bold rounded-pill">
-                            Yêu thích
+                        <button type="submit" class="btn btn-outline-danger fw-bold rounded-circle px-3" title="Thêm vào yêu thích">
+                            <i class="bi bi-heart-fill"></i>
                         </button>
                     </form>
-
-                    <button id="btnAiSummary" onclick="loadAiSummary(@Model.Id)" class="btn btn-outline-success fw-bold rounded-pill" title="Tóm tắt bằng AI">
-                        AI
-                    </button>
                 </div>
+
+                @* Hàng 2: Nút Tóm tắt AI *@
+                <button id="btnAiSummary" onclick="loadAiSummary(@Model.Id)" class="btn btn-outline-success fw-bold rounded-pill w-100" title="Tóm tắt nội dung bằng AI">
+                    <i class="bi bi-robot me-1"></i> Tóm tắt
+                </button>
                 
                 @if (User.Identity!.IsAuthenticated)
                 {
                     <div class="text-end mt-1">
-                        <a href="#" class="text-muted small text-decoration-none" data-bs-toggle="collapse" data-bs-target="#reportForm">
-                            Báo cáo vi phạm
+                        <a href="#" class="text-danger small text-decoration-underline" data-bs-toggle="collapse" data-bs-target="#reportForm">
+                            Báo cáo
                         </a>
                         <div class="collapse mt-2 text-start" id="reportForm">
                             <form asp-action="Report" asp-controller="Document" method="post">
