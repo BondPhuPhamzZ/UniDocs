@@ -51,19 +51,19 @@
             </div>
 
             @* ===== Khu vực hiển thị các tài liệu dc UPLOAD ===== *@
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            <div class="document-grid">
                 @if (Model != null && Model.Any())
                 {
                     foreach (var item in Model)
                     {
-                        <div class="col">
+                        <div>
                             <partial name="_DocumentCardPartial" model="item" />
                         </div>
                     }
                 }
                 else
                 {
-                    <div class="col-12 alert alert-info text-center">Chưa có tài liệu nào!</div>
+                    <div class="alert alert-info text-center" style="grid-column: 1 / -1;">Chưa có tài liệu nào!</div>
                 }
             </div>
 
