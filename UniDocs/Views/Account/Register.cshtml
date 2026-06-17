@@ -24,21 +24,21 @@
                 <div class="row">
                     @* Nhập tên *@
                     <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold small">Tên</label>
+                        <label class="form-label fw-bold small text-dark">Tên</label>
                         @* <input type="text" name="firstName" class="form-control" placeholder="Tên của bạn" required /> *@
                         <input asp-for="FirstName" class="form-control" placeholder="Tên của bạn" required />
                     </div>
 
                     @* Nhập họ *@
                     <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold small">Họ</label>
+                        <label class="form-label fw-bold small text-dark">Họ</label>
                         <input asp-for="LastName" class="form-control" placeholder="Họ của bạn" required />
                     </div>
                 </div>
 
                 @* Chọn trường *@
                 <div class="mb-3">
-                    <label class="form-label fw-bold small">Trường Đại học</label>
+                    <label class="form-label fw-bold small text-dark">Trường Đại học</label>
                     <select asp-for="University" class="form-select">
                         <option value="">Chọn trường đại học...</option>
                         <option value="Đại học Ngoại ngữ - Tin học TP.HCM">Đại học Ngoại ngữ - Tin học TP.HCM</option>
@@ -50,19 +50,19 @@
 
                 @* Nhập Email *@
                 <div class="mb-3">
-                    <label class="form-label fw-bold small">Email</label>
+                    <label class="form-label fw-bold small text-dark">Email</label>
                     <input asp-for="Email" class="form-control" placeholder="mssv@student.edu.vn" required />
                 </div>
 
                 @* Nhập mật khẩu *@
                 <div class="mb-3">
-                    <label class="form-label fw-bold small">Mật khẩu</label>
+                    <label class="form-label fw-bold small text-dark">Mật khẩu</label>
                     <input asp-for="Password" class="form-control" type="password" placeholder="Tạo mật khẩu" required />
                 </div>
 
                 @* Xác nhận lại mật khầu *@
                 <div class="mb-4">
-                    <label class="form-label fw-bold small">Vui lòng nhập lại mật khẩu</label>
+                    <label class="form-label fw-bold small text-dark">Vui lòng nhập lại mật khẩu</label>
                     <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Xác nhận lại mật khẩu" required />
                     <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                 </div>
@@ -71,9 +71,9 @@
             </form>
 
 
-            <div class="text-center mt-4 small">
+            <div class="text-center mt-4 small text-muted">
                 Đã có tài khoản?
-                <a asp-controller="Account" asp-action="Login" class="text-decoration-none fw-bold">Đăng nhập</a>
+                <a asp-controller="Account" asp-action="Login" class="text-primary text-decoration-none fw-bold ms-1">Đăng nhập</a>
             </div>
 
         </div>

@@ -20,14 +20,14 @@
             <form asp-controller="Account" asp-action="Login" method="post">
 
                 <div class="mb-3">
-                    <label class="form-label fw-bold small">Email đăng nhập</label>
+                    <label class="form-label fw-bold small text-dark">Email đăng nhập</label>
 
                     <input asp-for="Email" class="form-control" placeholder="Ví dụ: phupham@gmail.com" required />
 
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label fw-bold small">Mật khẩu</label>
+                    <label class="form-label fw-bold small text-dark">Mật khẩu</label>
                     <input type="password" asp-for="Password" class="form-control" placeholder="Nhập mật khẩu" required />
                 </div>
 
@@ -35,9 +35,9 @@
             </form>
 
 
-            <div class="text-center mt-4 small">
+            <div class="text-center mt-4 small text-muted">
                 Chưa có tài khoản?
-                <a asp-controller="Account" asp-action="Register" class="text-decoration-none fw-bold">Đăng ký ngay</a>
+                <a asp-controller="Account" asp-action="Register" class="text-primary text-decoration-none fw-bold ms-1">Đăng ký ngay</a>
             </div>
 
         </div>

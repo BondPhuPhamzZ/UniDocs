@@ -67,32 +67,14 @@
                 }
             </div>
 
-            @* Thanh phân trang *@
-            @if (ViewBag.TotalPages > 1)
+            @* Nút Xem thêm tài liệu *@
+            @if (Model != null && Model.Count() >= 8)
             {
-                <nav aria-label="Page navigation" class="mt-5">
-                    <ul class="pagination justify-content-center">
-
-                        @* Nút Previous *@
-                        <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
-                            <a class="page-link" asp-action="Index" asp-route-query="@ViewBag.SearchQuery" asp-route-page="@(ViewBag.CurrentPage - 1)">Trước</a>
-                        </li>
-
-                        @* In số trang *@
-                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
-                        {
-                            <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                                <a class="page-link" asp-action="Index" asp-route-query="@ViewBag.SearchQuery" asp-route-page="@i">@i</a>
-                            </li>
-                        }
-
-                        @* Nút Next *@
-                        <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
-                            <a class="page-link" asp-action="Index" asp-route-query="@ViewBag.SearchQuery" asp-route-page="@(ViewBag.CurrentPage + 1)">Sau</a>
-                        </li>
-
-                    </ul>
-                </nav>
+                <div class="text-center mt-5">
+                    <a asp-controller="Course" asp-action="Index" class="btn btn-outline-primary fw-bold rounded-pill px-4">
+                        Xem thêm tài liệu <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
             }
 
         </div>
