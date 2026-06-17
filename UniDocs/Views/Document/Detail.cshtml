@@ -6,7 +6,15 @@
 <div class="container py-4">
     
     @* ===== HEADER TRÊN CÙNG: Thông tin & Nút ===== *@
-    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 position-relative">
+        
+        @if (User.Identity!.IsAuthenticated)
+        {
+            @* Nút báo cáo ở góc trên cùng bên phải *@
+            <a href="#" class="position-absolute top-0 end-0 mt-3 me-4 text-danger fs-5" data-bs-toggle="collapse" data-bs-target="#reportForm" title="Báo cáo tài liệu">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+            </a>
+        }
         
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start">
             
@@ -43,24 +51,20 @@
 
                     <form asp-controller="Document" asp-action="SaveDocument" method="post" class="d-inline-block">
                         <input type="hidden" name="documentId" value="@Model.Id" />
-                        <button type="submit" class="btn btn-outline-danger fw-bold rounded-circle px-3" title="Thêm vào yêu thích">
+                        <button type="submit" class="btn btn-outline-danger fw-bold rounded px-3" title="Thêm vào yêu thích">
                             <i class="bi bi-heart-fill"></i>
                         </button>
                     </form>
                 </div>
 
                 @* Hàng 2: Nút Tóm tắt AI *@
-                <button id="btnAiSummary" onclick="loadAiSummary(@Model.Id)" class="btn btn-outline-success fw-bold rounded-pill w-100" title="Tóm tắt nội dung bằng AI">
-                    <i class="bi bi-robot me-1"></i> Tóm tắt
+                <button id="btnAiSummary" onclick="loadAiSummary(@Model.Id)" class="btn btn-outline-primary fw-bold rounded-pill w-100" title="Tóm tắt nội dung bằng AI">
+                    Tóm tắt
                 </button>
                 
                 @if (User.Identity!.IsAuthenticated)
                 {
-                    <div class="text-end mt-1">
-                        <a href="#" class="text-danger small text-decoration-underline" data-bs-toggle="collapse" data-bs-target="#reportForm">
-                            Báo cáo
-                        </a>
-                        <div class="collapse mt-2 text-start" id="reportForm">
+                    <div class="collapse mt-3 text-start" id="reportForm">
                             <form asp-action="Report" asp-controller="Document" method="post">
                                 <input type="hidden" name="documentId" value="@Model.Id" />
                                 <select name="reason" class="form-select form-select-sm mb-2">

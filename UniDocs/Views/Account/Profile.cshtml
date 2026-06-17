@@ -51,16 +51,16 @@
                     <ul class="nav nav-tabs card-header-tabs" id="profileTabs">
 
                         <li class="nav-item">
-                            <button class="nav-link active fw-bold" data-bs-toggle="tab" data-bs-target="#tab-uploaded">
-                                <i class="bi bi-upload me-1"></i> Tài liệu của tôi
-                                <span class="badge bg-primary ms-1">@Model.Documents?.Count()</span>
+                            <button class="nav-link active fw-bold d-flex align-items-center gap-2" data-bs-toggle="tab" data-bs-target="#tab-uploaded">
+                                <span><i class="bi bi-upload me-1"></i> Tài liệu của tôi</span>
+                                <span class="badge bg-primary">@Model.Documents?.Count()</span>
                             </button>
                         </li>
 
                         <li class="nav-item">
-                            <button class="nav-link fw-bold" data-bs-toggle="tab" data-bs-target="#tab-saved">
-                                <i class="bi bi-heart me-1"></i> Đã lưu yêu thích
-                                <span class="badge bg-danger ms-1">@Model.SavedDocuments?.Count()</span>
+                            <button class="nav-link fw-bold d-flex align-items-center gap-2" data-bs-toggle="tab" data-bs-target="#tab-saved">
+                                <span><i class="bi bi-heart me-1"></i> Đã lưu yêu thích</span>
+                                <span class="badge bg-danger">@Model.SavedDocuments?.Count()</span>
                             </button>
                         </li>
                     </ul>
