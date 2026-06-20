@@ -13,9 +13,12 @@
             <div class="mb-3 mb-md-0 pe-md-4">
                 <h2 class="fw-bold text-dark mb-2 d-flex align-items-center gap-3">
                     @Model.Title
-                    <a href="#" class="text-danger fs-5" data-bs-toggle="collapse" data-bs-target="#reportForm" title="Báo cáo tài liệu">
-                        <i class="bi bi-exclamation-triangle-fill"></i>
-                    </a>
+                    @if (User.Identity!.IsAuthenticated)
+                    {
+                        <a href="#" class="text-danger fs-5" data-bs-toggle="collapse" data-bs-target="#reportForm" title="Báo cáo tài liệu">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                        </a>
+                    }
                 </h2>
                 
                 <div class="d-flex flex-wrap gap-2 text-muted small mb-3">
