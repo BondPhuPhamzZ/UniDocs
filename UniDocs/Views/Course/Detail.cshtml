@@ -51,23 +51,16 @@
             {
                 @* Hiển thị các tài liệu *@
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-                    @if (Model != null && Model.Any())
+                    @foreach (var item in Model)
                     {
-                        foreach (var item in Model)
-                        {
-                            <div class="col">
-                                <partial name="_DocumentCardPartial" model="item" />
-                            </div>
-                        }
-                    }
-                    else
-                    {
-                        <div class="col-12 alert alert-info text-center">Chưa có tài liệu nào!</div>
+                        <div class="col">
+                            <partial name="_DocumentCardPartial" model="item" />
+                        </div>
                     }
                 </div>
 
                 @* Thanh phân trang *@
-                <nav aria-label="Page navigation" class="mt-5">
+                <nav aria-label="Page navigation" class="my-5">
                     <ul class="pagination justify-content-center shadow-sm" style="border-radius: 0.5rem; overflow: hidden;">
 
                         @* Nút Previous *@
@@ -98,7 +91,11 @@
             }
             else
             {
-                <div class="alert alert-info text-center py-5">Chưa có tài liệu nào cho môn học này!</div>
+                <div class="alert alert-primary bg-primary-subtle text-primary border-primary-subtle text-center py-5 shadow-sm rounded-3">
+                    <i class="bi bi-folder-x fs-1 d-block mb-3"></i>
+                    <h5 class="fw-bold">Chưa có tài liệu nào</h5>
+                    <p class="mb-0">Môn học này hiện chưa có tài liệu. Hãy là người đầu tiên đóng góp tài liệu nhé!</p>
+                </div>
             }
 
         </div>
