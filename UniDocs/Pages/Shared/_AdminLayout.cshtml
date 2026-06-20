@@ -12,7 +12,7 @@
     @* Navbar Admin *@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top" style="z-index: 1000;">
         <div class="container-fluid px-4">
-            <a class="navbar-brand d-flex align-items-center text-warning" asp-controller="Admin" asp-action="Dashboard">
+            <a class="navbar-brand d-flex align-items-center text-warning" asp-page="/Admin/Dashboard">
                 <i class="bi bi-shield-lock-fill fs-3 me-2"></i>
                 <strong>UniDoc Admin</strong>
             </a>
@@ -22,13 +22,13 @@
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Admin" asp-action="Dashboard">Quản lý Báo cáo</a>
+                        <a class="nav-link" asp-page="/Admin/Dashboard">Quản lý Báo cáo</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Admin" asp-action="Users">Quản lý Tài khoản</a>
+                        <a class="nav-link" asp-page="/Admin/Users">Quản lý Tài khoản</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Admin" asp-action="Courses">Danh mục Môn học</a>
+                        <a class="nav-link" asp-page="/Admin/Courses">Danh mục Môn học</a>
                     </li>
                 </ul>
                 <div class="d-flex align-items-center gap-3">
@@ -49,13 +49,13 @@
            @* Tái sử dụng Sidebar quản trị *@
             <div class="col-lg-2 mb-4">
                 <div class="list-group shadow-sm">
-                    <a asp-controller="Admin" asp-action="Dashboard" class="list-group-item list-group-item-action">
+                    <a asp-page="/Admin/Dashboard" class="list-group-item list-group-item-action">
                         <i class="bi bi-flag me-2"></i> Tài liệu bị báo cáo
                     </a>
-                    <a asp-controller="Admin" asp-action="Users" class="list-group-item list-group-item-action">
+                    <a asp-page="/Admin/Users" class="list-group-item list-group-item-action">
                         <i class="bi bi-people me-2"></i> Quản lý Người dùng
                     </a>
-                    <a asp-controller="Admin" asp-action="Courses" class="list-group-item list-group-item-action">
+                    <a asp-page="/Admin/Courses" class="list-group-item list-group-item-action">
                         <i class="bi bi-book me-2"></i> Quản lý Môn học
                     </a>
                 </div>

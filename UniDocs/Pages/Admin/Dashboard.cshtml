@@ -1,0 +1,104 @@
+@page
+@model UniDocs.Pages.Admin.DashboardModel
+@{
+    ViewData["Title"] = "Quản lý Báo cáo";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark mb-0">Tài liệu bị báo cáo</h2>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="px-4 py-3">Tài liệu</th>
+                        <th class="py-3">Người báo cáo</th>
+                        <th class="py-3">Lý do</th>
+                        <th class="py-3">Ngày báo cáo</th>
+                        <th class="py-3">Trạng thái</th>
+                        <th class="px-4 py-3 text-end">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Reports.Any())
+                    {
+                        foreach (var item in Model.Reports)
+                        {
+                            <tr>
+                                <td class="px-4 py-3">
+                                    <a asp-controller="Document" asp-action="Detail" asp-route-id="@item.DocumentId" class="fw-bold text-decoration-none text-primary">
+                                        @(item.Document?.Title ?? "Tài liệu không tồn tại")
+                                    </a>
+                                </td>
+                                <td class="py-3">
+                                    <span class="badge bg-secondary">@(item.Reporter?.LastName) @(item.Reporter?.FirstName)</span>
+                                </td>
+                                <td class="py-3 text-danger fw-medium">
+                                    @item.Reason
+                                </td>
+                                <td class="py-3 text-muted small">
+                                    @item.ReportDate.ToString("dd/MM/yyyy HH:mm")
+                                </td>
+                                <td class="py-3">
+                                    @if (item.Status == "Đang xử lý")
+                                    {
+                                        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">Đang xử lý</span>
+                                    }
+                                    else if (item.Status == "Đã xóa tài liệu")
+                                    {
+                                        <span class="badge bg-danger px-3 py-2 rounded-pill">Đã xóa tài liệu</span>
+                                    }
+                                    else if (item.Status == "Hợp lệ")
+                                    {
+                                        <span class="badge bg-success px-3 py-2 rounded-pill">Hợp lệ</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-info text-dark px-3 py-2 rounded-pill">@item.Status</span>
+                                    }
+                                </td>
+                                <td class="px-4 py-3 text-end">
+                                    @if (item.Status == "Đang xử lý")
+                                    {
+                                        <div class="d-flex justify-content-end gap-2">
+                                            <form method="post" asp-page-handler="DismissReport" asp-route-id="@item.Id" class="d-inline">
+                                                <button type="submit" class="btn btn-outline-success btn-sm px-3 fw-bold">
+                                                    <i class="bi bi-check-lg"></i> Bỏ qua
+                                                </button>
+                                            </form>
+                                            <form method="post" asp-page-handler="DeleteDocument" asp-route-id="@item.DocumentId" class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài liệu này? Hành động này sẽ xóa file vật lý nhưng giữ lại lịch sử báo cáo.');">
+                                                <button type="submit" class="btn btn-danger btn-sm px-3 fw-bold">
+                                                    <i class="bi bi-trash"></i> Xóa
+                                                </button>
+                                            </form>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                <i class="bi bi-emoji-smile fs-1 d-block mb-3 text-success"></i>
+                                Tuyệt vời! Không có báo cáo vi phạm nào cần xử lý.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Connections;
+using Microsoft.AspNetCore.Connections;
 using Microsoft.EntityFrameworkCore;
 using UniDocs.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -28,6 +28,7 @@ namespace UniDocs
                 });
 
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
 
 
             var app = builder.Build();
@@ -78,6 +79,7 @@ namespace UniDocs
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.MapRazorPages();
 
             app.Run();
         }

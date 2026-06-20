@@ -1,0 +1,100 @@
+@page
+@model UniDocs.Pages.Admin.CoursesModel
+@{
+    ViewData["Title"] = "Danh mục Môn học";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark mb-0">Danh mục Môn học</h2>
+    <button class="btn btn-primary px-4 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#addCourseModal">
+        <i class="bi bi-plus-lg me-1"></i> Thêm môn học
+    </button>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+    @foreach (var course in Model.CourseList)
+    {
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm rounded-4 position-relative document-card-hover">
+                
+                @if (course.Documents.Count == 0)
+                {
+                    <form method="post" asp-page-handler="DeleteCourse" asp-route-id="@course.Id" class="position-absolute top-0 end-0 mt-3 me-3" onsubmit="return confirm('Xóa môn học này?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger border-0 rounded-circle p-2" title="Xóa môn học">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                    </form>
+                }
+
+                <div class="card-body p-4 text-center">
+                    <div class="mb-3">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle" style="width: 60px; height: 60px;">
+                            <i class="bi bi-book-half fs-3"></i>
+                        </div>
+                    </div>
+                    
+                    <h5 class="fw-bold text-dark mb-1">@course.CourseName</h5>
+                    <p class="text-muted small mb-3">Mã môn: <span class="fw-medium">@course.CourseCode</span></p>
+                    
+                    <div class="badge bg-light text-dark border px-3 py-2 rounded-pill">
+                        <i class="bi bi-file-earmark-text text-primary me-1"></i> @course.Documents.Count tài liệu
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@* Modal Thêm môn học *@
+<div class="modal fade" id="addCourseModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4">
+            <form method="post" asp-page-handler="AddCourse">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold">Thêm Môn học mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted small">Tên môn học</label>
+                        <input type="text" asp-for="NewCourse.CourseName" class="form-control" required placeholder="VD: Lập trình Web" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted small">Mã môn học</label>
+                        <input type="text" asp-for="NewCourse.CourseCode" class="form-control" required placeholder="VD: SE104" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted small">Khoa quản lý</label>
+                        <select asp-for="NewCourse.Department" class="form-select">
+                            <option value="Công nghệ Phần mềm">Công nghệ Phần mềm</option>
+                            <option value="Hệ thống Thông tin">Hệ thống Thông tin</option>
+                            <option value="Khoa học Máy tính">Khoa học Máy tính</option>
+                            <option value="Kỹ thuật Máy tính">Kỹ thuật Máy tính</option>
+                            <option value="Mạng Máy tính & Truyền thông">Mạng Máy tính & Truyền thông</option>
+                            <option value="Khoa học & Kỹ thuật Thông tin">Khoa học & Kỹ thuật Thông tin</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0 pt-0">
+                    <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary px-4 fw-bold">Lưu môn học</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

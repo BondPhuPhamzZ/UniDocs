@@ -1,0 +1,79 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using UniDocs.Data;
+using UniDocs.Models;
+
+namespace UniDocs.Pages.Admin
+{
+    [Authorize(Roles = "Admin")]
+    public class DashboardModel : PageModel
+    {
+        private readonly AppDbContext _context;
+        private readonly IWebHostEnvironment _env;
+
+        public DashboardModel(AppDbContext context, IWebHostEnvironment env)
+        {
+            _context = context;
+            _env = env;
+        }
+
+        public IList<Report> Reports { get; set; } = new List<Report>();
+
+        public async Task OnGetAsync()
+        {
+            Reports = await _context.Reports
+                .Include(r => r.Document)
+                .Include(r => r.Reporter)
+                .OrderByDescending(r => r.ReportDate)
+                .ToListAsync();
+        }
+
+        // Xóa tài liệu vi phạm (Soft Delete)
+        public async Task<IActionResult> OnPostDeleteDocumentAsync(int id)
+        {
+            var document = await _context.Documents.FindAsync(id);
+            if (document == null)
+                return NotFound();
+
+            // Xóa file vật lý
+            string physicalPath = Path.Combine(_env.WebRootPath, document.FilePath.TrimStart('/'));
+            if (System.IO.File.Exists(physicalPath))
+                System.IO.File.Delete(physicalPath);
+
+            // Xóa mềm trong cơ sở dữ liệu
+            document.IsApproved = false;
+            if (!document.Title.StartsWith("[Đã xóa]"))
+            {
+                document.Title = "[Đã xóa] " + document.Title;
+            }
+            
+            // Đánh dấu tất cả các báo cáo của tài liệu này là "Đã xóa tài liệu"
+            var relatedReports = await _context.Reports.Where(r => r.DocumentId == id).ToListAsync();
+            foreach(var report in relatedReports)
+            {
+                report.Status = "Đã xóa tài liệu";
+            }
+
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Đã xóa tài liệu vi phạm thành công!";
+            return RedirectToPage("./Dashboard");
+        }
+
+        // Bỏ qua báo cáo (ko có vi phạm) -> đánh dấu "Hợp lệ"
+        public async Task<IActionResult> OnPostDismissReportAsync(int id)
+        {
+            var report = await _context.Reports.FindAsync(id);
+            if (report == null)
+                return NotFound();
+
+            report.Status = "Hợp lệ";
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Đã đánh dấu tài liệu là Hợp lệ!";
+            return RedirectToPage("./Dashboard");
+        }
+    }
+}
