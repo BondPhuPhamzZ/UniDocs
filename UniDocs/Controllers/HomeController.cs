@@ -39,7 +39,7 @@ namespace UniDocs.Controllers
             return View(documents);
         }
 
-        // UI xử lý lỗi ko mong muốn
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error (int? statusCode = null)
         {
