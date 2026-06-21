@@ -78,7 +78,6 @@ namespace UniDocs.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            // Check [Required]
             if (!ModelState.IsValid)
             {
                 model.Password = "";
