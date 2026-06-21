@@ -43,7 +43,7 @@ namespace UniDocs.Models
 
 
         // Khi UPLOAD thì tài liệu cần đc Admin duyệt -> Default là FALSE -> đang chờ duyệt
-        public bool IsApproved { get; set; } = false; 
+        public bool IsApproved { get; set; } = false;
 
 
         // FK (khóa ngoại) connect to bảng User (người dùng)
@@ -59,6 +59,9 @@ namespace UniDocs.Models
 
         // Danh sách người đã lưu tài liệu này (quan hệ ngược lại với SavedDocument)
         public ICollection<SavedDocument> SavedDocuments { get; set; } = new List<SavedDocument>();
+
+        // Lưu lại ID trên Cloudinary để xóa file
+        public string? CloudinaryPublicId { get; set; }
 
     }
 }

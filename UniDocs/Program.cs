@@ -6,20 +6,18 @@ using System.Threading.Tasks;
 
 namespace UniDocs
 {
-    // Đăng ký DbContext vào hệ thống
-    // ===== Thêm kết nối Database =====
     public class Program
     {
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // ===== Khai báo Database =====
+            // ===== Dki Database =====
             builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-            // ===== Khai báo Cookie Authentication (cấu hình mới) =====
+            // ===== Dki Cookie Authentication =====
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
@@ -28,6 +26,12 @@ namespace UniDocs
                 });
 
             builder.Services.AddControllersWithViews();
+
+
+            // Dki Cloudinary
+            builder.Services.AddScoped<UniDocs.Services.ICloudinaryService, UniDocs.Services.CloudinaryService>();
+
+
             builder.Services.AddRazorPages();
 
 
