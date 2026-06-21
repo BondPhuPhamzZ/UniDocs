@@ -31,11 +31,28 @@ namespace UniDocs.Pages.Admin
 
         public async Task<IActionResult> OnPostAddCourseAsync()
         {
-            if (ModelState.IsValid)
+            if (!string.IsNullOrEmpty(NewCourse.CourseName) && !string.IsNullOrEmpty(NewCourse.CourseCode))
             {
                 _context.Courses.Add(NewCourse);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = $"Đã thêm môn học \"{NewCourse.CourseName}\" thành công!";
+            }
+            return RedirectToPage("./Courses");
+        }
+
+        public async Task<IActionResult> OnPostEditCourseAsync(int id, string courseName, string courseCode, string department)
+        {
+            var course = await _context.Courses.FindAsync(id);
+            if (course == null)
+                return NotFound();
+
+            if (!string.IsNullOrEmpty(courseName) && !string.IsNullOrEmpty(courseCode))
+            {
+                course.CourseName = courseName;
+                course.CourseCode = courseCode;
+                course.Department = department;
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = $"Đã cập nhật môn học \"{courseName}\" thành công!";
             }
             return RedirectToPage("./Courses");
         }

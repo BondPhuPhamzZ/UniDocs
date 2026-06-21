@@ -37,9 +37,18 @@
                         {
                             <tr>
                                 <td class="px-4 py-3">
-                                    <a asp-controller="Document" asp-action="Detail" asp-route-id="@item.DocumentId" class="fw-bold text-decoration-none text-primary">
-                                        @(item.Document?.Title ?? "Tài liệu không tồn tại")
-                                    </a>
+                                    @if (item.Status == "Đã xóa tài liệu")
+                                    {
+                                        <span class="fw-bold text-muted">
+                                            @(item.Document?.Title ?? "Tài liệu không tồn tại")
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="Document" asp-action="Detail" asp-route-id="@item.DocumentId" class="fw-bold text-decoration-none text-primary">
+                                            @(item.Document?.Title ?? "Tài liệu không tồn tại")
+                                        </a>
+                                    }
                                 </td>
                                 <td class="py-3">
                                     <span class="badge bg-secondary">@(item.Reporter?.LastName) @(item.Reporter?.FirstName)</span>

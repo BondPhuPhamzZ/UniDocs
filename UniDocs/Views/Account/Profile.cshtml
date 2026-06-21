@@ -91,8 +91,15 @@
                                                     <div class="d-flex align-items-center">
                                                         <i class="bi bi-file-earmark-pdf text-danger fs-4 me-3"></i>
                                                         <div>
-                                                            <a asp-controller="Document" asp-action="Detail" asp-route-id="@doc.Id"
-                                                               class="text-decoration-none text-dark fw-bold">@doc.Title</a>
+                                                            @if (!doc.IsApproved && doc.Title.StartsWith("[Đã xóa]"))
+                                                            {
+                                                                <span class="text-decoration-none text-muted fw-bold">@doc.Title</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <a asp-controller="Document" asp-action="Detail" asp-route-id="@doc.Id"
+                                                                   class="text-decoration-none text-dark fw-bold">@doc.Title</a>
+                                                            }
                                                             <div class="text-muted small">Đăng: @doc.UploadDate.ToString("dd/MM/yyyy")</div>
                                                         </div>
                                                     </div>
@@ -105,14 +112,26 @@
                                                 <td class="text-center fw-bold text-primary">@doc.DownloadCount</td>
 
                                                 <td class="text-end pe-4">
-                                                    @if (doc.IsApproved)
-                                                    {
-                                                        <span class="badge bg-success">Đã duyệt</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="badge bg-warning text-dark">Chờ duyệt</span>
-                                                    }
+                                                    <div class="d-flex justify-content-end align-items-center gap-2">
+                                                        @if (doc.IsApproved)
+                                                        {
+                                                            <span class="badge bg-success">Đang hiển thị</span>
+                                                        }
+                                                        else if (doc.Title.StartsWith("[Đã xóa]"))
+                                                        {
+                                                            <span class="badge bg-danger">Đã bị xóa / Vi phạm</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge bg-warning text-dark">Chờ duyệt</span>
+                                                        }
+                                                        
+                                                        <form method="post" asp-controller="Account" asp-action="DeleteMyDocument" asp-route-id="@doc.Id" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác!');">
+                                                            <button type="submit" class="btn btn-sm btn-outline-danger border-0 rounded-circle p-2" title="Xóa tài liệu">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         }

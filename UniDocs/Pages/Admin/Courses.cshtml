@@ -32,14 +32,19 @@
         <div class="col">
             <div class="card h-100 border-0 shadow-sm rounded-4 position-relative document-card-hover">
                 
-                @if (course.Documents.Count == 0)
-                {
-                    <form method="post" asp-page-handler="DeleteCourse" asp-route-id="@course.Id" class="position-absolute top-0 end-0 mt-3 me-3" onsubmit="return confirm('Xóa môn học này?');">
-                        <button type="submit" class="btn btn-sm btn-outline-danger border-0 rounded-circle p-2" title="Xóa môn học">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
-                    </form>
-                }
+                <div class="position-absolute top-0 end-0 mt-3 me-3 d-flex gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-primary border-0 rounded-circle p-2" title="Sửa môn học" data-bs-toggle="modal" data-bs-target="#editCourseModal-@course.Id">
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
+                    @if (course.Documents.Count == 0)
+                    {
+                        <form method="post" asp-page-handler="DeleteCourse" asp-route-id="@course.Id" onsubmit="return confirm('Xóa môn học này?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger border-0 rounded-circle p-2" title="Xóa môn học">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </form>
+                    }
+                </div>
 
                 <div class="card-body p-4 text-center">
                     <div class="mb-3">
@@ -98,3 +103,53 @@
         </div>
     </div>
 </div>
+
+@* Modal Sửa môn học (Render cho mỗi môn) *@
+@foreach (var course in Model.CourseList)
+{
+    <div class="modal fade" id="editCourseModal-@course.Id" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow rounded-4">
+                <form method="post" asp-page-handler="EditCourse" asp-route-id="@course.Id">
+                    <div class="modal-header border-bottom-0 pb-0">
+                        <h5 class="modal-title fw-bold">Sửa Môn học</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-muted small">Tên môn học</label>
+                            <input type="text" name="courseName" class="form-control" required value="@course.CourseName" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-muted small">Mã môn học</label>
+                            <input type="text" name="courseCode" class="form-control" required value="@course.CourseCode" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-muted small">Khoa quản lý</label>
+                            <select name="department" class="form-select">
+                                @{
+                                    string[] depts = { "Công nghệ Phần mềm", "Hệ thống Thông tin", "Khoa học Máy tính", "Kỹ thuật Máy tính", "Mạng Máy tính & Truyền thông", "Khoa học & Kỹ thuật Thông tin" };
+                                    foreach (var dept in depts)
+                                    {
+                                        if (course.Department == dept)
+                                        {
+                                            <option value="@dept" selected>@dept</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@dept">@dept</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top-0 pt-0">
+                        <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary px-4 fw-bold">Cập nhật</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}

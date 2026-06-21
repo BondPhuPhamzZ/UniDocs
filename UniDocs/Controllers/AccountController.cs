@@ -144,6 +144,47 @@ namespace UniDocs.Controllers
             return View(user);
         }
 
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteMyDocument(int id, [FromServices] IWebHostEnvironment env)
+        {
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int userId = int.Parse(userIdStr);
+
+            var document = await _context.Documents.FirstOrDefaultAsync(d => d.Id == id && d.UserId == userId);
+
+            if (document == null)
+            {
+                return NotFound("Tài liệu không tồn tại hoặc bạn không có quyền xóa!");
+            }
+
+            // Xóa file vật lý
+            string physicalPath = Path.Combine(env.WebRootPath, document.FilePath.TrimStart('/'));
+            if (System.IO.File.Exists(physicalPath))
+            {
+                System.IO.File.Delete(physicalPath);
+            }
+
+            // Soft delete
+            document.IsApproved = false;
+            if (!document.Title.StartsWith("[Đã xóa]"))
+            {
+                document.Title = "[Đã xóa] " + document.Title;
+            }
+
+            // Đánh dấu các report thành đã xóa
+            var relatedReports = await _context.Reports.Where(r => r.DocumentId == id).ToListAsync();
+            foreach (var report in relatedReports)
+            {
+                report.Status = "Đã xóa tài liệu";
+            }
+
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Đã xóa tài liệu thành công!";
+            return RedirectToAction("Profile");
+        }
 
     }
 }

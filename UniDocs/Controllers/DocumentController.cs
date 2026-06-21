@@ -105,6 +105,13 @@ namespace UniDocs.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upload(Document model, IFormFile uploadedFile)
         {
+            // Bỏ qua validate các trường tự động tạo
+            ModelState.Remove("FilePath");
+            ModelState.Remove("User");
+            ModelState.Remove("Course");
+            ModelState.Remove("Description");
+            ModelState.Remove("AcademicYear");
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Courses = await _context.Courses.ToListAsync();
@@ -175,6 +182,17 @@ namespace UniDocs.Controllers
             if (document == null)
             {
                 return NotFound("Không tìm thấy tài liệu này!");
+            }
+
+            if (!document.IsApproved)
+            {
+                bool isAdmin = User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("Admin");
+                bool isOwner = User.Identity != null && User.Identity.IsAuthenticated && document.UserId.ToString() == User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
+                
+                if (!isAdmin && !isOwner)
+                {
+                    return NotFound("Tài liệu này không tồn tại hoặc đã bị gỡ bỏ.");
+                }
             }
 
             return View(document);
