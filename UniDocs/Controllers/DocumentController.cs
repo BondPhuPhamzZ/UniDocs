@@ -144,13 +144,12 @@ namespace UniDocs.Controllers
                 await uploadedFile.CopyToAsync(fileStream);
             }
 
-            // Cập nhật các thông tin còn thiếu cho Object Document
             model.FilePath = "/uploads/" + uniqueFileName;
             model.UploadDate = DateTime.Now;
             model.DownloadCount = 0;
-            model.IsApproved = true; // => Đang test
+            model.IsApproved = true; 
 
-            // Lấy ID của người dùng đang đăng nhập từ Cookie
+            // ID Người đang đăng nhập
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
             model.UserId = int.Parse(userIdStr);
 
