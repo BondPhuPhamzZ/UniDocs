@@ -31,25 +31,34 @@ namespace UniDocs.Pages.Admin
         }
 
         // Xóa tài liệu vi phạm (Soft Delete)
-        public async Task<IActionResult> OnPostDeleteDocumentAsync(int id)
+        public async Task<IActionResult> OnPostDeleteDocumentAsync(int id, [FromServices] UniDocs.Services.ICloudinaryService cloudinaryService)
         {
             var document = await _context.Documents.FindAsync(id);
             if (document == null)
                 return NotFound();
 
-            // Xóa file vật lý
-            string physicalPath = Path.Combine(_env.WebRootPath, document.FilePath.TrimStart('/'));
-            if (System.IO.File.Exists(physicalPath))
-                System.IO.File.Delete(physicalPath);
+            // Xóa file vật lý cũ (nếu có) -> KO QUAN TRỌNG
+            if (document.FilePath != null && document.FilePath.StartsWith("/uploads/"))
+            {
+                string physicalPath = Path.Combine(_env.WebRootPath, document.FilePath.TrimStart('/'));
+                if (System.IO.File.Exists(physicalPath))
+                    System.IO.File.Delete(physicalPath);
+            }
 
-            // Xóa mềm trong CSDL
+            // Xóa file trên Cloudinary
+            if (!string.IsNullOrEmpty(document.CloudinaryPublicId))
+            {
+                await cloudinaryService.DeleteDocumentAsync(document.CloudinaryPublicId);
+            }
+
+            // Soft Delete
             document.IsApproved = false;
             if (!document.Title.StartsWith("[Đã xóa]"))
             {
                 document.Title = "[Đã xóa] " + document.Title;
             }
             
-            // Đánh dấu tất cả các báo cáo của tài liệu này là "Đã xóa tài liệu"
+            // Đánh dấu -> đã xóa
             var relatedReports = await _context.Reports.Where(r => r.DocumentId == id).ToListAsync();
             foreach(var report in relatedReports)
             {
@@ -62,7 +71,7 @@ namespace UniDocs.Pages.Admin
             return RedirectToPage("./Dashboard");
         }
 
-        // Bỏ qua báo cáo -> "Hợp lệ"
+        // Bỏ qua -> Hợp lệ
         public async Task<IActionResult> OnPostDismissReportAsync(int id)
         {
             var report = await _context.Reports.FindAsync(id);

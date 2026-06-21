@@ -1,4 +1,4 @@
-﻿using CloudinaryDotNet;
+using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 
 namespace UniDocs.Services
@@ -17,19 +17,32 @@ namespace UniDocs.Services
             _cloudinary = new Cloudinary(account);
         }
 
-        // Upload
         public async Task<(string url, string publicId)> UploadDocumentAsync(IFormFile file)
         {
             if (file == null || file.Length == 0) 
                 return (null, null);
 
             using var stream = file.OpenReadStream();
-            var uploadParams = new RawUploadParams()
+            var extension = Path.GetExtension(file.FileName).ToLower();
+
+            if (extension == ".pdf")
             {
-                File = new FileDescription(file.FileName, stream)
-            };
-            var result = await _cloudinary.UploadAsync(uploadParams);
-            return (result.SecureUrl.ToString(), result.PublicId);
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(file.FileName, stream)
+                };
+                var result = await _cloudinary.UploadAsync(uploadParams);
+                return (result.SecureUrl.ToString(), result.PublicId);
+            }
+            else
+            {
+                var uploadParams = new RawUploadParams()
+                {
+                    File = new FileDescription(file.FileName, stream)
+                };
+                var result = await _cloudinary.UploadAsync(uploadParams);
+                return (result.SecureUrl.ToString(), result.PublicId);
+            }
         }
 
         // Delete
@@ -38,10 +51,12 @@ namespace UniDocs.Services
             if (string.IsNullOrEmpty(publicId))  
                 return false;
 
+            var isRaw = publicId.Contains(".");
+
             var deleteParams = new DelResParams()
             {
                 PublicIds = new List<string> { publicId },
-                ResourceType = ResourceType.Raw
+                ResourceType = isRaw ? ResourceType.Raw : ResourceType.Image
             };
 
             var result = await _cloudinary.DeleteResourcesAsync(deleteParams);

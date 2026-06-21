@@ -144,10 +144,11 @@ namespace UniDocs.Controllers
             return View(user);
         }
 
+
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteMyDocument(int id, [FromServices] IWebHostEnvironment env)
+        public async Task<IActionResult> DeleteMyDocument(int id, [FromServices] UniDocs.Services.ICloudinaryService cloudinaryService)
         {
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int userId = int.Parse(userIdStr);
@@ -159,11 +160,18 @@ namespace UniDocs.Controllers
                 return NotFound("Tài liệu không tồn tại hoặc bạn không có quyền xóa!");
             }
 
-            // Xóa file vật lý
-            string physicalPath = Path.Combine(env.WebRootPath, document.FilePath.TrimStart('/'));
-            if (System.IO.File.Exists(physicalPath))
+
+            // Xóa file vật lý (giữ lại để tương thích ngược với file cũ nếu có)
+            if (document.FilePath.StartsWith("/uploads/"))
             {
-                System.IO.File.Delete(physicalPath);
+                // TODO: Dọn dẹp đoạn code này sau nếu hệ thống đã lên Cloudinary hoàn toàn
+            }
+
+
+            // Xóa file trên Cloudinary
+            if (!string.IsNullOrEmpty(document.CloudinaryPublicId))
+            {
+                await cloudinaryService.DeleteDocumentAsync(document.CloudinaryPublicId);
             }
 
             // Soft delete
@@ -173,7 +181,7 @@ namespace UniDocs.Controllers
                 document.Title = "[Đã xóa] " + document.Title;
             }
 
-            // Đánh dấu các report thành đã xóa
+            // Đánh dấu -> Đã xóa
             var relatedReports = await _context.Reports.Where(r => r.DocumentId == id).ToListAsync();
             foreach (var report in relatedReports)
             {
