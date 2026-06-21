@@ -42,7 +42,7 @@ namespace UniDocs.Pages.Admin
             if (System.IO.File.Exists(physicalPath))
                 System.IO.File.Delete(physicalPath);
 
-            // Xóa mềm trong cơ sở dữ liệu
+            // Xóa mềm trong CSDL
             document.IsApproved = false;
             if (!document.Title.StartsWith("[Đã xóa]"))
             {
@@ -62,7 +62,7 @@ namespace UniDocs.Pages.Admin
             return RedirectToPage("./Dashboard");
         }
 
-        // Bỏ qua báo cáo (ko có vi phạm) -> đánh dấu "Hợp lệ"
+        // Bỏ qua báo cáo -> "Hợp lệ"
         public async Task<IActionResult> OnPostDismissReportAsync(int id)
         {
             var report = await _context.Reports.FindAsync(id);
