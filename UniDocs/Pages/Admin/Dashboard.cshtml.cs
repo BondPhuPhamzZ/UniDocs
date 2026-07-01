@@ -31,7 +31,7 @@ namespace UniDocs.Pages.Admin
         }
 
         // Xóa tài liệu vi phạm (Soft Delete)
-        public async Task<IActionResult> OnPostDeleteDocumentAsync(int id, [FromServices] UniDocs.Services.ICloudinaryService cloudinaryService)
+        public async Task<IActionResult> OnPostDeleteDocumentAsync(int id, [FromServices] UniDocs.Services.IFirebaseStorageService firebaseStorageService)
         {
             var document = await _context.Documents.FindAsync(id);
             if (document == null)
@@ -45,10 +45,10 @@ namespace UniDocs.Pages.Admin
                     System.IO.File.Delete(physicalPath);
             }
 
-            // Xóa file trên Cloudinary
-            if (!string.IsNullOrEmpty(document.CloudinaryPublicId))
+            // Xóa file trên Firebase
+            if (!string.IsNullOrEmpty(document.FilePath) && document.FilePath.Contains("firebasestorage"))
             {
-                await cloudinaryService.DeleteDocumentAsync(document.CloudinaryPublicId);
+                await firebaseStorageService.DeleteFileAsync(document.FilePath);
             }
 
             // Soft Delete

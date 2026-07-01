@@ -3,17 +3,17 @@ body {
 }
 
 :root {
-    --bs-primary: #0070f3;
-    --bs-primary-rgb: 0, 112, 243;
-    --bs-link-color: #0070f3;
-    --bs-link-hover-color: #0761d1;
-    --bs-body-bg: #fafafa;
-    --bs-body-color: #4d4d4d;
-    --bs-heading-color: #171717;
-    --vercel-ink: #171717;
-    --vercel-canvas: #fafafa;
+    --bs-primary: #2563EB;
+    --bs-primary-rgb: 37, 99, 235;
+    --bs-link-color: #2563EB;
+    --bs-link-hover-color: #1d4ed8;
+    --bs-body-bg: #f8fafc;
+    --bs-body-color: #334155;
+    --bs-heading-color: #0f172a;
+    --vercel-ink: #0f172a;
+    --vercel-canvas: #f8fafc;
     --vercel-elevated: #ffffff;
-    --vercel-hairline: #ebebeb;
+    --vercel-hairline: #e2e8f0;
 }
 
 body {
@@ -31,7 +31,7 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
     border-color: var(--bs-primary) !important;
 }
 .btn {
-    border-radius: 6px;
+    border-radius: 8px;
     font-weight: 500;
     transition: all 0.2s ease;
 }
@@ -42,8 +42,8 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
     color: #fff;
 }
 .btn-primary:hover, .btn-primary:active, .btn-primary:focus {
-    background-color: #0761d1 !important;
-    border-color: #0761d1 !important;
+    background-color: #1d4ed8 !important;
+    border-color: #1d4ed8 !important;
 }
 .btn-outline-primary {
     color: var(--bs-primary);
@@ -158,9 +158,9 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
 /* Card Modernization */
 .card {
     border: 1px solid var(--vercel-hairline) !important;
-    border-radius: 12px;
+    border-radius: 16px;
     background-color: var(--vercel-elevated) !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
 .document-card-hover {

@@ -21,12 +21,12 @@
 <body class="bg-light d-flex flex-column min-vh-100">
 
     <!-- ================= NAVBAR ================= -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top" style="z-index: 1000;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm sticky-top" style="z-index: 1000;">
 
         <div class="container">
 
-            <a class="navbar-brand d-flex align-items-center" asp-controller="Home" asp-action="Index">
-                <i class="bi bi-journal-text fs-3 me-2"></i>
+            <a class="navbar-brand d-flex align-items-center text-dark" asp-controller="Home" asp-action="Index">
+                <i class="bi bi-journal-text fs-3 me-2 text-primary"></i>
                 <strong>UniDoc</strong>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
@@ -40,13 +40,13 @@
                 @* Khối các page (bên trái) *@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                        <a class="nav-link text-dark fw-medium" asp-controller="Home" asp-action="Index">Trang chủ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Course" asp-action="Index">Danh mục môn học</a>
+                        <a class="nav-link text-dark fw-medium" asp-controller="Course" asp-action="Index">Danh mục môn học</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Document" asp-action="Upload">Đóng góp tài liệu</a>
+                        <a class="nav-link text-dark fw-medium" asp-controller="Document" asp-action="Upload">Đóng góp tài liệu</a>
                     </li>
                 </ul>
 
@@ -55,10 +55,10 @@
                 <div class="d-flex align-items-center gap-2">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <span class="text-light small me-2 d-none d-md-inline">Chào, <strong>@User.Identity.Name</strong></span>
+                        <span class="text-dark small me-2 d-none d-md-inline">Chào, <strong>@User.Identity.Name</strong></span>
 
                         @* Xem Profile *@
-                        <a asp-controller="Account" asp-action="Profile" class="btn btn-outline-light btn-sm px-2" title="Trang cá nhân">
+                        <a asp-controller="Account" asp-action="Profile" class="btn btn-outline-primary btn-sm px-2" title="Trang cá nhân">
                             <i class="bi bi-person-circle"></i>
                         </a>
 
@@ -71,14 +71,14 @@
                         }
 
                         @* Đăng xuất *@
-                        <a asp-controller="Account" asp-action="Logout" class="btn btn-danger btn-sm px-2" title="Đăng xuất">
+                        <a asp-controller="Account" asp-action="Logout" class="btn btn-outline-danger btn-sm px-2" title="Đăng xuất">
                             <i class="bi bi-box-arrow-right"></i>
                         </a>
                     }
                     else
                     {
-                        <a asp-controller="Account" asp-action="Login" class="btn btn-light btn-sm text-primary fw-bold px-3">Đăng nhập</a>
-                        <a asp-controller="Account" asp-action="Register" class="btn btn-outline-light btn-sm px-3">Đăng ký</a>
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary btn-sm fw-bold px-3">Đăng nhập</a>
+                        <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-sm px-3">Đăng ký</a>
                     }
                 </div>
 
@@ -111,10 +111,10 @@
     </main>
 
     <!-- ================= FOOTER ================= -->
-    <footer class="bg-primary text-light py-4 mt-auto">
+    <footer class="bg-white border-top text-dark py-4 mt-auto">
         <div class="container text-center">
             <p class="mb-1"><strong>Đồ án Lập trình Web - Năm 2</strong></p>
-            <p class="small text-white-50 mb-0">
+            <p class="small text-muted mb-0">
                 Thực hiện bởi Nhóm 1 • Sử dụng ASP.NET Core MVC & Bootstrap 5
             </p>
         </div>
