@@ -59,7 +59,8 @@ namespace UniDocs.Models
 
         // Danh sách người đã lưu tài liệu này (quan hệ ngược lại với SavedDocument)
         public ICollection<SavedDocument> SavedDocuments { get; set; } = new List<SavedDocument>();
-
+        // Lưu lại ID trên Cloudinary để xóa file
+        public string? CloudinaryPublicId { get; set; }
 
 
     }

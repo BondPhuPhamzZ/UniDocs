@@ -45,7 +45,7 @@ namespace UniDocs.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("UniDocs.Models.Document", b =>
@@ -101,7 +101,7 @@ namespace UniDocs.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Documents");
+                    b.ToTable("Documents", (string)null);
                 });
 
             modelBuilder.Entity("UniDocs.Models.Report", b =>
@@ -134,7 +134,7 @@ namespace UniDocs.Migrations
 
                     b.HasIndex("ReporterId");
 
-                    b.ToTable("Reports");
+                    b.ToTable("Reports", (string)null);
                 });
 
             modelBuilder.Entity("UniDocs.Models.SavedDocument", b =>
@@ -160,7 +160,7 @@ namespace UniDocs.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("SavedDocuments");
+                    b.ToTable("SavedDocuments", (string)null);
                 });
 
             modelBuilder.Entity("UniDocs.Models.User", b =>
@@ -200,7 +200,7 @@ namespace UniDocs.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("UniDocs.Models.Document", b =>

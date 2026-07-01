@@ -101,7 +101,7 @@ namespace UniDocs.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upload(Document model, IFormFile uploadedFile, [FromServices] UniDocs.Services.IFirebaseStorageService firebaseStorageService)
+        public async Task<IActionResult> Upload(Document model, IFormFile uploadedFile, [FromServices] UniDocs.Services.ICloudinaryService cloudinaryService)
         {
             ModelState.Remove("FilePath");
             ModelState.Remove("User");
@@ -132,16 +132,17 @@ namespace UniDocs.Controllers
                 return View(model);
             }
 
-            // Firebase Storage
-            string fileUrl = await firebaseStorageService.UploadFileAsync(uploadedFile, "documents");
-            if (string.IsNullOrEmpty(fileUrl))
+            // Cloudinary
+            var uploadResult = await cloudinaryService.UploadDocumentAsync(uploadedFile);
+            if (string.IsNullOrEmpty(uploadResult.url))
             {
-                ModelState.AddModelError(string.Empty, "Đã xảy ra lỗi khi tải file lên máy chủ đám mây Firebase!");
+                ModelState.AddModelError(string.Empty, "Đã xảy ra lỗi khi tải file lên máy chủ đám mây!");
                 ViewBag.Courses = await _context.Courses.ToListAsync();
                 return View(model);
             }
 
-            model.FilePath = fileUrl;
+            model.FilePath = uploadResult.url;
+            model.CloudinaryPublicId = uploadResult.publicId;
             model.UploadDate = DateTime.Now;
             model.DownloadCount = 0;
             model.IsApproved = true; 

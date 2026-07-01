@@ -150,7 +150,7 @@ namespace UniDocs.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteMyDocument(int id, [FromServices] UniDocs.Services.IFirebaseStorageService firebaseStorageService)
+        public async Task<IActionResult> DeleteMyDocument(int id, [FromServices] UniDocs.Services.ICloudinaryService cloudinaryService)
         {
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int userId = int.Parse(userIdStr);
@@ -170,10 +170,10 @@ namespace UniDocs.Controllers
             }
 
 
-            // Xóa file trên Firebase Storage
-            if (!string.IsNullOrEmpty(document.FilePath) && document.FilePath.Contains("firebasestorage"))
+            // Xóa file trên Cloudinary
+            if (!string.IsNullOrEmpty(document.CloudinaryPublicId))
             {
-                await firebaseStorageService.DeleteFileAsync(document.FilePath);
+                await cloudinaryService.DeleteDocumentAsync(document.CloudinaryPublicId);
             }
 
             // Soft delete
