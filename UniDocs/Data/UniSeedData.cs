@@ -1,12 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using UniDocs.Models;
 
 namespace UniDocs.Data
 {
     public class UniSeedData
     {
-        public static async Task SeedAsync(AppDbContext context)
+        public static async Task SeedAsync(AppDbContext context, IServiceProvider serviceProvider)
         {
+            var securityService = serviceProvider.GetRequiredService<UniDocs.Services.SecurityService>();
+
             context.Database.EnsureCreated();
 
             // TK Admin 
@@ -17,8 +20,8 @@ namespace UniDocs.Data
                     FirstName = "Admin",
                     LastName = "System",
                     Email = "adminunidocs@gmail.com",
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"), 
-                    Role = "Admin",
+                    PasswordHash = securityService.HashPassword("admin123"), 
+                    Role = UniDocs.Models.Enums.RoleEnum.Admin,
                     IsActive = true
                 };
                 await context.Users.AddAsync(adminUser);

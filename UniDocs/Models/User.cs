@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using UniDocs.Models.Enums;
 
 namespace UniDocs.Models
 {
@@ -37,7 +38,7 @@ namespace UniDocs.Models
 
 
         // Default ai dky cx la Sinh Vien => Student/ Admin
-        public string Role { get; set; } = "Student";
+        public RoleEnum Role { get; set; } = RoleEnum.Student;
 
 
         // Trang thai tkhoan => TRUE là hoạt động, FALSE là bị KHÓA

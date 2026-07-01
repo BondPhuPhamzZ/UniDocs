@@ -62,7 +62,7 @@ namespace UniDocs.Pages.Admin
             var relatedReports = await _context.Reports.Where(r => r.DocumentId == id).ToListAsync();
             foreach(var report in relatedReports)
             {
-                report.Status = "Đã xóa tài liệu";
+                report.Status = UniDocs.Models.Enums.ReportStatusEnum.Valid; // Hợp lệ (vi phạm thật) => đã xóa
             }
 
             await _context.SaveChangesAsync();
@@ -78,7 +78,7 @@ namespace UniDocs.Pages.Admin
             if (report == null)
                 return NotFound();
 
-            report.Status = "Hợp lệ";
+            report.Status = UniDocs.Models.Enums.ReportStatusEnum.Rejected;
             await _context.SaveChangesAsync();
 
             TempData["SuccessMessage"] = "Đã đánh dấu tài liệu là Hợp lệ!";

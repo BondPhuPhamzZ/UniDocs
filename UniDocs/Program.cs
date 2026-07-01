@@ -31,6 +31,9 @@ namespace UniDocs
             // Dki Cloudinary
             builder.Services.AddScoped<UniDocs.Services.ICloudinaryService, UniDocs.Services.CloudinaryService>();
 
+            // Dki Security Service
+            builder.Services.AddSingleton<UniDocs.Services.SecurityService>();
+
 
             builder.Services.AddRazorPages();
 
@@ -45,7 +48,7 @@ namespace UniDocs
                 try
                 {
                     var context = services.GetRequiredService<AppDbContext>();
-                    await UniSeedData.SeedAsync(context);
+                    await UniSeedData.SeedAsync(context, services);
                 }
                 catch (Exception ex)
                 {

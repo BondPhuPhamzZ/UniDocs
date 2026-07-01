@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using UniDocs.Models.Enums;
 
 namespace UniDocs.Models
 {
@@ -20,7 +21,7 @@ namespace UniDocs.Models
 
 
         // Trang thai xu ly
-        public string Status { get; set; } = "Đang xử lý";
+        public ReportStatusEnum Status { get; set; } = ReportStatusEnum.Pending;
 
 
         // FK connect to bảng Document (tài liệu bị báo cáo)

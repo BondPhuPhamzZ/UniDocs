@@ -13,10 +13,12 @@ namespace UniDocs.Controllers
     public class AccountController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UniDocs.Services.SecurityService _securityService;
 
-        public AccountController(AppDbContext context)
+        public AccountController(AppDbContext context, UniDocs.Services.SecurityService securityService)
         {
             _context = context;
+            _securityService = securityService;
         }
 
         // ========== Đăng nhập ===========
@@ -36,7 +38,7 @@ namespace UniDocs.Controllers
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
+            if (user == null || !_securityService.VerifyPassword(model.Password, user.PasswordHash))
             {
                 ModelState.AddModelError(string.Empty, "Email hoặc mật khẩu không chính xác!");
                 return View(model);
@@ -53,7 +55,7 @@ namespace UniDocs.Controllers
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role) 
+                new Claim(ClaimTypes.Role, user.Role.ToString()) 
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -61,7 +63,7 @@ namespace UniDocs.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-            if (user.Role == "Admin")
+            if (user.Role == UniDocs.Models.Enums.RoleEnum.Admin)
             {
                 return RedirectToAction("Dashboard", "Admin");
             }
@@ -98,9 +100,9 @@ namespace UniDocs.Controllers
                 LastName = model.LastName,
                 Email = model.Email,
                 University = model.University,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password),
+                PasswordHash = _securityService.HashPassword(model.Password),
 
-                Role = "Student",
+                Role = UniDocs.Models.Enums.RoleEnum.Student,
                 IsActive = true
             };
 
@@ -181,11 +183,11 @@ namespace UniDocs.Controllers
                 document.Title = "[Đã xóa] " + document.Title;
             }
 
-            // Đánh dấu -> Đã xóa
+            // Đánh dấu các report thành đã xóa
             var relatedReports = await _context.Reports.Where(r => r.DocumentId == id).ToListAsync();
             foreach (var report in relatedReports)
             {
-                report.Status = "Đã xóa tài liệu";
+                report.Status = UniDocs.Models.Enums.ReportStatusEnum.Valid; // Đã xóa tài liệu (Hợp lệ)
             }
 
             await _context.SaveChangesAsync();

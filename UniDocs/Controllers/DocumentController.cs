@@ -213,7 +213,7 @@ namespace UniDocs.Controllers
                 ReporterId = userId,
                 Reason = reason,
                 ReportDate = DateTime.Now,
-                Status = "Đang xử lý"
+                Status = UniDocs.Models.Enums.ReportStatusEnum.Pending
             };
             _context.Reports.Add(report);
             await _context.SaveChangesAsync();
