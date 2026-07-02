@@ -30,10 +30,16 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
 .border-primary {
     border-color: var(--bs-primary) !important;
 }
+
+/* Nút */
 .btn {
     border-radius: 8px;
     font-weight: 500;
     transition: all 0.2s ease;
+}
+
+.btn-pastel-pink {
+
 }
 
 .btn-primary {
@@ -41,6 +47,7 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
     border-color: var(--bs-primary);
     color: #fff;
 }
+
 .btn-primary:hover, .btn-primary:active, .btn-primary:focus {
     background-color: #1d4ed8 !important;
     border-color: #1d4ed8 !important;
