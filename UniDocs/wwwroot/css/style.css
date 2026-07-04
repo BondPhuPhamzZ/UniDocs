@@ -3,17 +3,21 @@ body {
 }
 
 :root {
-    --bs-primary: #2563EB;
-    --bs-primary-rgb: 37, 99, 235;
-    --bs-link-color: #2563EB;
-    --bs-link-hover-color: #1d4ed8;
-    --bs-body-bg: #f8fafc;
-    --bs-body-color: #334155;
+    --bs-primary: #0056b3;
+    --bs-primary-rgb: 0, 86, 179;
+    --bs-secondary: #555f6b;
+    --bs-link-color: #0056b3;
+    --bs-link-hover-color: #003f87;
+    --bs-body-bg: #f6faff;
+    --bs-body-color: #141d23;
     --bs-heading-color: #0f172a;
-    --vercel-ink: #0f172a;
-    --vercel-canvas: #f8fafc;
-    --vercel-elevated: #ffffff;
-    --vercel-hairline: #e2e8f0;
+    
+    /* Academic Theme Tokens */
+    --academic-surface: #f6faff;
+    --academic-surface-elevated: #ffffff;
+    --academic-outline: #e9ecef;
+    --academic-secondary-soft: #e7f1ff;
+    --academic-primary-dark: #003f87;
 }
 
 body {
@@ -31,15 +35,51 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
     border-color: var(--bs-primary) !important;
 }
 
-/* Nút */
-.btn {
-    border-radius: 8px;
-    font-weight: 500;
-    transition: all 0.2s ease;
+/* Typography Classes */
+.display-lg {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 56px;
+    letter-spacing: -0.02em;
+}
+.headline-lg {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 40px;
+    letter-spacing: -0.01em;
+}
+.headline-md {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 32px;
+}
+.title-lg {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+}
+.body-lg {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+}
+.body-md {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+}
+.label-md {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0.05em;
 }
 
-.btn-pastel-pink {
-
+/* Nút */
+.btn {
+    border-radius: 8px; /* 0.5rem */
+    font-weight: 500;
+    transition: all 0.2s ease;
 }
 
 .btn-primary {
@@ -49,8 +89,8 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
 }
 
 .btn-primary:hover, .btn-primary:active, .btn-primary:focus {
-    background-color: #1d4ed8 !important;
-    border-color: #1d4ed8 !important;
+    background-color: var(--academic-primary-dark) !important;
+    border-color: var(--academic-primary-dark) !important;
 }
 .btn-outline-primary {
     color: var(--bs-primary);
@@ -62,8 +102,13 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
     color: #fff !important;
 }
 
+/* Badges */
 .rounded-pill {
-    border-radius: 100px !important;
+    border-radius: 24px !important;
+}
+.badge.bg-secondary-soft {
+    background-color: var(--academic-secondary-soft) !important;
+    color: var(--bs-primary) !important;
 }
 
 .nav-tabs .nav-link {
@@ -83,20 +128,17 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
     font-weight: bold;
     background-color: transparent !important;
 }
-.badge.bg-primary-subtle {
-    background-color: #EBF8FF !important;
-}
 
 .list-item-hover {
-    border: 1px solid var(--vercel-hairline) !important;
+    border: 1px solid var(--academic-outline) !important;
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
-    background-color: var(--vercel-elevated);
+    background-color: var(--academic-surface-elevated);
 }
 
 .list-item-hover:hover {
     background-color: #f5f5f5;
     border-color: #e0e0e0 !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .bi-file-earmark-pdf,
@@ -158,24 +200,31 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
 }
 
 .course-sidebar-link.active-course-link:hover {
-    background-color: #1a2a40;
+    background-color: var(--academic-primary-dark);
     color: #fff;
 }
 
 /* Card Modernization */
 .card {
-    border: 1px solid var(--vercel-hairline) !important;
-    border-radius: 16px;
-    background-color: var(--vercel-elevated) !important;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    border: 1px solid var(--academic-outline) !important;
+    border-radius: 8px;
+    background-color: var(--academic-surface-elevated) !important;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
 }
 
 .document-card-hover {
-    transition: box-shadow 0.2s ease;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .document-card-hover:hover {
-    box-shadow: 0 6px 18px rgba(0,0,0,0.1) !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08) !important;
+    transform: translateY(-2px);
+}
+
+/* Thumbnail preview radius */
+.img-thumbnail-preview,
+.card-img-top {
+    border-radius: 4px;
 }
 
 /* Document Grid Tự động co giãn */
@@ -193,4 +242,10 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
 }
 .page-link {
     color: var(--bs-primary);
+}
+
+/* Search bar glow on focus */
+.form-control:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.25);
 }

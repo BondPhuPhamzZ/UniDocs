@@ -2,7 +2,7 @@
 
 <a asp-controller="Document" asp-action="Detail" asp-route-id="@Model.Id" class="text-decoration-none text-dark">
 
-    <div class="card h-100 shadow-sm border-0 bg-white device-card-hover position-relative rounded-4 overflow-hidden">
+    <div class="card document-card-hover h-100 position-relative overflow-hidden">
 
         @* Ảnh tài liệu *@
         <div class="bg-light d-flex justify-content-center align-items-center" style="height: 180px;">
@@ -32,16 +32,16 @@
         @* Thông tin Card *@
         <div class="card-body d-flex flex-column">
             
-            <h5 class="card-title fs-6 fw-bold text-primary text-truncate-2-lines">
+            <h5 class="card-title title-lg text-primary text-truncate-2-lines mb-1">
                 @Model.Title
             </h5>
 
-            <p class="card-text text-muted small mb-3">
+            <p class="card-text body-md text-muted mb-3">
                 @Model.Course?.CourseName
             </p>
 
             <div class="mt-auto d-flex justify-content-between align-items-center">
-                <span class="badge bg-primary-subtle text-primary border px-2 py-1">
+                <span class="badge bg-secondary-soft px-2 py-1">
                     <i class="bi bi-hand-thumbs-up-fill"></i> 100%
                 </span>
                 <span class="text-muted small">
