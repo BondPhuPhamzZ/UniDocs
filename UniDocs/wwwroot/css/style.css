@@ -3,21 +3,21 @@ body {
 }
 
 :root {
-    --bs-primary: #0056b3;
-    --bs-primary-rgb: 0, 86, 179;
-    --bs-secondary: #555f6b;
-    --bs-link-color: #0056b3;
-    --bs-link-hover-color: #003f87;
-    --bs-body-bg: #f6faff;
-    --bs-body-color: #141d23;
-    --bs-heading-color: #0f172a;
+    --bs-primary: #e05a7e;
+    --bs-primary-rgb: 224, 90, 126;
+    --bs-secondary: #7d6b71;
+    --bs-link-color: #e05a7e;
+    --bs-link-hover-color: #c9496b;
+    --bs-body-bg: #fdfbfb;
+    --bs-body-color: #2c2425;
+    --bs-heading-color: #1a1516;
     
     /* Academic Theme Tokens */
-    --academic-surface: #f6faff;
+    --academic-surface: #fdfbfb;
     --academic-surface-elevated: #ffffff;
-    --academic-outline: #e9ecef;
-    --academic-secondary-soft: #e7f1ff;
-    --academic-primary-dark: #003f87;
+    --academic-outline: #f3e6e8;
+    --academic-secondary-soft: #fcf0f3;
+    --academic-primary-dark: #c9496b;
 }
 
 body {
@@ -109,6 +109,7 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
 .badge.bg-secondary-soft {
     background-color: var(--academic-secondary-soft) !important;
     color: var(--bs-primary) !important;
+    font-weight: 600;
 }
 
 .nav-tabs .nav-link {
@@ -206,10 +207,11 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
 
 /* Card Modernization */
 .card {
-    border: 1px solid var(--academic-outline) !important;
+    border: none !important;
+    border-bottom: 4px solid var(--bs-primary) !important;
     border-radius: 8px;
     background-color: var(--academic-surface-elevated) !important;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0px 4px 24px rgba(0,0,0,0.04);
 }
 
 .document-card-hover {
@@ -217,8 +219,8 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
 }
 
 .document-card-hover:hover {
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08) !important;
-    transform: translateY(-2px);
+    box-shadow: 0 10px 32px rgba(224, 90, 126, 0.12) !important;
+    transform: translateY(-4px);
 }
 
 /* Thumbnail preview radius */
@@ -247,5 +249,5 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
 /* Search bar glow on focus */
 .form-control:focus {
     border-color: var(--bs-primary);
-    box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.25);
+    box-shadow: 0 0 0 2px rgba(224, 90, 126, 0.25);
 }

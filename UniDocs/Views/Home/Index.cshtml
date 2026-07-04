@@ -3,28 +3,19 @@
     ViewData["Title"] = "Thư viện tài liệu sinh viên";
 }
 
-@* ===== Thanh tìm kiếm ===== *@
-<div class="bg-white py-4 mb-4 sticky-top shadow-sm" style="top: 56px; z-index: 990;">
-    <div class="container">
-
-        <div class="row justify-content-center">
-
-            <div class="col-md-8 text-center">
-
-                <form class="d-flex gap-2" asp-controller="Home" asp-action="Index" method="get">
-
-                    <input type="text" name="query" value="@ViewBag.SearchQuery" class="form-control form-control-lg bg-light shadow-none border-0" placeholder="Nhập tên môn học, hoặc tên tài liệu..." />
-
-                    <button class="btn btn-primary btn-lg px-4 shadow-sm" type="submit">
-                        <i class="bi bi-search"></i>
-                    </button>
-
-                </form>
-
-            </div>
-
+@* ===== HERO SECTION ===== *@
+<div class="container mt-4 mb-5">
+    <div class="position-relative overflow-hidden rounded-4 shadow-sm" style="min-height: 380px; display: flex; align-items: center; justify-content: center;">
+        @* Background Image & Blur *@
+        <div class="position-absolute w-100 h-100" style="background: url('/images/hero-bg.png') center/cover no-repeat; filter: blur(4px); opacity: 0.7; z-index: 0;"></div>
+        <div class="position-absolute w-100 h-100" style="background: linear-gradient(to bottom, rgba(253,251,251,0.6), rgba(253,251,251,0.9)); z-index: 1;"></div>
+        
+        @* Content *@
+        <div class="position-relative text-center px-3" style="z-index: 2;">
+            <h1 class="display-lg text-primary mb-2">UniDoc</h1>
+            <p class="headline-md text-dark mb-4">Kho tài liệu tri thức</p>
+            <a asp-controller="Course" asp-action="Index" class="btn btn-primary btn-lg px-5 shadow-sm fw-bold">Khám phá ngay</a>
         </div>
-
     </div>
 </div>
 

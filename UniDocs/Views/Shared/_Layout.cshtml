@@ -47,6 +47,15 @@
                     </li>
                 </ul>
 
+                @* Thanh tìm kiếm trên Navbar *@
+                <form asp-controller="Course" asp-action="Index" method="get" class="d-flex mx-auto col-12 col-lg-5 mb-3 mb-lg-0 px-lg-3">
+                    <div class="input-group">
+                        <input type="text" name="query" class="form-control bg-light shadow-none border-0 rounded-start-pill px-4" placeholder="Tìm kiếm môn học..." />
+                        <button class="btn btn-light bg-light border-0 rounded-end-pill pe-3 text-muted" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
 
                 @* ===== Khối các Login/ Register (bên phải) ===== *@
                 <div class="d-flex align-items-center gap-2">
