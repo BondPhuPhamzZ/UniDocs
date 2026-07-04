@@ -13,12 +13,12 @@
                 <div class="card-body text-center p-4">
                     <img src="https://ui-avatars.com/api/?name=@(Model.FirstName)+@(Model.LastName)&background=2A4365&color=fff&size=150" class="rounded-circle shadow-sm mb-3" alt="Avatar" />
 
-                    <h4 class="fw-bold mt-3 mb-1">@Model.LastName @Model.FirstName</h4>
+                    <h2 class="title-lg text-dark mt-3 mb-1">@Model.LastName @Model.FirstName</h2>
                     <p class="text-muted small mb-3">@Model.Email</p>
 
                     <div class="d-flex justify-content-center gap-2 mb-4">
-                        <span class="badge bg-primary-subtle text-primary border">
-                            <i class="bi bi-building me-1"></i>@Model.University
+                        <span class="badge bg-secondary-soft px-3 py-2">
+                            @Model.University
                         </span>
                     </div>
 
@@ -52,14 +52,14 @@
 
                         <li class="nav-item">
                             <button class="nav-link active fw-bold d-flex align-items-center gap-2" data-bs-toggle="tab" data-bs-target="#tab-uploaded">
-                                <span><i class="bi bi-upload me-1"></i> Tài liệu của tôi</span>
+                                <span>Tài liệu của tôi</span>
                                 <span class="badge bg-primary">@Model.Documents?.Count()</span>
                             </button>
                         </li>
 
                         <li class="nav-item">
                             <button class="nav-link fw-bold d-flex align-items-center gap-2" data-bs-toggle="tab" data-bs-target="#tab-saved">
-                                <span><i class="bi bi-heart me-1"></i> Đã lưu yêu thích</span>
+                                <span>Đã lưu yêu thích</span>
                                 <span class="badge bg-danger">@Model.SavedDocuments?.Count()</span>
                             </button>
                         </li>
@@ -89,7 +89,6 @@
                                                 @* Hiển thị thông tin tài liệu mà User đã đăng *@
                                                 <td class="ps-4">
                                                     <div class="d-flex align-items-center">
-                                                        <i class="bi bi-file-earmark-pdf text-danger fs-4 me-3"></i>
                                                         <div>
                                                             @if (!doc.IsApproved && doc.Title.StartsWith("[Đã xóa]"))
                                                             {
@@ -106,7 +105,7 @@
                                                 </td>
 
                                                 <td>
-                                                    <span class="badge bg-light text-dark border">@doc.Course?.CourseName</span>
+                                                    <span class="badge bg-secondary-soft">@doc.Course?.CourseName</span>
                                                 </td>
 
                                                 <td class="text-center fw-bold text-primary">@doc.DownloadCount</td>
@@ -127,7 +126,7 @@
                                                         }
                                                         
                                                         <form method="post" asp-controller="Account" asp-action="DeleteMyDocument" asp-route-id="@doc.Id" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác!');">
-                                                            <button type="submit" class="btn btn-sm btn-outline-danger border-0 rounded-circle p-2" title="Xóa tài liệu">
+                                                            <button type="submit" class="btn btn-sm btn-danger" title="Xóa tài liệu">
                                                                 <i class="bi bi-trash"></i>
                                                             </button>
                                                         </form>
@@ -140,7 +139,6 @@
                                     {
                                         <tr>
                                             <td colspan="4" class="text-center py-5 text-muted">
-                                                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
                                                 Bạn chưa tải lên tài liệu nào!
                                             </td>
                                         </tr>
@@ -169,21 +167,20 @@
                                                 @* Hiển thị thông tin của các tài liệu mà User bấm lưu *@
                                                 <td class="ps-4">
                                                     <div class="d-flex align-items-center">
-                                                        <i class="bi bi-file-earmark-pdf text-danger fs-4 me-3"></i>
                                                         <div>
                                                             <a asp-controller="Document" asp-action="Detail" asp-route-id="@saved.Document?.Id"
                                                                class="text-decoration-none text-dark fw-bold">
                                                                 @saved.Document?.Title
                                                             </a>
                                                             <div class="text-muted small">
-                                                                <i class="bi bi-cloud-download me-1"></i>@saved.Document?.DownloadCount lượt tải
+                                                                @saved.Document?.DownloadCount lượt tải
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </td>
 
                                                 <td>
-                                                    <span class="badge bg-light text-dark border">
+                                                    <span class="badge bg-secondary-soft">
                                                         @saved.Document?.Course?.CourseName
                                                     </span>
                                                 </td>
@@ -198,7 +195,7 @@
 
                                                         <button type="submit" class="btn btn-sm btn-outline-danger"
                                                                 title="Bỏ lưu">
-                                                            <i class="bi bi-heart-fill me-1"></i>Bỏ lưu
+                                                            Bỏ lưu
                                                         </button>
                                                     </form>
                                                 </td>
@@ -210,7 +207,6 @@
                                     {
                                         <tr>
                                             <td colspan="4" class="text-center py-5 text-muted">
-                                                <i class="bi bi-heart fs-1 d-block mb-2"></i>
                                                 Bạn chưa lưu tài liệu yêu thích nào!
                                             </td>
                                         </tr>

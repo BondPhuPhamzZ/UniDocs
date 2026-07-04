@@ -11,7 +11,7 @@
             
             @* Thông tin tài liệu *@
             <div class="mb-3 mb-md-0 pe-md-4">
-                <h2 class="fw-bold text-dark mb-2 d-flex align-items-center gap-3">
+                <h2 class="headline-md text-dark mb-2 d-flex align-items-center gap-3">
                     @Model.Title
                     @if (User.Identity!.IsAuthenticated)
                     {
@@ -22,10 +22,10 @@
                 </h2>
                 
                 <div class="d-flex flex-wrap gap-2 text-muted small mb-3">
-                    <span class="badge bg-light text-dark border p-2">Môn: @Model.Course?.CourseName</span>
-                    <span class="badge bg-light text-dark border p-2">Năm học: @Model.AcademicYear</span>
-                    <span class="badge bg-light text-dark border p-2">Loại: @Model.DocType</span>
-                    <span class="badge bg-light text-dark border p-2">Lượt tải: @Model.DownloadCount</span>
+                    <span class="badge bg-secondary-soft p-2">Môn: @Model.Course?.CourseName</span>
+                    <span class="badge bg-secondary-soft p-2">Năm học: @Model.AcademicYear</span>
+                    <span class="badge bg-secondary-soft p-2">Loại: @Model.DocType</span>
+                    <span class="badge bg-secondary-soft p-2">Lượt tải: @Model.DownloadCount</span>
                 </div>
 
                 <div class="small text-muted">
@@ -126,7 +126,7 @@
                     `Lỗi kết nối: ${err.message}. Vui lòng thử lại.`;
                 document.getElementById('aiResult').classList.remove('d-none');
             } finally {
-                btn.innerHTML = '<i class="bi bi-robot fs-5 me-2"></i>Tóm tắt lại';
+                btn.innerHTML = 'Tóm tắt lại';
                 btn.disabled = false;
             }
         }

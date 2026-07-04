@@ -5,7 +5,7 @@
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold text-dark mb-0">Danh mục Môn học</h2>
+    <h2 class="headline-md text-dark mb-0">Danh mục Môn học</h2>
     <button class="btn btn-primary px-4 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#addCourseModal">
         <i class="bi bi-plus-lg me-1"></i> Thêm môn học
     </button>
@@ -33,31 +33,25 @@
             <div class="card h-100 border-0 shadow-sm rounded-4 position-relative document-card-hover">
                 
                 <div class="position-absolute top-0 end-0 mt-3 me-3 d-flex gap-2">
-                    <button type="button" class="btn btn-sm btn-outline-primary border-0 rounded-circle p-2" title="Sửa môn học" data-bs-toggle="modal" data-bs-target="#editCourseModal-@course.Id">
-                        <i class="bi bi-pencil-square"></i>
+                    <button type="button" class="btn btn-sm btn-primary" title="Sửa môn học" data-bs-toggle="modal" data-bs-target="#editCourseModal-@course.Id">
+                        <i class="bi bi-pencil"></i> Sửa
                     </button>
                     @if (course.Documents.Count == 0)
                     {
                         <form method="post" asp-page-handler="DeleteCourse" asp-route-id="@course.Id" onsubmit="return confirm('Xóa môn học này?');">
-                            <button type="submit" class="btn btn-sm btn-outline-danger border-0 rounded-circle p-2" title="Xóa môn học">
-                                <i class="bi bi-trash-fill"></i>
+                            <button type="submit" class="btn btn-sm btn-danger" title="Xóa môn học">
+                                <i class="bi bi-trash"></i> Xóa
                             </button>
                         </form>
                     }
                 </div>
 
                 <div class="card-body p-4 text-center">
-                    <div class="mb-3">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle" style="width: 60px; height: 60px;">
-                            <i class="bi bi-book-half fs-3"></i>
-                        </div>
-                    </div>
+                    <h5 class="title-lg text-dark mb-1 mt-4">@course.CourseName</h5>
+                    <p class="text-muted body-md mb-3">Mã môn: <span class="fw-medium">@course.CourseCode</span></p>
                     
-                    <h5 class="fw-bold text-dark mb-1">@course.CourseName</h5>
-                    <p class="text-muted small mb-3">Mã môn: <span class="fw-medium">@course.CourseCode</span></p>
-                    
-                    <div class="badge bg-light text-dark border px-3 py-2 rounded-pill">
-                        <i class="bi bi-file-earmark-text text-primary me-1"></i> @course.Documents.Count tài liệu
+                    <div class="badge bg-secondary-soft px-3 py-2">
+                        @course.Documents.Count tài liệu
                     </div>
                 </div>
             </div>
