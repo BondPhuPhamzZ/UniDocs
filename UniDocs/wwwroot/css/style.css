@@ -3,21 +3,21 @@ body {
 }
 
 :root {
-    --bs-primary: #e05a7e;
-    --bs-primary-rgb: 224, 90, 126;
-    --bs-secondary: #7d6b71;
-    --bs-link-color: #e05a7e;
-    --bs-link-hover-color: #c9496b;
-    --bs-body-bg: #fdfbfb;
-    --bs-body-color: #2c2425;
-    --bs-heading-color: #1a1516;
+    --bs-primary: #9c6644;
+    --bs-primary-rgb: 156, 102, 68;
+    --bs-secondary: #7a4f35;
+    --bs-link-color: #9c6644;
+    --bs-link-hover-color: #7a4f35;
+    --bs-body-bg: #fdfbf7;
+    --bs-body-color: #3e2723;
+    --bs-heading-color: #2d1b15;
     
     /* Academic Theme Tokens */
-    --academic-surface: #fdfbfb;
+    --academic-surface: #fdfbf7;
     --academic-surface-elevated: #ffffff;
-    --academic-outline: #f3e6e8;
-    --academic-secondary-soft: #fcf0f3;
-    --academic-primary-dark: #c9496b;
+    --academic-outline: #e6dfd9;
+    --academic-secondary-soft: #f2ebe6;
+    --academic-primary-dark: #7a4f35;
 }
 
 body {
@@ -106,9 +106,9 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
 .rounded-pill {
     border-radius: 24px !important;
 }
-.badge.bg-secondary-soft {
-    background-color: var(--academic-secondary-soft) !important;
-    color: var(--bs-primary) !important;
+.badge.bg-secondary-soft, .badge.bg-secondary, .badge.bg-light {
+    background-color: var(--bs-primary) !important;
+    color: #ffffff !important;
     font-weight: 600;
 }
 
@@ -219,7 +219,7 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
 }
 
 .document-card-hover:hover {
-    box-shadow: 0 10px 32px rgba(224, 90, 126, 0.12) !important;
+    box-shadow: 0 10px 32px rgba(156, 102, 68, 0.12) !important;
     transform: translateY(-4px);
 }
 
@@ -249,5 +249,5 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
 /* Search bar glow on focus */
 .form-control:focus {
     border-color: var(--bs-primary);
-    box-shadow: 0 0 0 2px rgba(224, 90, 126, 0.25);
+    box-shadow: 0 0 0 2px rgba(156, 102, 68, 0.25);
 }
