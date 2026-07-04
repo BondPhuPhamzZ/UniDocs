@@ -34,13 +34,13 @@
                 
                 <div class="position-absolute top-0 end-0 mt-3 me-3 d-flex gap-2">
                     <button type="button" class="btn btn-sm btn-primary" title="Sửa môn học" data-bs-toggle="modal" data-bs-target="#editCourseModal-@course.Id">
-                        <i class="bi bi-pencil"></i> Sửa
+                        <i class="bi bi-pencil"></i>
                     </button>
                     @if (course.Documents.Count == 0)
                     {
                         <form method="post" asp-page-handler="DeleteCourse" asp-route-id="@course.Id" onsubmit="return confirm('Xóa môn học này?');">
                             <button type="submit" class="btn btn-sm btn-danger" title="Xóa môn học">
-                                <i class="bi bi-trash"></i> Xóa
+                                <i class="bi bi-trash"></i>
                             </button>
                         </form>
                     }
