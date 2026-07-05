@@ -40,7 +40,7 @@
                         <div class="mb-3">
                             <label class="form-label fw-bold small">Document title <span class="text-danger">*</span></label>
                             @* <input type="text" name="Title" class="form-control" placeholder="Ví dụ: Đề thi giữa kỳ môn Cơ sở dữ liệu 2023" required /> *@
-                            <input asp-for="Title" class="form-control" placeholder="E.g: Database Midterm Exam" required />
+                            <input asp-for="Title" class="form-control" placeholder="E.g: Database Midterm Exam" maxlength="100" required />
                         </div>
 
                         @* Chọn môn *@
@@ -75,13 +75,13 @@
                         @* Năm học *@
                         <div class="mt-3 mb-3">
                             <label class="form-label fw-bold small">Academic year</label>
-                            <input asp-for="AcademicYear" class="form-control" placeholder="E.g: 2023-2024" />
+                            <input asp-for="AcademicYear" class="form-control" placeholder="E.g: 2023-2024" maxlength="20" />
                         </div>
 
                         @* Mô tả thêm cho tài liệu *@
                         <div class="mb-4">
                             <label class="form-label fw-bold small">Additional description (Optional)</label>
-                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Add notes about the document..."></textarea>
+                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Add notes about the document..." maxlength="500"></textarea>
                         </div>
 
                         @* Button gửi tlieu *@

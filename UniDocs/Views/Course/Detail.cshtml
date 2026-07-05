@@ -17,10 +17,6 @@
                 </p>
             </div>
 
-            <div class="text-end d-none d-md-block">
-                @ViewBag.TotalDocuments Tài liệu
-            </div>
-
         </div>
 
     </div>
@@ -42,7 +38,7 @@
             @if (!string.IsNullOrEmpty(ViewBag.DocQuery as string))
             {
                 <div class="alert alert-success shadow-sm mb-4">
-                    Đang hiển thị tài liệu chứa từ khóa: <strong>"@ViewBag.DocQuery"</strong>
+                    Showing documents containing keyword: <strong>"@ViewBag.DocQuery"</strong>
                 </div>
             }
 
@@ -91,8 +87,8 @@
             else
             {
                 <div class="alert alert-primary bg-primary-subtle text-primary border-primary-subtle text-center py-5 shadow-sm rounded-3">
-                    <h5 class="title-lg text-dark mb-3">Chưa có tài liệu nào</h5>
-                    <p class="mb-0">Môn học này hiện chưa có tài liệu. Hãy là người đầu tiên đóng góp tài liệu nhé!</p>
+                    <h5 class="title-lg text-dark mb-3">No documents yet</h5>
+                    <p class="mb-0">This course doesn't have any documents yet. Be the first to contribute!</p>
                 </div>
             }
 
