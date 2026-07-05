@@ -65,20 +65,20 @@
 
                         @* Xem Profile *@
                         <a asp-controller="Account" asp-action="Profile" class="btn btn-outline-primary btn-sm px-3 fw-medium">
-                            Hồ sơ
+                            Profile
                         </a>
 
                         @* Check role là Admin *@
                         @if (User.IsInRole("Admin"))
                         {
                             <a asp-controller="Admin" asp-action="Dashboard" class="btn btn-primary btn-sm fw-bold px-3">
-                                Quản trị
+                                Admin
                             </a>
                         }
 
                         @* Đăng xuất *@
                         <a asp-controller="Account" asp-action="Logout" class="btn btn-outline-danger btn-sm px-3 fw-medium">
-                            Đăng xuất
+                            Logout
                         </a>
                     }
                     else
@@ -119,9 +119,9 @@
     <!-- ================= FOOTER ================= -->
     <footer class="bg-white border-top text-dark py-4 mt-auto">
         <div class="container text-center">
-            <p class="mb-1"><strong>Đồ án Lập trình Web - Năm 2</strong></p>
+            <p class="mb-1"><strong>UniDocs</strong></p>
             <p class="small text-muted mb-0">
-                Thực hiện bởi Nhóm 1 • Sử dụng ASP.NET Core MVC & Bootstrap 5
+                Gia Phú - Chí Kiệt - Điền Viên
             </p>
         </div>
     </footer>

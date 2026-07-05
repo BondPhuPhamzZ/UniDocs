@@ -14,29 +14,6 @@
                 </p>
             </div>
 
-            @* Thanh tìm kiếm môn -> TRÊN CÙNG *@
-            <div class="col-md-6 mt-3 mt-md-0">
-                <form asp-controller="Course" asp-action="Index" method="get">
-                    <div class="input-group">
-                        <input type="text" name="query" value="@ViewBag.SearchQuery" class="form-control bg-light shadow-none border-0" placeholder="Lọc nhanh tên môn..." />
-                        
-                        <button class="btn btn-primary px-4" type="submit">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
-                </form>
-
-                @* Thông báo tìm kiếm *@
-                @if (!string.IsNullOrEmpty(ViewBag.SearchQuery))
-                {
-                    <div class="alert alert-success mt-3 mb-0">
-                        Tìm thấy kết quả cho: <strong>"@ViewBag.SearchQuery"</strong>
-                        <a asp-controller="Course" asp-action="Index" class="text-danger text-decoration-none ms-3">Xóa bộ lọc</a>
-                    </div>
-                }
-
-            </div>
-
         </div>
     </div>
 </div>
@@ -45,43 +22,23 @@
 @* ===== Khu vực hiển thị các môn học của Web ===== *@
 <div class="container mb-5 flex-grow-1">
 
-    <div class="row g-4">
-
-        @* Các môn học *@
-        @foreach (var item in Model)
-        {
-            <div class="col-md-4 col-sm-6">
-                <div class="card h-100 border-0 document-card-hover position-relative">
-                    <div class="card-body d-flex flex-column">
-
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <span class="badge bg-secondary-soft">@item.Department</span>
-                        </div>
-
-                        @* Tên môn học *@
-                        <h5 class="title-lg text-dark mt-2 mb-3">
-                            <a asp-controller="Course" asp-action="Detail" asp-route-id="@item.Id" class="text-decoration-none text-dark stretched-link">@item.CourseName</a>
-                        </h5>
-
-                        @* Số tài liệu của môn *@
-                        <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
-
-                            <div class="text-secondary small fw-bold">
-                                @item.Documents?.Count() Tài liệu
-                            </div>
-
-                            <span class="text-secondary small fw-medium">
-                                Truy cập
-                            </span>
-
-                        </div>
-
-                    </div>
+    @* Course List *@
+    @if (Model != null && Model.Any())
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col">
+                    <partial name="_CourseCardPartial" model="item" />
                 </div>
-            </div>
-        }
+            }
+        </div>
+    }
+    else
+    {
+        <div class="col-12 alert alert-info text-center">No courses yet!</div>
+    }
 
-    </div>
 
     @* Thanh phân trang *@
     @if (ViewBag.TotalPages > 1)

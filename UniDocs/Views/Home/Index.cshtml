@@ -1,6 +1,6 @@
 @model IEnumerable<UniDocs.Models.Document>
 @{
-    ViewData["Title"] = "Thư viện tài liệu sinh viên";
+    ViewData["Title"] = "Student Document Library";
 }
 
 @* ===== HERO SECTION ===== *@
@@ -13,34 +13,33 @@
         @* Content *@
         <div class="position-relative text-center px-3" style="z-index: 2;">
             <h1 class="display-lg text-primary mb-2">UniDoc</h1>
-            <p class="headline-md text-dark mb-4">Kho tài liệu tri thức</p>
-            <a asp-controller="Course" asp-action="Index" class="btn btn-primary btn-lg px-5 shadow-sm fw-bold">Khám phá ngay</a>
+            <p class="headline-md text-dark mb-4">Academic Knowledge Base</p>
+            <a asp-controller="Course" asp-action="Index" class="btn btn-primary btn-lg px-5 shadow-sm fw-bold">Explore Now</a>
         </div>
     </div>
 </div>
 
 
-@* ===== KQua tìm kiếm ===== *@
+@* ===== Search Results ===== *@
 @if (!string.IsNullOrEmpty(ViewBag.SearchQuery))
 {
     <div class="mt-4 alert alert-success text-center shadow-sm">
-        Tìm thấy <strong>@Model.Count()</strong> kết quả cho từ khóa: <span class="text-danger fw-bold">"@ViewBag.SearchQuery"</span>
+        Found <strong>@Model.Count()</strong> results for keyword: <span class="text-danger fw-bold">"@ViewBag.SearchQuery"</span>
     </div>
 }
 
-@* ===== BODY CHÍNH ===== *@
+@* ===== MAIN BODY ===== *@
 <div class="container mb-5 flex-grow-1">
     <div class="row">
 
-        @* ===== Khu vự hiển thị Tài liệu UPLOAD lên -> BÊN PHẢI ===== *@
+        @* ===== Display Uploaded Documents Section ===== *@
         <div class="col-12">
 
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2 class="headline-md m-0 text-primary">Tài liệu mới cập nhật</h2>
-                <span class="badge bg-primary text-white">@Model.Count() tài liệu</span>
+                <h2 class="headline-md m-0 text-primary">Recently Documents</h2>
             </div>
 
-            @* ===== Khu vực hiển thị các tài liệu dc UPLOAD ===== *@
+            @* ===== Display uploaded documents area ===== *@
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
                 @if (Model != null && Model.Any())
                 {
@@ -53,7 +52,7 @@
                 }
                 else
                 {
-                    <div class="col-12 alert alert-info text-center">Chưa có tài liệu nào!</div>
+                    <div class="col-12 alert alert-info text-center">No documents yet!</div>
                 }
             </div>
 
@@ -62,7 +61,7 @@
             {
                 <div class="text-center mt-5">
                     <a asp-controller="Course" asp-action="Index" class="btn btn-outline-primary fw-bold rounded-pill px-4">
-                        Xem thêm tài liệu <i class="bi bi-arrow-right ms-1"></i>
+                        View more documents <i class="bi bi-arrow-right ms-1"></i>
                     </a>
                 </div>
             }
