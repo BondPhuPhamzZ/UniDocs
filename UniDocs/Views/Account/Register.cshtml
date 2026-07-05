@@ -1,6 +1,6 @@
 @model UniDocs.ViewModels.RegisterViewModel;
 @{
-    ViewData["Title"] = "Đăng ký";
+    ViewData["Title"] = "Register";
 }
 <div class="container flex-grow-1 d-flex align-items-center justify-content-center py-5">
     <div class="card border-0 shadow-sm"
@@ -8,9 +8,9 @@
         <div class="card-body p-4 p-md-5">
 
             <div class="text-center mb-4">
-                <h2 class="headline-md mt-2 text-dark">Đăng ký tài khoản</h2>
+                <h2 class="headline-md mt-2 text-dark">Create an Account</h2>
                 <p class="text-muted small">
-                    Tham gia cộng đồng sinh viên chia sẻ tài liệu lớn nhất
+                    Join the largest student document sharing community
                 </p>
             </div>
 
@@ -23,56 +23,56 @@
                 <div class="row">
                     @* Nhập tên *@
                     <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold small text-dark">Tên</label>
-                        @* <input type="text" name="firstName" class="form-control" placeholder="Tên của bạn" required /> *@
-                        <input asp-for="FirstName" class="form-control" placeholder="Tên của bạn" required />
+                        <label class="form-label fw-bold small text-dark">First Name</label>
+                        @* <input type="text" name="firstName" class="form-control" placeholder="Your first name" required /> *@
+                        <input asp-for="FirstName" class="form-control" placeholder="Your first name" required />
                     </div>
 
                     @* Nhập họ *@
                     <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold small text-dark">Họ</label>
-                        <input asp-for="LastName" class="form-control" placeholder="Họ của bạn" required />
+                        <label class="form-label fw-bold small text-dark">Last Name</label>
+                        <input asp-for="LastName" class="form-control" placeholder="Your last name" required />
                     </div>
                 </div>
 
                 @* Chọn trường *@
                 <div class="mb-3">
-                    <label class="form-label fw-bold small text-dark">Trường Đại học</label>
+                    <label class="form-label fw-bold small text-dark">University</label>
                     <select asp-for="University" class="form-select">
-                        <option value="">Chọn trường đại học...</option>
-                        <option value="Đại học Ngoại ngữ - Tin học TP.HCM">Đại học Ngoại ngữ - Tin học TP.HCM</option>
-                        <option value="Đại học Bách Khoa HN">Đại học Bách Khoa HN</option>
-                        <option value="Đại học Khoa học Tự nhiên">Đại học Khoa học Tự nhiên</option>
-                        <option value="Đại học FPT">Đại học FPT</option>
+                        <option value="">Select your university...</option>
+                        <option value="Đại học Ngoại ngữ - Tin học TP.HCM">Ho Chi Minh City University of Foreign Languages and Information Technology (HUFLIT)</option>
+                        <option value="Đại học Bách Khoa HN">Hanoi University of Science and Technology (HUST)</option>
+                        <option value="Đại học Khoa học Tự nhiên">University of Science</option>
+                        <option value="Đại học FPT">FPT University</option>
                     </select>
                 </div>
 
                 @* Nhập Email *@
                 <div class="mb-3">
-                    <label class="form-label fw-bold small text-dark">Email</label>
-                    <input asp-for="Email" class="form-control" placeholder="mssv@student.edu.vn" required />
+                    <label class="form-label fw-bold small text-dark">Email Address</label>
+                    <input asp-for="Email" class="form-control" placeholder="student_id@student.edu.vn" required />
                 </div>
 
                 @* Nhập mật khẩu *@
                 <div class="mb-3">
-                    <label class="form-label fw-bold small text-dark">Mật khẩu</label>
-                    <input asp-for="Password" class="form-control" type="password" placeholder="Tạo mật khẩu" required />
+                    <label class="form-label fw-bold small text-dark">Password</label>
+                    <input asp-for="Password" class="form-control" type="password" placeholder="Create a password" required />
                 </div>
 
                 @* Xác nhận lại mật khầu *@
                 <div class="mb-4">
-                    <label class="form-label fw-bold small text-dark">Vui lòng nhập lại mật khẩu</label>
-                    <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Xác nhận lại mật khẩu" required />
+                    <label class="form-label fw-bold small text-dark">Confirm Password</label>
+                    <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Confirm your password" required />
                     <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100 fw-bold py-2 mb-3">Đăng ký thành viên</button>
+                <button type="submit" class="btn btn-primary w-100 fw-bold py-2 mb-3">Register</button>
             </form>
 
 
             <div class="text-center mt-4 small text-muted">
-                Đã có tài khoản?
-                <a asp-controller="Account" asp-action="Login" class="text-primary text-decoration-none fw-bold ms-1">Đăng nhập</a>
+                Already have an account?
+                <a asp-controller="Account" asp-action="Login" class="text-primary text-decoration-none fw-bold ms-1">Log in</a>
             </div>
 
         </div>

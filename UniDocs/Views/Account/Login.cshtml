@@ -1,14 +1,14 @@
 @model UniDocs.ViewModels.LoginViewModel;
 @{
-    ViewData["Title"] = "Đăng nhập";
+    ViewData["Title"] = "Login";
 }
 <div class="container flex-grow-1 d-flex align-items-center justify-content-center py-5">
     <div class="card border-0 shadow-sm" style="max-width: 400px; width: 100%">
         <div class="card-body p-4 p-md-5">
 
             <div class="text-center mb-4">
-                <h2 class="headline-md mt-2 text-dark">Đăng nhập</h2>
-                <p class="text-muted small">Chào mừng bạn quay lại với UniDoc!</p>
+                <h2 class="headline-md mt-2 text-dark">Login</h2>
+                <p class="text-muted small">Welcome back to UniDoc!</p>
             </div>
 
 
@@ -19,24 +19,24 @@
             <form asp-controller="Account" asp-action="Login" method="post">
 
                 <div class="mb-3">
-                    <label class="form-label fw-bold small text-dark">Email đăng nhập</label>
+                    <label class="form-label fw-bold small text-dark">Email Address</label>
 
-                    <input asp-for="Email" class="form-control" placeholder="Ví dụ: phupham@gmail.com" required />
+                    <input asp-for="Email" class="form-control" placeholder="Example: user@gmail.com" required />
 
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label fw-bold small text-dark">Mật khẩu</label>
-                    <input type="password" asp-for="Password" class="form-control" placeholder="Nhập mật khẩu" required />
+                    <label class="form-label fw-bold small text-dark">Password</label>
+                    <input type="password" asp-for="Password" class="form-control" placeholder="Enter your password" required />
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100 fw-bold py-2 mb-3">Đăng nhập</button>
+                <button type="submit" class="btn btn-primary w-100 fw-bold py-2 mb-3">Login</button>
             </form>
 
 
             <div class="text-center mt-4 small text-muted">
-                Chưa có tài khoản?
-                <a asp-controller="Account" asp-action="Register" class="text-primary text-decoration-none fw-bold ms-1">Đăng ký ngay</a>
+                Don't have an account?
+                <a asp-controller="Account" asp-action="Register" class="text-primary text-decoration-none fw-bold ms-1">Sign up now</a>
             </div>
 
         </div>
