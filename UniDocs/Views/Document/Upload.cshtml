@@ -1,6 +1,6 @@
 @model UniDocs.Models.Document;
 @{
-    ViewData["Title"] = "Đăng tải tài liệu";
+    ViewData["Title"] = "Upload Document";
 }
 <div class="container flex-grow-1 py-4 py-md-5 upload-page">
     <div class="row justify-content-center g-0">
@@ -8,9 +8,9 @@
 
             <div class="d-flex align-items-start gap-3 mb-4">
                 <div class="min-w-0">
-                    <h2 class="headline-md mb-0">Đóng góp Tài liệu</h2>
+                    <h2 class="headline-md mb-0">Upload a Document</h2>
                     <p class="text-muted mb-0 small">
-                        Chia sẻ tài liệu của bạn để giúp đỡ cộng đồng sinh viên.
+                        Share your documents to help the student community.
                     </p>
                 </div>
             </div>
@@ -27,10 +27,10 @@
 
                         @* Chọn file muốn up có định dạng phù hợp *@
                         <div class="mb-4">
-                            <label class="form-label fw-bold small">Chọn file tải lên <span class="text-danger">*</span></label>
+                            <label class="form-label fw-bold small">Select file to upload <span class="text-danger">*</span></label>
                             <div class="border border-2 border-dashed rounded bg-light text-center upload-dropzone">
-                                <h5 class="title-lg mb-1">Click để chọn file</h5>
-                                <p class="text-muted small mb-3">Hỗ trợ định dạng: PDF, DOCX, PPTX, ZIP, RAR (Tối đa 50MB)</p>
+                                <h5 class="title-lg mb-1">Click to select file</h5>
+                                <p class="text-muted small mb-3">Supported formats: PDF, DOCX, PPTX, ZIP, RAR (Max 50MB)</p>
 
                                 <input type="file" name="uploadedFile" class="form-control" accept=".pdf,.doc,.docx,.ppt,.pptx,.zip,.rar" required />
                             </div>
@@ -38,17 +38,17 @@
 
                         @* Nhập tên tài liệu *@
                         <div class="mb-3">
-                            <label class="form-label fw-bold small">Tên tài liệu <span class="text-danger">*</span></label>
+                            <label class="form-label fw-bold small">Document title <span class="text-danger">*</span></label>
                             @* <input type="text" name="Title" class="form-control" placeholder="Ví dụ: Đề thi giữa kỳ môn Cơ sở dữ liệu 2023" required /> *@
-                            <input asp-for="Title" class="form-control" placeholder="VD: Đề thi giữa kỳ môn CSDL" required />
+                            <input asp-for="Title" class="form-control" placeholder="E.g: Database Midterm Exam" required />
                         </div>
 
                         @* Chọn môn *@
                         <div class="row g-3">
                             <div class="col-12 col-md-6">
-                                <label class="form-label fw-bold small">Môn học <span class="text-danger">*</span></label>
+                                <label class="form-label fw-bold small">Course <span class="text-danger">*</span></label>
                                 <select asp-for="CourseId" class="form-select" required>
-                                    <option value="">Chọn môn học...</option>
+                                    <option value="">Select course...</option>
                                     @if (ViewBag.Courses != null)
                                     {
                                         foreach (var course in ViewBag.Courses)
@@ -61,12 +61,12 @@
 
                             @* Chọn loại tài liệu *@
                             <div class="col-12 col-md-6">
-                                <label class="form-label fw-bold small">Loại tài liệu</label>
+                                <label class="form-label fw-bold small">Document type</label>
                                 <select asp-for="DocType" class="form-select">
-                                    <option value="Đề thi / Kiểm tra">Đề thi / Kiểm tra</option>
-                                    <option value="Bài giảng / Slide">Bài giảng / Slide</option>
-                                    <option value="Bài tập lớn">Bài tập lớn</option>
-                                    <option value="Khác">Khác</option>
+                                    <option value="Đề thi / Kiểm tra">Exam / Test</option>
+                                    <option value="Bài giảng / Slide">Lecture / Slide</option>
+                                    <option value="Bài tập lớn">Assignment / Project</option>
+                                    <option value="Khác">Other</option>
                                 </select>
                             </div>
 
@@ -74,20 +74,20 @@
 
                         @* Năm học *@
                         <div class="mt-3 mb-3">
-                            <label class="form-label fw-bold small">Năm học</label>
-                            <input asp-for="AcademicYear" class="form-control" placeholder="Ví dụ: 2023-2024" />
+                            <label class="form-label fw-bold small">Academic year</label>
+                            <input asp-for="AcademicYear" class="form-control" placeholder="E.g: 2023-2024" />
                         </div>
 
                         @* Mô tả thêm cho tài liệu *@
                         <div class="mb-4">
-                            <label class="form-label fw-bold small">Mô tả thêm (Tùy chọn)</label>
-                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Ghi chú thêm về tài liệu..."></textarea>
+                            <label class="form-label fw-bold small">Additional description (Optional)</label>
+                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Add notes about the document..."></textarea>
                         </div>
 
                         @* Button gửi tlieu *@
                         <div class="d-grid d-sm-flex justify-content-sm-end">
                             <button type="submit" class="btn btn-primary px-4 fw-bold">
-                                Gửi Tài Liệu
+                                Submit
                             </button>
                         </div>
 

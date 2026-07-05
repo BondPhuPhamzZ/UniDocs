@@ -1,11 +1,11 @@
-﻿@model UniDocs.Models.Course
+@model UniDocs.Models.Course
 
 <a asp-controller="Course" asp-action="Index" asp-route-id="@Model.Id" class="text-decoration-none text-dark">
         <div class="card h-100 border-0 document-card-hover position-relative">
             <div class="card-body d-flex flex-column">
 
                 <div class="d-flex justify-content-between align-items-start mb-2">
-                    <span class="badge bg-secondary-soft">@Model.Department</span>
+                    <span class="text-primary fw-bold small">@Model.Department</span>
                 </div>
 
                 @* Tên môn học *@

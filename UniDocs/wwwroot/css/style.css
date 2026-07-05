@@ -3,12 +3,20 @@ body {
 }
 
 :root {
+    /* Màu chính -> nút bấm, viền, text-primary*/
     --bs-primary: #9c6644;
     --bs-primary-rgb: 156, 102, 68;
+    
+    /* Hover */
     --bs-secondary: #7a4f35;
+
     --bs-link-color: #9c6644;
     --bs-link-hover-color: #7a4f35;
+
+    /* Nền kem (tổng thể) */
     --bs-body-bg: #fdfbf7;
+
+    /* Màu chữ (tổng thể) -> Nâu đen */
     --bs-body-color: #3e2723;
     --bs-heading-color: #2d1b15;
     
@@ -247,7 +255,14 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
 }
 
 /* Search bar glow on focus */
-.form-control:focus {
+.form-control:focus, .form-select:focus {
     border-color: var(--bs-primary);
     box-shadow: 0 0 0 2px rgba(156, 102, 68, 0.25);
+}
+
+/* Button focus glow (Ghi đè viền xanh mặc định) */
+.btn:focus, .btn:active:focus, .btn-outline-primary:focus, .btn:disabled {
+    outline: none !important;
+    box-shadow: 0 0 0 0.25rem rgba(156, 102, 68, 0.25) !important;
+    border-color: var(--bs-primary) !important;
 }

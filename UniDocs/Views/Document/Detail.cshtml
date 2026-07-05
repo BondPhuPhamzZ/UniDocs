@@ -4,33 +4,26 @@
 }
 
 <div class="container py-4">
-    
-    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+    <div class="row g-4">
         
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start">
+        @* ===== CONTENT: LEFT COLUMN ===== *@
+        <div class="col-12 col-lg-8 d-flex flex-column gap-4">
             
             @* Thông tin tài liệu *@
-            <div class="mb-3 mb-md-0 pe-md-4">
-                <h2 class="headline-md text-dark mb-2 d-flex align-items-center gap-3">
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+                <h2 class="headline-md text-dark mb-3">
                     @Model.Title
-                    @if (User.Identity!.IsAuthenticated)
-                    {
-                        <a href="#" class="text-danger fs-5" data-bs-toggle="collapse" data-bs-target="#reportForm" title="Báo cáo tài liệu">
-                            <i class="bi bi-exclamation-triangle-fill"></i>
-                        </a>
-                    }
                 </h2>
                 
-                <div class="d-flex flex-wrap gap-2 text-muted small mb-3">
-                    <span class="badge bg-secondary-soft p-2">Môn: @Model.Course?.CourseName</span>
-                    <span class="badge bg-secondary-soft p-2">Năm học: @Model.AcademicYear</span>
-                    <span class="badge bg-secondary-soft p-2">Loại: @Model.DocType</span>
-                    <span class="badge bg-secondary-soft p-2">Lượt tải: @Model.DownloadCount</span>
+                <div class="d-flex flex-wrap gap-4 text-muted small mb-3">
+                    <span><span class="fw-bold text-dark">Course: </span> @Model.Course?.CourseName</span>
+                    <span><span class="fw-bold text-dark">Year: </span> @Model.AcademicYear</span>
+                    <span><span class="fw-bold text-dark">Type: </span> @Model.DocType</span>
                 </div>
 
                 <div class="small text-muted">
-                    Người đăng: <span class="fw-bold text-dark">@Model.User?.LastName @Model.User?.FirstName</span> 
-                    &bull; Ngày đăng: @Model.UploadDate.ToString("dd/MM/yyyy")
+                    User: <span class="fw-bold text-dark">@Model.User?.LastName @Model.User?.FirstName</span> <br />
+                    Upload date: @Model.UploadDate.ToString("dd/MM/yyyy")
                 </div>
 
                 @if (!string.IsNullOrEmpty(Model.Description))
@@ -39,67 +32,84 @@
                 }
             </div>
 
-            @* Nút thao tác *@
-            <div class="d-flex flex-column gap-2" style="min-width: 250px;">
+            @* Khu vực đọc PDF *@
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-2">
+                    <h6 class="mb-0 fw-bold text-light">Nội dung</h6>
+                    <a href="@Model.FilePath" target="_blank" class="btn btn-sm btn-outline-light rounded-pill px-3">
+                        Full screen
+                    </a>
+                </div>
+                <div class="card-body p-0">
+                    <iframe src="https://docs.google.com/viewer?url=@Model.FilePath&embedded=true" width="100%" height="900px" style="border: none; display: block;">
+                        Trình duyệt của bạn không hỗ trợ xem PDF trực tiếp.
+                    </iframe>
+                </div>
+            </div>
+
+        </div>
+
+        @* ===== BUTTONS: RIGHT COLUMN ===== *@
+        <div class="col-12 col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 p-4 sticky-lg-top" style="top: 80px; z-index: 990;">
                 
-                @* Hàng 1: Tải tài liệu & Yêu thích (Icon) *@
-                <div class="d-flex gap-2">
-                    <a asp-controller="Document" asp-action="Download" asp-route-id="@Model.Id" class="btn btn-primary fw-bold rounded-pill flex-grow-1">
-                        Tải tài liệu
+                @* Hàng nút Icon *@
+                <div class="d-flex justify-content-between gap-2 mb-3">
+                    
+                    @* Nút Download (Icon) *@
+                    <a asp-controller="Document" asp-action="Download" asp-route-id="@Model.Id" class="btn btn-primary fw-bold rounded flex-grow-1" title="Download">
+                        <i class="bi bi-download"></i>
                     </a>
 
-                    <form asp-controller="Document" asp-action="SaveDocument" method="post" class="d-inline-block">
+                    @* Nút Yêu thích (Trái tim) *@
+                    <form asp-controller="Document" asp-action="SaveDocument" method="post" class="flex-grow-1 d-flex">
                         <input type="hidden" name="documentId" value="@Model.Id" />
-                        <button type="submit" class="btn btn-outline-danger fw-bold rounded px-3" title="Thêm vào yêu thích">
+                        <button type="submit" class="btn btn-outline-danger fw-bold rounded w-100" title="Thêm vào yêu thích">
                             <i class="bi bi-heart-fill"></i>
                         </button>
                     </form>
+
+                    @* Nút Báo cáo (Lá cờ) *@
+                    @if (User.Identity!.IsAuthenticated)
+                    {
+                        <button type="button" class="btn btn-outline-primary fw-bold rounded flex-grow-1" data-bs-toggle="collapse" data-bs-target="#reportForm" title="Báo cáo tài liệu" onclick="this.blur()">
+                            <i class="bi bi-flag-fill"></i>
+                        </button>
+                    }
                 </div>
 
-                @* Hàng 2: Nút Tóm tắt AI *@
+                @* Form Báo cáo (Collapse) *@
+                @if (User.Identity!.IsAuthenticated)
+                {
+                    <div class="collapse mb-3 text-start" id="reportForm">
+                        <form asp-action="Report" asp-controller="Document" method="post">
+                            <input type="hidden" name="documentId" value="@Model.Id" />
+                            <select name="reason" class="form-select form-select-sm mb-2">
+                                <option>Nội dung sai / không liên quan</option>
+                                <option>Vi phạm bản quyền</option>
+                                <option>Tài liệu bị lỗi / không mở được</option>
+                                <option>Nội dung không phù hợp</option>
+                            </select>
+                            <button type="submit" class="btn btn-danger btn-sm w-100">Gửi</button>
+                        </form>
+                    </div>
+                }
+
+                @* Nút Tóm tắt AI *@
                 <button id="btnAiSummary" onclick="loadAiSummary(@Model.Id)" class="btn btn-outline-primary fw-bold rounded-pill w-100" title="Tóm tắt nội dung bằng AI">
-                    Tóm tắt
+                    Summary
                 </button>
                 
-                <div class="collapse mt-3 text-start" id="reportForm">
-                            <form asp-action="Report" asp-controller="Document" method="post">
-                                <input type="hidden" name="documentId" value="@Model.Id" />
-                                <select name="reason" class="form-select form-select-sm mb-2">
-                                    <option>Nội dung sai / không liên quan</option>
-                                    <option>Vi phạm bản quyền</option>
-                                    <option>Tài liệu bị lỗi / không mở được</option>
-                                    <option>Nội dung không phù hợp</option>
-                                </select>
-                                <button type="submit" class="btn btn-danger btn-sm w-100">Gửi</button>
-                            </form>
-                    </div>
+                @* Khu vực kết quả AI *@
+                <div id="aiResult" class="d-none mt-4 p-3 bg-white rounded-3 border border-2 border-primary">
+                    <h6 class="fw-bold text-primary mb-2">AI result</h6>
+                    <p id="aiText" class="small mb-0 text-dark"></p>
+                </div>
 
             </div>
         </div>
-        
-        @* Khu vực kết quả AI (hiển thị khi có) *@
-        <div id="aiResult" class="d-none mt-4 p-3 bg-success-subtle rounded-3 border border-success">
-            <h6 class="fw-bold text-success mb-2">Kết quả AI tóm tắt:</h6>
-            <p id="aiText" class="small mb-0 text-dark"></p>
-        </div>
 
     </div>
-
-    @* ===== KHU VỰC ĐỌC PDF (FULL WIDTH) ===== *@
-    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-2">
-            <h6 class="mb-0 fw-bold text-light">Nội dung</h6>
-            <a href="@Model.FilePath" target="_blank" class="btn btn-sm btn-outline-light rounded-pill px-3">
-                Toàn màn hình
-            </a>
-        </div>
-        <div class="card-body p-0">
-            <iframe src="https://docs.google.com/viewer?url=@Model.FilePath&embedded=true" width="100%" height="900px" style="border: none; display: block;">
-                Trình duyệt của bạn không hỗ trợ xem PDF trực tiếp.
-            </iframe>
-        </div>
-    </div>
-
 </div>
 
 @* Tích hợp AI *@
@@ -108,7 +118,7 @@
             async function loadAiSummary(id) {
             const btn = document.getElementById('btnAiSummary');
             btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang phân tích...';
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm text-primary me-2" role="status"></span><span class="text-dark fw-bold">Analyze...</span>';
 
             try {
                 const res = await fetch(`/Document/AiSummary/${id}`);
@@ -123,10 +133,10 @@
                 document.getElementById('aiResult').classList.remove('d-none');
             } catch (err) {
                 document.getElementById('aiText').innerText =
-                    `Lỗi kết nối: ${err.message}. Vui lòng thử lại.`;
+                    `Fail to connect: ${err.message}. Please try again.`;
                 document.getElementById('aiResult').classList.remove('d-none');
             } finally {
-                btn.innerHTML = 'Tóm tắt lại';
+                btn.innerHTML = 'Summary again';
                 btn.disabled = false;
             }
         }
