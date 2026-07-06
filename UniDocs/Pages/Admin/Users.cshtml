@@ -38,18 +38,18 @@
                             <td class="py-3 fw-medium text-dark">@user.LastName @user.FirstName</td>
                             <td class="py-3 text-muted">@user.Email</td>
                             <td class="py-3 text-center">
-                                <span class="badge bg-primary rounded-pill px-3 py-2">
+                                <span class="text-primary">
                                     @(user.Documents?.Count ?? 0)
                                 </span>
                             </td>
                             <td class="py-3">
                                 @if (user.IsActive)
                                 {
-                                    <span class="badge bg-success px-3 py-2 rounded-pill">Hoạt động</span>
+                                    <span class="text-primary">Hoạt động</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-danger px-3 py-2 rounded-pill">Bị khóa</span>
+                                    <span class="text-primary">Bị khóa</span>
                                 }
                             </td>
                             <td class="px-4 py-3 text-end">
@@ -57,13 +57,13 @@
                                     @if (user.IsActive)
                                     {
                                         <button type="submit" class="btn btn-outline-danger btn-sm px-3 fw-bold">
-                                            <i class="bi bi-lock-fill"></i> Khóa
+                                            Khóa
                                         </button>
                                     }
                                     else
                                     {
                                         <button type="submit" class="btn btn-outline-success btn-sm px-3 fw-bold">
-                                            <i class="bi bi-unlock-fill"></i> Mở khóa
+                                            Mở khóa
                                         </button>
                                     }
                                 </form>
