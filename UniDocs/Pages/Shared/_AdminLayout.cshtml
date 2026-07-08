@@ -47,7 +47,7 @@
 
            @* Tái sử dụng Sidebar quản trị *@
             <div class="col-lg-2 mb-4">
-                <div class="list-group shadow-sm">
+                <div class="list-group shadow-sm flex-row flex-lg-column overflow-x-auto text-nowrap pb-2 pb-lg-0" style="scrollbar-width: thin;">
                     <a asp-page="/Admin/Dashboard" class="list-group-item list-group-item-action @(currentPage == "/Admin/Dashboard" ? "active" : "")">
                         Reported Documents
                     </a>

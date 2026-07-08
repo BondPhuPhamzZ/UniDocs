@@ -8,7 +8,7 @@
     <div class="row">
 
         @* ===== TRÁI: Thông tin cá nhân ===== *@
-        <div class="col-lg-4 mb-5 mb-lg-0">
+        <div class="col-lg-4 mb-5 pb-4 mb-lg-0 pb-lg-0">
             <div class="card border-0 shadow-sm sticky-lg-top" style="top: 100px; z-index: 900;">
                 <div class="card-body text-center p-4">
                     <img src="https://ui-avatars.com/api/?name=@(Model.FirstName)+@(Model.LastName)&background=2A4365&color=fff&size=150" class="rounded-circle shadow-sm mb-3" alt="Avatar" />
@@ -83,7 +83,7 @@
                                             <tr>
                                                 @* Hiển thị thông tin tài liệu mà User đã đăng *@
                                                 <td class="ps-4 text-start">
-                                                    <div class="d-flex align-items-center">
+                                                    <div class="d-flex align-items-start">
                                                         <div>
                                                             @if (!doc.IsApproved && doc.Title.StartsWith("[Đã xóa]"))
                                                             {
@@ -106,19 +106,19 @@
                                                 <td class="fw-bold text-primary">@doc.DownloadCount</td>
 
                                                 <td class="text-start pe-4">
-                                                    <div class="d-flex justify-content-start align-items-center gap-2">
-                                                        @if (doc.IsApproved)
-                                                        {
-                                                            <span class="fw-bold text-success">Đang hiển thị</span>
-                                                        }
-                                                        else if (doc.Title.StartsWith("[Đã xóa]"))
-                                                        {
-                                                            <span class="fw-bold text-danger">Đã bị xóa / Vi phạm</span>
-                                                        }
-                                                        else
-                                                        {
-                                                            <span class="fw-bold text-warning">Chờ duyệt</span>
-                                                        }
+                                                        <div class="d-flex justify-content-start align-items-start gap-2 flex-wrap">
+                                                            @if (doc.IsApproved)
+                                                            {
+                                                                <span class="fw-bold text-success">Đang hiển thị</span>
+                                                            }
+                                                            else if (doc.Title.StartsWith("[Đã xóa]"))
+                                                            {
+                                                                <span class="fw-bold text-danger mt-1">Đã xóa</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="fw-bold text-warning">Chờ duyệt</span>
+                                                            }
                                                         
                                                         <form method="post" asp-controller="Account" asp-action="DeleteMyDocument" asp-route-id="@doc.Id" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác!');">
                                                             <button type="submit" class="btn btn-sm btn-danger" title="Xóa tài liệu">
@@ -163,7 +163,7 @@
                                             <tr>
                                                 @* Hiển thị thông tin của các tài liệu mà User bấm lưu *@
                                                 <td class="ps-4 text-start">
-                                                    <div class="d-flex align-items-center">
+                                                    <div class="d-flex align-items-start">
                                                         <div>
                                                             <a asp-controller="Document" asp-action="Detail" asp-route-id="@saved.Document?.Id"
                                                                class="text-decoration-none text-dark fw-bold">

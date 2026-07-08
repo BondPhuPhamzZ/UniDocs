@@ -32,33 +32,21 @@
 
         <div class="container">
 
+            <!-- Hamburger Menu (Always visible) -->
+            <button class="btn btn-light border-0 me-2 shadow-sm rounded-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#mainMenuOffcanvas">
+                <i class="bi bi-list fs-4"></i>
+            </button>
+
             <a class="navbar-brand d-flex align-items-center text-dark" asp-controller="Home" asp-action="Index">
                 <i class="bi bi-journal-text fs-3 me-2 text-primary"></i>
                 <strong>UniDoc</strong>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
 
-
-            @* ===== Các page trên thanh menu ===== *@
-            <div class="collapse navbar-collapse" id="navbarContent">
-
-                @* Khối các page (bên trái) *@
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark fw-medium @(currentController == "Home" ? "active" : "")" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark fw-medium @(currentController == "Course" ? "active" : "")" asp-controller="Course" asp-action="Index">Course</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark fw-medium @(currentController == "Document" ? "active" : "")" asp-controller="Document" asp-action="Upload">Attribute</a>
-                    </li>
-                </ul>
+            @* ===== Phần tìm kiếm & Icons ===== *@
+            <div class="d-flex flex-grow-1 justify-content-end align-items-center" id="navbarContent">
 
                 @* Thanh tìm kiếm trên Navbar *@
-                <form asp-controller="Course" asp-action="Index" method="get" class="d-flex mx-auto flex-grow-1 mb-3 mb-lg-0 px-lg-3" style="max-width: 500px;">
+                <form asp-controller="Course" asp-action="Index" method="get" class="d-flex mx-auto mb-0 px-lg-3 flex-grow-1" style="max-width: 500px;">
                     <div class="input-group">
                         <input type="text" name="query" class="form-control bg-light shadow-none border-0 rounded-start-pill px-4" placeholder="Search for course..." />
                         <button class="btn btn-light bg-light border-0 rounded-end-pill pe-3 text-muted" type="submit">
@@ -71,30 +59,28 @@
                 <div class="d-flex align-items-center gap-2">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <span class="text-dark small me-2 d-none d-md-inline">Chào, <strong>@User.Identity.Name</strong></span>
-
-                        @* Xem Profile *@
-                        <a asp-controller="Account" asp-action="Profile" class="btn btn-outline-primary btn-sm px-3 fw-medium">
-                            Profile
+                        @* Nút Profile (Icon) *@
+                        <a asp-controller="Account" asp-action="Profile" class="btn btn-light border-0 fs-5 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;" title="Profile">
+                            <i class="bi bi-person-circle text-primary"></i>
                         </a>
 
-                        @* Check role là Admin *@
+                        @* Check role là Admin (Icon) *@
                         @if (User.IsInRole("Admin"))
                         {
-                            <a asp-controller="Admin" asp-action="Dashboard" class="btn btn-primary btn-sm fw-bold px-3">
-                                Admin
+                            <a asp-controller="Admin" asp-action="Dashboard" class="btn btn-light border-0 fs-5 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;" title="Admin Dashboard">
+                                <i class="bi bi-shield-lock-fill text-warning"></i>
                             </a>
                         }
 
-                        @* Đăng xuất *@
-                        <a asp-controller="Account" asp-action="Logout" class="btn btn-outline-danger btn-sm px-3 fw-medium">
-                            Logout
+                        @* Đăng xuất (Icon) *@
+                        <a asp-controller="Account" asp-action="Logout" class="btn btn-light border-0 fs-5 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;" title="Logout">
+                            <i class="bi bi-box-arrow-right text-danger"></i>
                         </a>
                     }
                     else
                     {
                         <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary btn-sm fw-bold px-3">Login</a>
-                        <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-sm px-3">Register</a>
+                        <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-sm px-3 d-none d-md-inline">Register</a>
                     }
                 </div>
 
@@ -104,6 +90,28 @@
 
     </nav>
 
+    <!-- Offcanvas Main Menu -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="mainMenuOffcanvas" style="width: 280px;">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold d-flex align-items-center">
+                <i class="bi bi-journal-text fs-3 me-2 text-primary"></i> UniDoc
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <div class="list-group list-group-flush">
+                <a asp-controller="Home" asp-action="Index" class="list-group-item list-group-item-action py-3 border-0 fw-medium @(currentController == "Home" ? "text-primary bg-primary-subtle" : "text-dark")">
+                    <i class="bi bi-house-door me-2"></i> Home
+                </a>
+                <a asp-controller="Course" asp-action="Index" class="list-group-item list-group-item-action py-3 border-0 fw-medium @(currentController == "Course" ? "text-primary bg-primary-subtle" : "text-dark")">
+                    <i class="bi bi-book me-2"></i> Course
+                </a>
+                <a asp-controller="Document" asp-action="Upload" class="list-group-item list-group-item-action py-3 border-0 fw-medium @(currentController == "Document" ? "text-primary bg-primary-subtle" : "text-dark")">
+                    <i class="bi bi-cloud-arrow-up me-2"></i> Attribute
+                </a>
+            </div>
+        </div>
+    </div>
     
     @* Toast thông báo toàn trang *@
     @if (TempData["SuccessMessage"] != null)
