@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UniDocs.Data;
 
@@ -16,7 +16,7 @@ namespace UniDocs.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var courses = await _context.Courses
-                .Include(c => c.Documents.Where(d => d.IsApproved == true))
+                .Include(c => c.Documents.Where(d => d.Status == UniDocs.Models.Enums.DocumentStatusEnum.Approved))
                 .ToListAsync();
 
             return View(courses);

@@ -37,18 +37,9 @@
                         {
                             <tr>
                                 <td class="ps-4 py-3">
-                                    @if (item.Status == UniDocs.Models.Enums.ReportStatusEnum.Valid)
-                                    {
-                                        <span class="fw-bold text-muted">
-                                            @(item.Document?.Title ?? "Document not found")
-                                        </span>
-                                    }
-                                    else
-                                    {
-                                        <a asp-controller="Document" asp-action="Detail" asp-route-id="@item.DocumentId" class="fw-bold text-decoration-none text-primary">
-                                            @(item.Document?.Title ?? "Document not found")
-                                        </a>
-                                    }
+                                    <a asp-controller="Document" asp-action="Detail" asp-route-id="@item.DocumentId" class="fw-bold text-decoration-none text-primary">
+                                        @(item.Document?.Title ?? "Document not found")
+                                    </a>
                                 </td>
                                 <td class="py-3">
                                     <span class="fw-bold">@(item.Reporter?.LastName) @(item.Reporter?.FirstName)</span>
@@ -64,13 +55,9 @@
                                     {
                                         <span class="fw-bold text-warning">Pending</span>
                                     }
-                                    else if (item.Status == UniDocs.Models.Enums.ReportStatusEnum.Valid)
+                                    else if (item.Status == UniDocs.Models.Enums.ReportStatusEnum.Finished)
                                     {
-                                        <span class="fw-bold text-danger">Deleted</span>
-                                    }
-                                    else if (item.Status == UniDocs.Models.Enums.ReportStatusEnum.Rejected)
-                                    {
-                                        <span class="fw-bold text-success">Valid</span>
+                                        <span class="fw-bold text-success">Finished</span>
                                     }
                                     else
                                     {

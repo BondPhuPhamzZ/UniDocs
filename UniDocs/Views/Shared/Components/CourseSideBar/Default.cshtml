@@ -29,7 +29,7 @@
 
             @foreach (var course in Model)
             {
-                int docCount = course.Documents?.Count(d => d.IsApproved) ?? 0;
+                int docCount = course.Documents?.Count(d => d.Status == UniDocs.Models.Enums.DocumentStatusEnum.Approved) ?? 0;
                 bool isActiveCourse = currentController == "Course"
                     && currentAction == "Detail"
                     && currentId == course.Id.ToString();

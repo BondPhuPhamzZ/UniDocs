@@ -14,11 +14,13 @@ namespace UniDocs.Controllers
     {
         private readonly AppDbContext _context;
         private readonly UniDocs.Services.SecurityService _securityService;
+        private readonly Microsoft.AspNetCore.Hosting.IWebHostEnvironment _env;
 
-        public AccountController(AppDbContext context, UniDocs.Services.SecurityService securityService)
+        public AccountController(AppDbContext context, UniDocs.Services.SecurityService securityService, Microsoft.AspNetCore.Hosting.IWebHostEnvironment env)
         {
             _context = context;
             _securityService = securityService;
+            _env = env;
         }
 
         // ========== Đăng nhập ===========
@@ -150,7 +152,7 @@ namespace UniDocs.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteMyDocument(int id, [FromServices] Microsoft.AspNetCore.Hosting.IWebHostEnvironment env)
+        public async Task<IActionResult> DeleteMyDocument(int id)
         {
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int userId = int.Parse(userIdStr);
@@ -166,26 +168,18 @@ namespace UniDocs.Controllers
             // Xóa file vật lý
             if (document.FilePath != null && document.FilePath.StartsWith("/uploads/"))
             {
-                string physicalPath = System.IO.Path.Combine(env.WebRootPath, document.FilePath.TrimStart('/'));
+                string physicalPath = System.IO.Path.Combine(_env.WebRootPath, document.FilePath.TrimStart('/'));
                 if (System.IO.File.Exists(physicalPath))
                     System.IO.File.Delete(physicalPath);
             }
 
-
-
-
             // Soft delete
-            document.IsApproved = false;
-            if (!document.Title.StartsWith("[Đã xóa]"))
-            {
-                document.Title = "[Đã xóa] " + document.Title;
-            }
+            document.Status = UniDocs.Models.Enums.DocumentStatusEnum.Deleted;
 
-            // Đánh dấu các report thành đã xóa
-            var relatedReports = await _context.Reports.Where(r => r.DocumentId == id).ToListAsync();
+            var relatedReports = await _context.Reports.Where(r => r.DocumentId == id && r.Status == UniDocs.Models.Enums.ReportStatusEnum.Pending).ToListAsync();
             foreach (var report in relatedReports)
             {
-                report.Status = UniDocs.Models.Enums.ReportStatusEnum.Valid; // Đã xóa tài liệu (Hợp lệ)
+                report.Status = UniDocs.Models.Enums.ReportStatusEnum.Finished; 
             }
 
             await _context.SaveChangesAsync();

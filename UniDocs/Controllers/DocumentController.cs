@@ -150,7 +150,7 @@ namespace UniDocs.Controllers
             model.FilePath = "/uploads/" + fileName;
             model.UploadDate = DateTime.Now;
             model.DownloadCount = 0;
-            model.IsApproved = true; 
+            model.Status = UniDocs.Models.Enums.DocumentStatusEnum.Approved;
 
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
             model.UserId = int.Parse(userIdStr);
@@ -178,7 +178,7 @@ namespace UniDocs.Controllers
                 return NotFound("Không tìm thấy tài liệu này!");
             }
 
-            if (!document.IsApproved)
+            if (document.Status != UniDocs.Models.Enums.DocumentStatusEnum.Approved)
             {
                 bool isAdmin = User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("Admin");
                 bool isOwner = User.Identity != null && User.Identity.IsAuthenticated && document.UserId.ToString() == User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
@@ -219,6 +219,18 @@ namespace UniDocs.Controllers
                 Status = UniDocs.Models.Enums.ReportStatusEnum.Pending
             };
             _context.Reports.Add(report);
+
+            // Auto-hide logic: If a document has >= 3 pending reports, mark it as Pending (hide from public)
+            var reportCount = await _context.Reports.CountAsync(r => r.DocumentId == documentId && r.Status == UniDocs.Models.Enums.ReportStatusEnum.Pending) + 1;
+            if (reportCount >= 3)
+            {
+                var docToHide = await _context.Documents.FindAsync(documentId);
+                if (docToHide != null && docToHide.Status == UniDocs.Models.Enums.DocumentStatusEnum.Approved)
+                {
+                    docToHide.Status = UniDocs.Models.Enums.DocumentStatusEnum.Pending;
+                }
+            }
+
             await _context.SaveChangesAsync();
 
             TempData["SuccessMessage"] = "Đã gửi báo cáo thành công! Admin sẽ xem xét sớm.";

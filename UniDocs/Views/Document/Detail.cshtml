@@ -41,7 +41,7 @@
                     </a>
                 </div>
                 <div class="card-body p-0">
-                    @if (Model.Title.StartsWith("[Đã xóa]"))
+                    @if (Model.Status == UniDocs.Models.Enums.DocumentStatusEnum.Deleted)
                     {
                         <div class="text-center py-5 text-muted">
                             <i class="bi bi-file-earmark-x display-4"></i>

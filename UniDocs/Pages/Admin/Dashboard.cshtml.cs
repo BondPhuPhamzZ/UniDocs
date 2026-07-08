@@ -43,18 +43,14 @@ namespace UniDocs.Pages.Admin
                     System.IO.File.Delete(physicalPath);
             }
 
-            // Soft Delete
-            document.IsApproved = false;
-            if (!document.Title.StartsWith("[Đã xóa]"))
-            {
-                document.Title = "[Đã xóa] " + document.Title;
-            }
+            // Xóa mềm tài liệu
+            document.Status = UniDocs.Models.Enums.DocumentStatusEnum.Deleted;
             
-            // Đánh dấu -> đã xóa
-            var relatedReports = await _context.Reports.Where(r => r.DocumentId == id).ToListAsync();
-            foreach(var report in relatedReports)
+            // Chuyển toàn bộ Report Pending của tài liệu này thành Finished
+            var pendingReports = await _context.Reports.Where(r => r.DocumentId == id && r.Status == UniDocs.Models.Enums.ReportStatusEnum.Pending).ToListAsync();
+            foreach(var report in pendingReports)
             {
-                report.Status = UniDocs.Models.Enums.ReportStatusEnum.Valid; 
+                report.Status = UniDocs.Models.Enums.ReportStatusEnum.Finished; 
             }
 
             await _context.SaveChangesAsync();
@@ -63,17 +59,29 @@ namespace UniDocs.Pages.Admin
             return RedirectToPage("./Dashboard");
         }
 
-        // Bỏ qua -> Hợp lệ
+        // Bỏ qua -> Tài liệu được phục hồi
         public async Task<IActionResult> OnPostDismissReportAsync(int id)
         {
-            var report = await _context.Reports.FindAsync(id);
+            var report = await _context.Reports.Include(r => r.Document).FirstOrDefaultAsync(r => r.Id == id);
             if (report == null)
                 return NotFound();
 
-            report.Status = UniDocs.Models.Enums.ReportStatusEnum.Rejected;
+            // Chuyển toàn bộ Report Pending của tài liệu này thành Finished
+            var pendingReports = await _context.Reports.Where(r => r.DocumentId == report.DocumentId && r.Status == UniDocs.Models.Enums.ReportStatusEnum.Pending).ToListAsync();
+            foreach (var r in pendingReports)
+            {
+                r.Status = UniDocs.Models.Enums.ReportStatusEnum.Finished;
+            }
+
+            // Phục hồi tài liệu (nếu nó đang bị Pending)
+            if (report.Document != null && report.Document.Status == UniDocs.Models.Enums.DocumentStatusEnum.Pending)
+            {
+                report.Document.Status = UniDocs.Models.Enums.DocumentStatusEnum.Approved;
+            }
+
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Đã đánh dấu tài liệu là Hợp lệ!";
+            TempData["SuccessMessage"] = "Đã bỏ qua báo cáo và khôi phục tài liệu thành công!";
             return RedirectToPage("./Dashboard");
         }
     }

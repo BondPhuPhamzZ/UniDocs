@@ -34,6 +34,9 @@
 
                 </div>
             </div>
+            
+            @* Vách ngăn trên mobile *@
+            <hr class="d-lg-none mt-5 text-muted border-2" />
         </div>
 
         @* ===== PHẢI: 2 Tab (Tài liệu đăng và Tài liệu yêu thích) ===== *@
@@ -69,10 +72,10 @@
                                 <table class="table table-hover align-top mb-0 text-start">
                                     <thead class="table-light position-sticky top-0 shadow-sm" style="z-index: 1;">
                                     <tr>
-                                        <th class="ps-4 text-nowrap">Tên tài liệu</th>
-                                        <th class="text-nowrap">Môn học</th>
-                                        <th class="text-nowrap">Lượt tải</th>
-                                        <th class="pe-4 text-start text-nowrap">Trạng thái</th>
+                                        <th class="ps-4 text-nowrap">Name</th>
+                                        <th class="text-nowrap">Course</th>
+                                        <th class="text-nowrap">Downloads</th>
+                                        <th class="pe-4 text-start text-nowrap">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -85,16 +88,16 @@
                                                 <td class="ps-4 text-start">
                                                     <div class="d-flex align-items-start">
                                                         <div>
-                                                            @if (!doc.IsApproved && doc.Title.StartsWith("[Đã xóa]"))
+                                                            @if (doc.Status == UniDocs.Models.Enums.DocumentStatusEnum.Deleted)
                                                             {
-                                                                <span class="text-decoration-none text-muted fw-bold">@doc.Title</span>
+                                                                <span class="text-decoration-none text-muted fw-bold">@doc.Title.Replace("[Đã xóa] ", "")</span>
                                                             }
                                                             else
                                                             {
                                                                 <a asp-controller="Document" asp-action="Detail" asp-route-id="@doc.Id"
                                                                    class="text-decoration-none text-dark fw-bold">@doc.Title</a>
                                                             }
-                                                            <div class="text-muted small">Đăng: @doc.UploadDate.ToString("dd/MM/yyyy")</div>
+                                                            <div class="text-muted small">Date: @doc.UploadDate.ToString("dd/MM/yyyy")</div>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -107,25 +110,28 @@
 
                                                 <td class="text-start pe-4">
                                                         <div class="d-flex justify-content-start align-items-start gap-2 flex-wrap">
-                                                            @if (doc.IsApproved)
+                                                            @if (doc.Status == UniDocs.Models.Enums.DocumentStatusEnum.Approved)
                                                             {
-                                                                <span class="fw-bold text-success">Đang hiển thị</span>
+                                                                <span class="fw-bold text-success mt-1">Đang hiển thị</span>
                                                             }
-                                                            else if (doc.Title.StartsWith("[Đã xóa]"))
+                                                            else if (doc.Status == UniDocs.Models.Enums.DocumentStatusEnum.Deleted)
                                                             {
                                                                 <span class="fw-bold text-danger mt-1">Đã xóa</span>
                                                             }
                                                             else
                                                             {
-                                                                <span class="fw-bold text-warning">Chờ duyệt</span>
+                                                                <span class="fw-bold text-warning mt-1">Chờ duyệt</span>
                                                             }
-                                                        
-                                                        <form method="post" asp-controller="Account" asp-action="DeleteMyDocument" asp-route-id="@doc.Id" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác!');">
-                                                            <button type="submit" class="btn btn-sm btn-danger" title="Xóa tài liệu">
-                                                                <i class="bi bi-trash"></i>
-                                                            </button>
-                                                        </form>
-                                                    </div>
+                                                            
+                                                            @if (doc.Status != UniDocs.Models.Enums.DocumentStatusEnum.Deleted)
+                                                            {
+                                                                <form method="post" asp-controller="Account" asp-action="DeleteMyDocument" asp-route-id="@doc.Id" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác!');">
+                                                                    <button type="submit" class="btn btn-sm btn-danger" title="Xóa tài liệu">
+                                                                        <i class="bi bi-trash"></i>
+                                                                    </button>
+                                                                </form>
+                                                            }
+                                                        </div>
                                                 </td>
                                             </tr>
                                         }

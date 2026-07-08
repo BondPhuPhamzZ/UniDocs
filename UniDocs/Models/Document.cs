@@ -44,8 +44,8 @@ namespace UniDocs.Models
         public int DownloadCount { get; set; } = 0;
 
 
-        // Khi UPLOAD thì tài liệu cần đc Admin duyệt -> Default là FALSE -> đang chờ duyệt
-        public bool IsApproved { get; set; } = false;
+        // Trạng thái tài liệu
+        public UniDocs.Models.Enums.DocumentStatusEnum Status { get; set; } = UniDocs.Models.Enums.DocumentStatusEnum.Pending;
 
 
         // FK (khóa ngoại) connect to bảng User (người dùng)
