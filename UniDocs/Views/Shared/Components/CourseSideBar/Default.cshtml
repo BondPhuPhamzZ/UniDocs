@@ -6,7 +6,7 @@
     var isCourseIndex = currentController == "Course" && currentAction == "Index";
 }
 
-<div class="card border-0 shadow-sm sticky-top" style="top: 80px; z-index: 900;">
+<div class="card border-0 shadow-sm sticky-top" style="top: 100px; z-index: 900;">
     <div class="card-header bg-white fw-bold border-bottom-0 pt-3">
         Filter by Course
     </div>
@@ -21,7 +21,7 @@
             </div>
         </form>
 
-        <div class="list-group list-group-flush small">
+        <div class="list-group list-group-flush small" style="max-height: 400px; overflow-y: auto;">
             <a asp-controller="Course" asp-action="Index"
                class="list-group-item list-group-item-action border-0 rounded course-sidebar-link @(isCourseIndex ? "active-course-link shadow-sm" : "")">
                 All Courses
@@ -37,7 +37,7 @@
                 <a asp-controller="Course" asp-action="Detail" asp-route-id="@course.Id"
                    class="list-group-item list-group-item-action border-0 d-flex justify-content-between align-items-center course-sidebar-link @(isActiveCourse ? "active-course-link shadow-sm" : "")">
                     <span class="text-truncate">@course.CourseName</span>
-                    <span class="badge rounded-pill ms-2 @(isActiveCourse ? "bg-light text-primary" : "bg-secondary")">@docCount</span>
+                    <span class="badge rounded-pill ms-2 @(isActiveCourse ? "bg-white text-primary" : "bg-secondary")">@docCount</span>
                 </a>
             }
         </div>

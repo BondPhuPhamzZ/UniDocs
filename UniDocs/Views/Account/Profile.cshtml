@@ -9,7 +9,7 @@
 
         @* ===== TRÁI: Thông tin cá nhân ===== *@
         <div class="col-lg-4 mb-4">
-            <div class="card border-0 shadow-sm">
+            <div class="card border-0 shadow-sm sticky-lg-top" style="top: 100px; z-index: 900;">
                 <div class="card-body text-center p-4">
                     <img src="https://ui-avatars.com/api/?name=@(Model.FirstName)+@(Model.LastName)&background=2A4365&color=fff&size=150" class="rounded-circle shadow-sm mb-3" alt="Avatar" />
 
@@ -65,13 +65,14 @@
 
                         @* ===== TAB 1: Tài liệu đã đăng ===== *@
                         <div class="tab-pane fade show active" id="tab-uploaded">
-                            <table class="table table-hover align-middle mb-0">
-                                <thead class="table-light">
+                            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                                <table class="table table-hover align-middle mb-0 text-center">
+                                    <thead class="table-light position-sticky top-0 shadow-sm" style="z-index: 1;">
                                     <tr>
-                                        <th class="ps-4">Tên tài liệu</th>
+                                        <th class="ps-4 text-start">Tên tài liệu</th>
                                         <th>Môn học</th>
-                                        <th class="text-center">Lượt tải</th>
-                                        <th class="text-end pe-4">Trạng thái</th>
+                                        <th>Lượt tải</th>
+                                        <th class="pe-4 text-end">Trạng thái</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -81,7 +82,7 @@
                                         {
                                             <tr>
                                                 @* Hiển thị thông tin tài liệu mà User đã đăng *@
-                                                <td class="ps-4">
+                                                <td class="ps-4 text-start">
                                                     <div class="d-flex align-items-center">
                                                         <div>
                                                             @if (!doc.IsApproved && doc.Title.StartsWith("[Đã xóa]"))
@@ -99,24 +100,24 @@
                                                 </td>
 
                                                 <td>
-                                                    <span class="badge bg-secondary-soft">@doc.Course?.CourseName</span>
+                                                    <span class="fw-bold text-dark">@doc.Course?.CourseName</span>
                                                 </td>
 
-                                                <td class="text-center fw-bold text-primary">@doc.DownloadCount</td>
+                                                <td class="fw-bold text-primary">@doc.DownloadCount</td>
 
                                                 <td class="text-end pe-4">
                                                     <div class="d-flex justify-content-end align-items-center gap-2">
                                                         @if (doc.IsApproved)
                                                         {
-                                                            <span class="badge bg-success">Đang hiển thị</span>
+                                                            <span class="fw-bold text-success">Đang hiển thị</span>
                                                         }
                                                         else if (doc.Title.StartsWith("[Đã xóa]"))
                                                         {
-                                                            <span class="badge bg-danger">Đã bị xóa / Vi phạm</span>
+                                                            <span class="fw-bold text-danger">Đã bị xóa / Vi phạm</span>
                                                         }
                                                         else
                                                         {
-                                                            <span class="badge bg-warning text-dark">Chờ duyệt</span>
+                                                            <span class="fw-bold text-warning">Chờ duyệt</span>
                                                         }
                                                         
                                                         <form method="post" asp-controller="Account" asp-action="DeleteMyDocument" asp-route-id="@doc.Id" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác!');">
@@ -139,14 +140,16 @@
                                     }
                                 </tbody>
                             </table>
+                            </div>
                         </div>
 
                         @* ===== TAB 2: Tài liệu đã lưu yêu thích ===== *@
                         <div class="tab-pane fade" id="tab-saved">
-                            <table class="table table-hover align-middle mb-0">
-                                <thead class="table-light">
+                            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                                <table class="table table-hover align-middle mb-0 text-center">
+                                    <thead class="table-light position-sticky top-0 shadow-sm" style="z-index: 1;">
                                     <tr>
-                                        <th class="ps-4">Tên tài liệu</th>
+                                        <th class="ps-4 text-start">Tên tài liệu</th>
                                         <th>Môn học</th>
                                         <th>Ngày lưu</th>
                                         <th class="text-end pe-4">Thao tác</th>
@@ -159,7 +162,7 @@
                                         {
                                             <tr>
                                                 @* Hiển thị thông tin của các tài liệu mà User bấm lưu *@
-                                                <td class="ps-4">
+                                                <td class="ps-4 text-start">
                                                     <div class="d-flex align-items-center">
                                                         <div>
                                                             <a asp-controller="Document" asp-action="Detail" asp-route-id="@saved.Document?.Id"
@@ -174,7 +177,7 @@
                                                 </td>
 
                                                 <td>
-                                                    <span class="badge bg-secondary-soft">
+                                                    <span class="fw-bold text-dark">
                                                         @saved.Document?.Course?.CourseName
                                                     </span>
                                                 </td>
@@ -207,6 +210,7 @@
                                     }
                                 </tbody>
                             </table>
+                            </div>
                         </div>
 
                     </div>

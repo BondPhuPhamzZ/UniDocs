@@ -59,6 +59,14 @@
     }
 </div>
 
+@* Datalist cho Department *@
+<datalist id="deptList">
+    @foreach(var dept in Model.Departments)
+    {
+        <option value="@dept"></option>
+    }
+</datalist>
+
 @* Modal Thêm môn học *@
 <div class="modal fade" id="addCourseModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -79,14 +87,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold text-muted small">Department</label>
-                        <select asp-for="NewCourse.Department" class="form-select">
-                            <option value="Công nghệ Phần mềm">Công nghệ Phần mềm</option>
-                            <option value="Hệ thống Thông tin">Hệ thống Thông tin</option>
-                            <option value="Khoa học Máy tính">Khoa học Máy tính</option>
-                            <option value="Kỹ thuật Máy tính">Kỹ thuật Máy tính</option>
-                            <option value="Mạng Máy tính & Truyền thông">Mạng Máy tính & Truyền thông</option>
-                            <option value="Khoa học & Kỹ thuật Thông tin">Khoa học & Kỹ thuật Thông tin</option>
-                        </select>
+                        <input type="text" asp-for="NewCourse.Department" class="form-control" list="deptList" required placeholder="E.g: Công nghệ phần mềm" />
                     </div>
                 </div>
                 <div class="modal-footer border-top-0 pt-0">
@@ -120,22 +121,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold text-muted small">Department</label>
-                            <select name="department" class="form-select">
-                                @{
-                                    string[] depts = { "Công nghệ Phần mềm", "Hệ thống Thông tin", "Khoa học Máy tính", "Kỹ thuật Máy tính", "Mạng Máy tính & Truyền thông", "Khoa học & Kỹ thuật Thông tin" };
-                                    foreach (var dept in depts)
-                                    {
-                                        if (course.Department == dept)
-                                        {
-                                            <option value="@dept" selected>@dept</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@dept">@dept</option>
-                                        }
-                                    }
-                                }
-                            </select>
+                            <input type="text" name="department" class="form-control" list="deptList" required value="@course.Department" />
                         </div>
                     </div>
                     <div class="modal-footer border-top-0 pt-0">

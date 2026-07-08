@@ -22,10 +22,18 @@ namespace UniDocs.Pages.Admin
         [BindProperty]
         public Course NewCourse { get; set; } = new Course();
 
+        public List<string> Departments { get; set; } = new List<string>();
+
         public async Task OnGetAsync()
         {
             CourseList = await _context.Courses
                 .Include(c => c.Documents)
+                .ToListAsync();
+
+            Departments = await _context.Courses
+                .Select(c => c.Department)
+                .Where(d => !string.IsNullOrEmpty(d))
+                .Distinct()
                 .ToListAsync();
         }
 
@@ -33,6 +41,12 @@ namespace UniDocs.Pages.Admin
         {
             if (!string.IsNullOrEmpty(NewCourse.CourseName) && !string.IsNullOrEmpty(NewCourse.CourseCode))
             {
+                if (await _context.Courses.AnyAsync(c => c.CourseCode == NewCourse.CourseCode))
+                {
+                    TempData["ErrorMessage"] = $"Mã môn học \"{NewCourse.CourseCode}\" đã tồn tại!";
+                    return RedirectToPage("./Courses");
+                }
+
                 _context.Courses.Add(NewCourse);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = $"Đã thêm môn học \"{NewCourse.CourseName}\" thành công!";
@@ -48,6 +62,12 @@ namespace UniDocs.Pages.Admin
 
             if (!string.IsNullOrEmpty(courseName) && !string.IsNullOrEmpty(courseCode))
             {
+                if (await _context.Courses.AnyAsync(c => c.CourseCode == courseCode && c.Id != id))
+                {
+                    TempData["ErrorMessage"] = $"Mã môn học \"{courseCode}\" đã tồn tại ở môn học khác!";
+                    return RedirectToPage("./Courses");
+                }
+
                 course.CourseName = courseName;
                 course.CourseCode = courseCode;
                 course.Department = department;

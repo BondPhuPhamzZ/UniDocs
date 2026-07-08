@@ -1,5 +1,8 @@
 <!doctype html>
 <html lang="vi">
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+}
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,6 +17,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .navbar-nav .nav-link.active {
+            font-weight: 700 !important;
+            border-bottom: 2px solid var(--bs-primary);
+            color: var(--bs-primary) !important;
+        }
+    </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
 
@@ -37,13 +47,13 @@
                 @* Khối các page (bên trái) *@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link text-dark fw-medium" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link text-dark fw-medium @(currentController == "Home" ? "active" : "")" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark fw-medium" asp-controller="Course" asp-action="Index">Course</a>
+                        <a class="nav-link text-dark fw-medium @(currentController == "Course" ? "active" : "")" asp-controller="Course" asp-action="Index">Course</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark fw-medium" asp-controller="Document" asp-action="Upload">Attribute</a>
+                        <a class="nav-link text-dark fw-medium @(currentController == "Document" ? "active" : "")" asp-controller="Document" asp-action="Upload">Attribute</a>
                     </li>
                 </ul>
 
