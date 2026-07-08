@@ -150,7 +150,7 @@ namespace UniDocs.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteMyDocument(int id, [FromServices] UniDocs.Services.ICloudinaryService cloudinaryService)
+        public async Task<IActionResult> DeleteMyDocument(int id, [FromServices] Microsoft.AspNetCore.Hosting.IWebHostEnvironment env)
         {
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int userId = int.Parse(userIdStr);
@@ -163,18 +163,16 @@ namespace UniDocs.Controllers
             }
 
 
-            // Xóa file vật lý (giữ lại để tương thích ngược với file cũ nếu có)
-            if (document.FilePath.StartsWith("/uploads/"))
+            // Xóa file vật lý
+            if (document.FilePath != null && document.FilePath.StartsWith("/uploads/"))
             {
-                // TODO: Dọn dẹp đoạn code này sau nếu hệ thống đã lên Cloudinary hoàn toàn
+                string physicalPath = System.IO.Path.Combine(env.WebRootPath, document.FilePath.TrimStart('/'));
+                if (System.IO.File.Exists(physicalPath))
+                    System.IO.File.Delete(physicalPath);
             }
 
 
-            // Xóa file trên Cloudinary
-            if (!string.IsNullOrEmpty(document.CloudinaryPublicId))
-            {
-                await cloudinaryService.DeleteDocumentAsync(document.CloudinaryPublicId);
-            }
+
 
             // Soft delete
             document.IsApproved = false;

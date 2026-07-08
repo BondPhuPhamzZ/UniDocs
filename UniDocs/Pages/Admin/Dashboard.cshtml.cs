@@ -30,25 +30,17 @@ namespace UniDocs.Pages.Admin
                 .ToListAsync();
         }
 
-        // Xóa tài liệu vi phạm (Soft Delete)
-        public async Task<IActionResult> OnPostDeleteDocumentAsync(int id, [FromServices] UniDocs.Services.ICloudinaryService cloudinaryService)
+        public async Task<IActionResult> OnPostDeleteDocumentAsync(int id)
         {
             var document = await _context.Documents.FindAsync(id);
             if (document == null)
                 return NotFound();
 
-            // Xóa file vật lý cũ (nếu có) -> KO QUAN TRỌNG
             if (document.FilePath != null && document.FilePath.StartsWith("/uploads/"))
             {
                 string physicalPath = Path.Combine(_env.WebRootPath, document.FilePath.TrimStart('/'));
                 if (System.IO.File.Exists(physicalPath))
                     System.IO.File.Delete(physicalPath);
-            }
-
-            // Xóa file trên Cloudinary
-            if (!string.IsNullOrEmpty(document.CloudinaryPublicId))
-            {
-                await cloudinaryService.DeleteDocumentAsync(document.CloudinaryPublicId);
             }
 
             // Soft Delete
@@ -62,7 +54,7 @@ namespace UniDocs.Pages.Admin
             var relatedReports = await _context.Reports.Where(r => r.DocumentId == id).ToListAsync();
             foreach(var report in relatedReports)
             {
-                report.Status = UniDocs.Models.Enums.ReportStatusEnum.Valid; // Hợp lệ (vi phạm thật) => đã xóa
+                report.Status = UniDocs.Models.Enums.ReportStatusEnum.Valid; 
             }
 
             await _context.SaveChangesAsync();

@@ -7,13 +7,7 @@
         @* Ảnh tài liệu *@
         <div class="bg-light d-flex justify-content-center align-items-center" style="height: 180px;">
 
-            @if (!string.IsNullOrEmpty(Model.FilePath) && Model.FilePath.Contains("cloudinary.com") && Model.FilePath.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
-            {
-                var thumbnailUrl = Model.FilePath.Substring(0, Model.FilePath.Length - 4) + ".jpg";
-                <img src="@thumbnailUrl" alt="@Model.Title" class="img-fluid w-100 h-100" style="object-fit: cover;" />
-            }
-
-            else if (!string.IsNullOrEmpty(Model.FilePath) && Model.FilePath.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+            @if (!string.IsNullOrEmpty(Model.FilePath) && Model.FilePath.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
             {
                 <i class="bi bi-file-earmark-pdf text-danger" style="font-size: 3.5rem;"></i>
             }

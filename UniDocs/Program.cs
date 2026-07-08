@@ -28,8 +28,6 @@ namespace UniDocs
             builder.Services.AddControllersWithViews();
 
 
-            // Dki Cloudinary
-            builder.Services.AddScoped<UniDocs.Services.ICloudinaryService, UniDocs.Services.CloudinaryService>();
 
             // Dki Security Service
             builder.Services.AddSingleton<UniDocs.Services.SecurityService>();

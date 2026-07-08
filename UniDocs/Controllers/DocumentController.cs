@@ -101,7 +101,7 @@ namespace UniDocs.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upload(Document model, IFormFile uploadedFile, [FromServices] UniDocs.Services.ICloudinaryService cloudinaryService)
+        public async Task<IActionResult> Upload(Document model, IFormFile uploadedFile)
         {
             ModelState.Remove("FilePath");
             ModelState.Remove("User");
@@ -122,36 +122,39 @@ namespace UniDocs.Controllers
                 return View(model);
             }
 
-            var allowedExtensions = new[] { ".pdf", ".doc", ".docx", ".ppt", ".pptx", ".zip", ".rar" };
+            var allowedExtensions = new[] { ".pdf", ".doc", ".docx", ".ppt", ".pptx", ".xls", ".xlsx" };
             var extension = Path.GetExtension(uploadedFile.FileName).ToLower();
 
             if (!allowedExtensions.Contains(extension))
             {
-                ModelState.AddModelError(string.Empty, "Chỉ cho phép tải lên file PDF, Word, PowerPoint hoặc Zip/ Rar!");
+                ModelState.AddModelError(string.Empty, "Chỉ cho phép tải lên file PDF, Word, PowerPoint, Excel!");
                 ViewBag.Courses = await _context.Courses.ToListAsync();
                 return View(model);
             }
 
-            // Cloudinary
-            var uploadResult = await cloudinaryService.UploadDocumentAsync(uploadedFile);
-            if (string.IsNullOrEmpty(uploadResult.url))
+            var uniqueId = DateTime.Now.Ticks.ToString();
+            var fileName = $"{uniqueId}_{uploadedFile.FileName}";
+            var filePath = Path.Combine(_env.WebRootPath, "uploads", fileName);
+
+            var directory = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(directory))
             {
-                ModelState.AddModelError(string.Empty, "Đã xảy ra lỗi khi tải file lên máy chủ đám mây!");
-                ViewBag.Courses = await _context.Courses.ToListAsync();
-                return View(model);
+                Directory.CreateDirectory(directory);
             }
 
-            model.FilePath = uploadResult.url;
-            model.CloudinaryPublicId = uploadResult.publicId;
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await uploadedFile.CopyToAsync(fileStream);
+            }
+
+            model.FilePath = "/uploads/" + fileName;
             model.UploadDate = DateTime.Now;
             model.DownloadCount = 0;
             model.IsApproved = true; 
 
-            // ID User đăng nhập
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
             model.UserId = int.Parse(userIdStr);
 
-            // Lưu DB
             _context.Documents.Add(model);
             await _context.SaveChangesAsync();
 
