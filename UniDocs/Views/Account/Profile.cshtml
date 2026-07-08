@@ -8,7 +8,7 @@
     <div class="row">
 
         @* ===== TRÁI: Thông tin cá nhân ===== *@
-        <div class="col-lg-4 mb-4">
+        <div class="col-lg-4 mb-5 mb-lg-0">
             <div class="card border-0 shadow-sm sticky-lg-top" style="top: 100px; z-index: 900;">
                 <div class="card-body text-center p-4">
                     <img src="https://ui-avatars.com/api/?name=@(Model.FirstName)+@(Model.LastName)&background=2A4365&color=fff&size=150" class="rounded-circle shadow-sm mb-3" alt="Avatar" />
@@ -66,13 +66,13 @@
                         @* ===== TAB 1: Tài liệu đã đăng ===== *@
                         <div class="tab-pane fade show active" id="tab-uploaded">
                             <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-                                <table class="table table-hover align-middle mb-0 text-center">
+                                <table class="table table-hover align-top mb-0 text-start">
                                     <thead class="table-light position-sticky top-0 shadow-sm" style="z-index: 1;">
                                     <tr>
-                                        <th class="ps-4 text-start">Tên tài liệu</th>
-                                        <th>Môn học</th>
-                                        <th>Lượt tải</th>
-                                        <th class="pe-4 text-end">Trạng thái</th>
+                                        <th class="ps-4 text-nowrap">Tên tài liệu</th>
+                                        <th class="text-nowrap">Môn học</th>
+                                        <th class="text-nowrap">Lượt tải</th>
+                                        <th class="pe-4 text-start text-nowrap">Trạng thái</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -105,8 +105,8 @@
 
                                                 <td class="fw-bold text-primary">@doc.DownloadCount</td>
 
-                                                <td class="text-end pe-4">
-                                                    <div class="d-flex justify-content-end align-items-center gap-2">
+                                                <td class="text-start pe-4">
+                                                    <div class="d-flex justify-content-start align-items-center gap-2">
                                                         @if (doc.IsApproved)
                                                         {
                                                             <span class="fw-bold text-success">Đang hiển thị</span>
@@ -146,13 +146,13 @@
                         @* ===== TAB 2: Tài liệu đã lưu yêu thích ===== *@
                         <div class="tab-pane fade" id="tab-saved">
                             <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-                                <table class="table table-hover align-middle mb-0 text-center">
+                                <table class="table table-hover align-top mb-0 text-start">
                                     <thead class="table-light position-sticky top-0 shadow-sm" style="z-index: 1;">
                                     <tr>
-                                        <th class="ps-4 text-start">Tên tài liệu</th>
-                                        <th>Môn học</th>
-                                        <th>Ngày lưu</th>
-                                        <th class="text-end pe-4">Thao tác</th>
+                                        <th class="ps-4 text-nowrap">Tên tài liệu</th>
+                                        <th class="text-nowrap">Môn học</th>
+                                        <th class="text-nowrap">Ngày lưu</th>
+                                        <th class="pe-4 text-nowrap">Thao tác</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -185,7 +185,7 @@
                                                 <td class="text-muted small">@saved.SavedDate.ToString("dd/MM/yyyy")</td>
 
                                                 @* Nút bỏ lưu *@
-                                                <td class="text-end pe-4">
+                                                <td class="pe-4">
                                                     <form asp-controller="Document" asp-action="SaveDocument" method="post"
                                                           class="d-inline">
                                                         <input type="hidden" name="documentId" value="@saved.DocumentId" />

@@ -19,28 +19,26 @@
 <div class="card border-0">
     <div class="card-body p-0">
         <div class="table-responsive" style="max-height: 60vh; overflow-y: auto;">
-            <table class="table table-hover align-middle mb-0 text-center">
+            <table class="table table-hover align-top mb-0 text-start">
                 <thead class="table-light position-sticky top-0 shadow-sm" style="z-index: 1;">
                     <tr>
-                        <th class="px-4 py-3 text-start">ID</th>
-                        <th class="py-3">Full Name</th>
-                        <th class="py-3">Email</th>
-                        <th class="py-3 text-center">Docs Count</th>
-                        <th class="py-3">Status</th>
-                        <th class="px-4 py-3 text-end">Action</th>
+                        <th class="ps-4 py-3 text-nowrap">ID</th>
+                        <th class="py-3 text-nowrap">Full Name</th>
+                        <th class="py-3 text-nowrap">Email</th>
+                        <th class="py-3 text-nowrap">Docs Count</th>
+                        <th class="py-3 text-nowrap">Status</th>
+                        <th class="pe-4 py-3 text-nowrap">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var user in Model.UserList)
                     {
                         <tr>
-                            <td class="px-4 py-3 fw-bold text-muted text-start">#@user.Id</td>
+                            <td class="ps-4 py-3 fw-bold text-muted">#@user.Id</td>
                             <td class="py-3 fw-medium text-dark">@user.LastName @user.FirstName</td>
                             <td class="py-3 text-muted">@user.Email</td>
-                            <td class="py-3 text-center">
-                                <span class="text-primary">
-                                    @(user.Documents?.Count ?? 0)
-                                </span>
+                            <td class="py-3">
+                                @(user.Documents?.Count ?? 0)
                             </td>
                             <td class="py-3">
                                 @if (user.IsActive)
@@ -52,7 +50,7 @@
                                     <span class="fw-bold text-danger">Locked</span>
                                 }
                             </td>
-                            <td class="px-4 py-3 text-end">
+                            <td class="pe-4 py-3">
                                 <form method="post" asp-page-handler="ToggleLock" asp-route-id="@user.Id" class="d-inline">
                                     @if (user.IsActive)
                                     {

@@ -19,15 +19,15 @@
 <div class="card border-0">
     <div class="card-body p-0">
         <div class="table-responsive" style="max-height: 60vh; overflow-y: auto;">
-            <table class="table table-hover align-middle mb-0 text-center">
+            <table class="table table-hover align-top mb-0 text-start">
                 <thead class="table-light position-sticky top-0 shadow-sm" style="z-index: 1;">
                     <tr>
-                        <th class="px-4 py-3 text-start">DocName</th>
-                        <th class="py-3">Reporter</th>
-                        <th class="py-3">Reason</th>
-                        <th class="py-3">Reported date</th>
-                        <th class="py-3">Status</th>
-                        <th class="px-4 py-3 text-end">Action</th>
+                        <th class="ps-4 py-3 text-nowrap">DocName</th>
+                        <th class="py-3 text-nowrap">Reporter</th>
+                        <th class="py-3 text-nowrap">Reason</th>
+                        <th class="py-3 text-nowrap">Reported date</th>
+                        <th class="py-3 text-nowrap">Status</th>
+                        <th class="pe-4 py-3 text-nowrap">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,7 +36,7 @@
                         foreach (var item in Model.Reports)
                         {
                             <tr>
-                                <td class="px-4 py-3 text-start">
+                                <td class="ps-4 py-3">
                                     @if (item.Status == UniDocs.Models.Enums.ReportStatusEnum.Valid)
                                     {
                                         <span class="fw-bold text-muted">
@@ -77,10 +77,10 @@
                                         <span class="fw-bold text-info">@item.Status</span>
                                     }
                                 </td>
-                                <td class="px-4 py-3 text-end">
+                                <td class="pe-4 py-3">
                                     @if (item.Status == UniDocs.Models.Enums.ReportStatusEnum.Pending)
                                     {
-                                        <div class="d-flex justify-content-end gap-2">
+                                        <div class="d-flex gap-2">
                                             <form method="post" asp-page-handler="DismissReport" asp-route-id="@item.Id" class="d-inline">
                                                 <button type="submit" class="btn btn-outline-success btn-sm px-3 fw-bold">
                                                     Dismiss

@@ -24,10 +24,22 @@ namespace UniDocs.Pages.Admin
 
         public List<string> Departments { get; set; } = new List<string>();
 
-        public async Task OnGetAsync()
+        public int CurrentPage { get; set; } = 1;
+        public int TotalPages { get; set; }
+        public const int PageSize = 6;
+
+        public async Task OnGetAsync(int p = 1)
         {
-            CourseList = await _context.Courses
+            CurrentPage = p;
+            var query = _context.Courses.AsQueryable();
+            int totalCourses = await query.CountAsync();
+            TotalPages = (int)Math.Ceiling(totalCourses / (double)PageSize);
+
+            CourseList = await query
                 .Include(c => c.Documents)
+                .OrderByDescending(c => c.Id)
+                .Skip((CurrentPage - 1) * PageSize)
+                .Take(PageSize)
                 .ToListAsync();
 
             Departments = await _context.Courses
