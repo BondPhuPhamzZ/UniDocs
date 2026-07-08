@@ -1,11 +1,11 @@
 @page
 @model UniDocs.Pages.Admin.UsersModel
 @{
-    ViewData["Title"] = "Quản lý Tài khoản";
+    ViewData["Title"] = "User Management";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="headline-md text-dark mb-0">Quản lý Tài khoản</h2>
+    <h2 class="headline-md text-dark mb-0">User Management</h2>
 </div>
 
 @if (TempData["SuccessMessage"] != null)
@@ -23,11 +23,11 @@
                 <thead class="table-light">
                     <tr>
                         <th class="px-4 py-3">ID</th>
-                        <th class="py-3">Họ và tên</th>
+                        <th class="py-3">Full Name</th>
                         <th class="py-3">Email</th>
-                        <th class="py-3 text-center">SL Tài liệu</th>
-                        <th class="py-3">Trạng thái</th>
-                        <th class="px-4 py-3 text-end">Hành động</th>
+                        <th class="py-3 text-center">Docs Count</th>
+                        <th class="py-3">Status</th>
+                        <th class="px-4 py-3 text-end">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,11 +45,11 @@
                             <td class="py-3">
                                 @if (user.IsActive)
                                 {
-                                    <span class="text-primary">Hoạt động</span>
+                                    <span class="text-primary">Active</span>
                                 }
                                 else
                                 {
-                                    <span class="text-primary">Bị khóa</span>
+                                    <span class="text-primary">Locked</span>
                                 }
                             </td>
                             <td class="px-4 py-3 text-end">
@@ -57,13 +57,13 @@
                                     @if (user.IsActive)
                                     {
                                         <button type="submit" class="btn btn-outline-danger btn-sm px-3 fw-bold">
-                                            Khóa
+                                            Lock
                                         </button>
                                     }
                                     else
                                     {
                                         <button type="submit" class="btn btn-outline-success btn-sm px-3 fw-bold">
-                                            Mở khóa
+                                            Unlock
                                         </button>
                                     }
                                 </form>

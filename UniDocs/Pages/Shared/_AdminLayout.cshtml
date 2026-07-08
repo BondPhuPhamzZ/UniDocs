@@ -22,20 +22,20 @@
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" asp-page="/Admin/Dashboard">Quản lý Báo cáo</a>
+                        <a class="nav-link" asp-page="/Admin/Dashboard">Reports</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-page="/Admin/Users">Quản lý Tài khoản</a>
+                        <a class="nav-link" asp-page="/Admin/Users">Users</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-page="/Admin/Courses">Danh mục Môn học</a>
+                        <a class="nav-link" asp-page="/Admin/Courses">Courses</a>
                     </li>
                 </ul>
                 <div class="d-flex align-items-center gap-3">
-                    <span class="text-light small">Xin chào, <strong>Admin</strong>!</span>
+                    <span class="text-light small">Welcome, <strong>Admin</strong>!</span>
 
                     <a asp-controller="Home" asp-action="Index" class="btn btn-outline-light btn-sm px-3 fw-medium">
-                        Về trang chủ
+                        Back to Home
                     </a>
                 </div>
             </div>
@@ -50,13 +50,13 @@
             <div class="col-lg-2 mb-4">
                 <div class="list-group shadow-sm">
                     <a asp-page="/Admin/Dashboard" class="list-group-item list-group-item-action">
-                        Tài liệu bị báo cáo
+                        Reported Documents
                     </a>
                     <a asp-page="/Admin/Users" class="list-group-item list-group-item-action">
-                        Quản lý Người dùng
+                        User Management
                     </a>
                     <a asp-page="/Admin/Courses" class="list-group-item list-group-item-action">
-                        Quản lý Môn học
+                        Course Management
                     </a>
                 </div>
             </div>

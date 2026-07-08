@@ -1,13 +1,13 @@
 @page
 @model UniDocs.Pages.Admin.CoursesModel
 @{
-    ViewData["Title"] = "Danh mục Môn học";
+    ViewData["Title"] = "Course Catalog";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="headline-md text-dark mb-0">Danh mục Môn học</h2>
+    <h2 class="headline-md text-dark mb-0">Courses Catalog</h2>
     <button class="btn btn-primary px-4 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#addCourseModal">
-        <i class="bi bi-plus-lg me-1"></i> Thêm môn học
+        <i class="bi bi-plus-lg me-1"></i> Add course
     </button>
 </div>
 
@@ -33,13 +33,13 @@
             <div class="card h-100 border-0 shadow-sm rounded-4 position-relative document-card-hover">
                 
                 <div class="position-absolute top-0 end-0 mt-3 me-3 d-flex gap-2">
-                    <button type="button" class="btn btn-sm btn-primary" title="Sửa môn học" data-bs-toggle="modal" data-bs-target="#editCourseModal-@course.Id">
+                    <button type="button" class="btn btn-sm btn-primary" title="Update course" data-bs-toggle="modal" data-bs-target="#editCourseModal-@course.Id">
                         <i class="bi bi-pencil"></i>
                     </button>
                     @if (course.Documents.Count == 0)
                     {
-                        <form method="post" asp-page-handler="DeleteCourse" asp-route-id="@course.Id" onsubmit="return confirm('Xóa môn học này?');">
-                            <button type="submit" class="btn btn-sm btn-danger" title="Xóa môn học">
+                        <form method="post" asp-page-handler="DeleteCourse" asp-route-id="@course.Id" onsubmit="return confirm('Delete this course?');">
+                            <button type="submit" class="btn btn-sm btn-danger" title="Delete course">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </form>
@@ -48,7 +48,7 @@
 
                 <div class="card-body p-4 text-center">
                     <h5 class="title-lg text-dark mb-1 mt-4">@course.CourseName</h5>
-                    <p class="text-muted body-md mb-3">Mã môn: <span class="fw-medium">@course.CourseCode</span></p>
+                    <p class="text-muted body-md mb-3">CourseID: <span class="fw-medium">@course.CourseCode</span></p>
                     
                     <div class="bg-secondary-soft px-3 py-2">
                         @course.Documents.Count docs
@@ -65,20 +65,20 @@
         <div class="modal-content border-0 shadow rounded-4">
             <form method="post" asp-page-handler="AddCourse">
                 <div class="modal-header border-bottom-0 pb-0">
-                    <h5 class="modal-title fw-bold">Thêm Môn học mới</h5>
+                    <h5 class="modal-title fw-bold">Add New Course</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label fw-bold text-muted small">Tên môn học</label>
-                        <input type="text" asp-for="NewCourse.CourseName" class="form-control" required placeholder="VD: Lập trình Web" />
+                        <label class="form-label fw-bold text-muted small">Course name</label>
+                        <input type="text" asp-for="NewCourse.CourseName" class="form-control" required placeholder="E.g: Advanced Web" />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-bold text-muted small">Mã môn học</label>
-                        <input type="text" asp-for="NewCourse.CourseCode" class="form-control" required placeholder="VD: SE104" />
+                        <label class="form-label fw-bold text-muted small">CourseID</label>
+                        <input type="text" asp-for="NewCourse.CourseCode" class="form-control" required placeholder="E.g: SE104" />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-bold text-muted small">Khoa quản lý</label>
+                        <label class="form-label fw-bold text-muted small">Department</label>
                         <select asp-for="NewCourse.Department" class="form-select">
                             <option value="Công nghệ Phần mềm">Công nghệ Phần mềm</option>
                             <option value="Hệ thống Thông tin">Hệ thống Thông tin</option>
@@ -90,8 +90,8 @@
                     </div>
                 </div>
                 <div class="modal-footer border-top-0 pt-0">
-                    <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Hủy</button>
-                    <button type="submit" class="btn btn-primary px-4 fw-bold">Lưu môn học</button>
+                    <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary px-4 fw-bold">Save</button>
                 </div>
             </form>
         </div>
@@ -106,20 +106,20 @@
             <div class="modal-content border-0 shadow rounded-4">
                 <form method="post" asp-page-handler="EditCourse" asp-route-id="@course.Id">
                     <div class="modal-header border-bottom-0 pb-0">
-                        <h5 class="modal-title fw-bold">Sửa Môn học</h5>
+                        <h5 class="modal-title fw-bold">Update Course</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label class="form-label fw-bold text-muted small">Tên môn học</label>
+                            <label class="form-label fw-bold text-muted small">Course name</label>
                             <input type="text" name="courseName" class="form-control" required value="@course.CourseName" />
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold text-muted small">Mã môn học</label>
+                            <label class="form-label fw-bold text-muted small">CourseID</label>
                             <input type="text" name="courseCode" class="form-control" required value="@course.CourseCode" />
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold text-muted small">Khoa quản lý</label>
+                            <label class="form-label fw-bold text-muted small">Department</label>
                             <select name="department" class="form-select">
                                 @{
                                     string[] depts = { "Công nghệ Phần mềm", "Hệ thống Thông tin", "Khoa học Máy tính", "Kỹ thuật Máy tính", "Mạng Máy tính & Truyền thông", "Khoa học & Kỹ thuật Thông tin" };
@@ -139,8 +139,8 @@
                         </div>
                     </div>
                     <div class="modal-footer border-top-0 pt-0">
-                        <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Hủy</button>
-                        <button type="submit" class="btn btn-primary px-4 fw-bold">Cập nhật</button>
+                        <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary px-4 fw-bold">Save</button>
                     </div>
                 </form>
             </div>
