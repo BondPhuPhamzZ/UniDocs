@@ -75,15 +75,15 @@ namespace UniDocs.Controllers
                 return NotFound("Tài liệu không tồn tại!");
             }
 
-            document.DownloadCount += 1;
-            await _context.SaveChangesAsync();
-
             string physicalPath = Path.Combine(_env.WebRootPath, document.FilePath.TrimStart('/'));
 
             if (!System.IO.File.Exists(physicalPath))
             {
                 return NotFound("Lỗi: Không tìm thấy file trong máy chủ!");
             }
+
+            document.DownloadCount += 1;
+            await _context.SaveChangesAsync();
 
             byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(physicalPath);
             string downloadName = document.Title + Path.GetExtension(physicalPath);

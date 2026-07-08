@@ -41,9 +41,20 @@
                     </a>
                 </div>
                 <div class="card-body p-0">
-                    <iframe src="@Model.FilePath" width="100%" height="900px" style="border: none; display: block;">
-                        Trình duyệt của bạn không hỗ trợ xem tài liệu trực tiếp.
-                    </iframe>
+                    @if (Model.Title.StartsWith("[Đã xóa]"))
+                    {
+                        <div class="text-center py-5 text-muted">
+                            <i class="bi bi-file-earmark-x display-4"></i>
+                            <h5 class="mt-3">Tài liệu đã bị gỡ bỏ</h5>
+                            <p>File vật lý của tài liệu này đã bị xóa khỏi máy chủ.</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <iframe src="@Model.FilePath" width="100%" height="900px" style="border: none; display: block;">
+                            Trình duyệt của bạn không hỗ trợ xem tài liệu trực tiếp.
+                        </iframe>
+                    }
                 </div>
             </div>
 
