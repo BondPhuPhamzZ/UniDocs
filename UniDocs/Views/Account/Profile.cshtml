@@ -123,7 +123,7 @@
                                                                 <span class="fw-bold text-warning mt-1">Chờ duyệt</span>
                                                             }
                                                             
-                                                            @if (doc.Status != UniDocs.Models.Enums.DocumentStatusEnum.Deleted)
+                                                            @if (doc.Status == UniDocs.Models.Enums.DocumentStatusEnum.Approved)
                                                             {
                                                                 <form method="post" asp-controller="Account" asp-action="DeleteMyDocument" asp-route-id="@doc.Id" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác!');">
                                                                     <button type="submit" class="btn btn-sm btn-danger" title="Xóa tài liệu">
