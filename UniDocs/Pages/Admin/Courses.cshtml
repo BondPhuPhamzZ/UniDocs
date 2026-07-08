@@ -61,22 +61,7 @@
 
 @if (Model.TotalPages > 1)
 {
-    <nav aria-label="Page navigation" class="mt-5">
-        <ul class="pagination justify-content-center">
-            <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
-                <a class="page-link shadow-sm border-0 mx-1 rounded" asp-page="./Courses" asp-route-p="@(Model.CurrentPage - 1)">Previous</a>
-            </li>
-            @for (int i = 1; i <= Model.TotalPages; i++)
-            {
-                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                    <a class="page-link shadow-sm border-0 mx-1 rounded" asp-page="./Courses" asp-route-p="@i">@i</a>
-                </li>
-            }
-            <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
-                <a class="page-link shadow-sm border-0 mx-1 rounded" asp-page="./Courses" asp-route-p="@(Model.CurrentPage + 1)">Next</a>
-            </li>
-        </ul>
-    </nav>
+    <partial name="_PaginationPartial" model="@(new UniDocs.ViewModels.PaginationViewModel { CurrentPage = Model.CurrentPage, TotalPages = Model.TotalPages, UrlTemplate = Url.Page("./Courses", new { p = "{0}" })?.Replace("%7B0%7D", "{0}") })" />
 }
 
 @* Datalist cho Department *@

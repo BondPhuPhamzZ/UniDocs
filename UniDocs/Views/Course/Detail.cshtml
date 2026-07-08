@@ -55,33 +55,7 @@
                 </div>
 
                 @* Thanh phân trang *@
-                <nav aria-label="Page navigation" class="my-5">
-                    <ul class="pagination justify-content-center" style="border-radius: 0.5rem; overflow: hidden;">
-
-                        @* Nút Previous *@
-                        <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
-                            <a class="page-link px-3" asp-action="Detail" asp-route-id="@ViewBag.CourseId" asp-route-docQuery="@ViewBag.DocQuery" asp-route-page="@(ViewBag.CurrentPage - 1)">
-                                <i class="bi bi-chevron-left"></i>
-                            </a>
-                        </li>
-
-                        @* In số trang *@
-                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
-                        {
-                            <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                                <a class="page-link px-3" asp-action="Detail" asp-route-id="@ViewBag.CourseId" asp-route-docQuery="@ViewBag.DocQuery" asp-route-page="@i">@i</a>
-                            </li>
-                        }
-
-                        @* Nút Next *@
-                        <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
-                            <a class="page-link px-3" asp-action="Detail" asp-route-id="@ViewBag.CourseId" asp-route-docQuery="@ViewBag.DocQuery" asp-route-page="@(ViewBag.CurrentPage + 1)">
-                                <i class="bi bi-chevron-right"></i>
-                            </a>
-                        </li>
-
-                    </ul>
-                </nav>
+                <partial name="_PaginationPartial" model="@(new UniDocs.ViewModels.PaginationViewModel { CurrentPage = ViewBag.CurrentPage ?? 1, TotalPages = ViewBag.TotalPages ?? 1, UrlTemplate = Url.Action("Detail", new { id = ViewBag.CourseId, docQuery = ViewBag.DocQuery, page = "{0}" })?.Replace("%7B0%7D", "{0}") })" />
 
             }
             else

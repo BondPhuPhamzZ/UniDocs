@@ -237,7 +237,6 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
     border-radius: 4px;
 }
 
-/* Document Grid Tự động co giãn */
 .document-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
