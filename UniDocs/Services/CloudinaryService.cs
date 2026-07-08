@@ -25,17 +25,30 @@ namespace UniDocs.Services
             if (file == null || file.Length == 0)
                 return (null, null);
 
-            var uploadResult = new RawUploadResult();
+            UploadResult uploadResult = null;
 
             using (var stream = file.OpenReadStream())
             {
-                var uploadParams = new RawUploadParams()
-                {
-                    File = new FileDescription(file.FileName, stream),
-                    Folder = "unidocs",
-                };
+                var extension = System.IO.Path.GetExtension(file.FileName).ToLower();
 
-                uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                if (extension == ".pdf")
+                {
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(file.FileName, stream),
+                        Folder = "unidocs",
+                    };
+                    uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                }
+                else
+                {
+                    var uploadParams = new RawUploadParams()
+                    {
+                        File = new FileDescription(file.FileName, stream),
+                        Folder = "unidocs",
+                    };
+                    uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                }
             }
 
             return (uploadResult.SecureUrl?.ToString(), uploadResult.PublicId);
@@ -43,12 +56,19 @@ namespace UniDocs.Services
 
         public async Task DeleteDocumentAsync(string publicId)
         {
-            var deleteParams = new DelResParams()
+            // Xóa các file được upload dạng Raw (Word, Powerpoint...)
+            await _cloudinary.DeleteResourcesAsync(new DelResParams()
             {
                 PublicIds = new List<string> { publicId },
                 ResourceType = ResourceType.Raw
-            };
-            await _cloudinary.DeleteResourcesAsync(deleteParams);
+            });
+
+            // Xóa các file được upload dạng Image (PDF...)
+            await _cloudinary.DeleteResourcesAsync(new DelResParams()
+            {
+                PublicIds = new List<string> { publicId },
+                ResourceType = ResourceType.Image
+            });
         }
     }
 }
