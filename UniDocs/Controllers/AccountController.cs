@@ -188,5 +188,64 @@ namespace UniDocs.Controllers
             return RedirectToAction("Profile");
         }
 
+        // ========== Update Profile ==========
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateProfile(UpdateProfileViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Thông tin không hợp lệ. Vui lòng kiểm tra lại.";
+                return RedirectToAction("Profile");
+            }
+
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int userId = int.Parse(userIdStr);
+
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) return NotFound();
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.University = model.University;
+
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Cập nhật thông tin cá nhân thành công!";
+            return RedirectToAction("Profile");
+        }
+
+        // ========== Change Password ==========
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Thông tin mật khẩu không hợp lệ. Vui lòng kiểm tra lại.";
+                return RedirectToAction("Profile");
+            }
+
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int userId = int.Parse(userIdStr);
+
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) return NotFound();
+
+            if (!_securityService.VerifyPassword(model.CurrentPassword, user.PasswordHash))
+            {
+                TempData["ErrorMessage"] = "Mật khẩu hiện tại không chính xác!";
+                return RedirectToAction("Profile");
+            }
+
+            user.PasswordHash = _securityService.HashPassword(model.NewPassword);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Đổi mật khẩu thành công!";
+            return RedirectToAction("Profile");
+        }
+
     }
 }

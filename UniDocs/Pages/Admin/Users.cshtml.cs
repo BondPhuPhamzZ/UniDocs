@@ -33,6 +33,12 @@ namespace UniDocs.Pages.Admin
             if (user == null)
                 return NotFound();
 
+            if (user.Role == UniDocs.Models.Enums.RoleEnum.Admin)
+            {
+                TempData["ErrorMessage"] = "Không thể thao tác khóa/mở khóa tài khoản Quản trị viên!";
+                return RedirectToPage("./Users");
+            }
+
             user.IsActive = !user.IsActive;
             await _context.SaveChangesAsync();
 

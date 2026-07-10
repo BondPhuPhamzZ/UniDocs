@@ -51,20 +51,27 @@
                                 }
                             </td>
                             <td class="pe-4 py-3">
-                                <form method="post" asp-page-handler="ToggleLock" asp-route-id="@user.Id" class="d-inline">
-                                    @if (user.IsActive)
-                                    {
-                                        <button type="submit" class="btn btn-outline-danger btn-sm px-3 fw-bold">
-                                            Lock
-                                        </button>
-                                    }
-                                    else
-                                    {
-                                        <button type="submit" class="btn btn-outline-primary btn-sm px-3 fw-bold">
-                                            Unlock
-                                        </button>
-                                    }
-                                </form>
+                                @if (user.Role == UniDocs.Models.Enums.RoleEnum.Admin)
+                                {
+                                    <span class="badge bg-primary px-3 py-2 rounded-pill">Admin</span>
+                                }
+                                else
+                                {
+                                    <form method="post" asp-page-handler="ToggleLock" asp-route-id="@user.Id" class="d-inline">
+                                        @if (user.IsActive)
+                                        {
+                                            <button type="submit" class="btn btn-outline-danger btn-sm px-3 fw-bold rounded-pill">
+                                                Lock
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" class="btn btn-outline-primary btn-sm px-3 fw-bold rounded-pill">
+                                                Unlock
+                                            </button>
+                                        }
+                                    </form>
+                                }
                             </td>
                         </tr>
                     }

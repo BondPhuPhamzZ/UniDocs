@@ -32,6 +32,16 @@
                         </div>
                     </div>
 
+                    @* Buttons for Edit/Change Password *@
+                    <div class="d-flex flex-column gap-2 mt-4 px-3">
+                        <button class="btn btn-primary rounded-pill fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#updateProfileModal">
+                            <i class="bi bi-person-lines-fill me-2"></i>Cập nhật thông tin
+                        </button>
+                        <button class="btn btn-outline-primary rounded-pill fw-bold" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                            <i class="bi bi-shield-lock-fill me-2"></i>Đổi mật khẩu
+                        </button>
+                    </div>
+
                 </div>
             </div>
             
@@ -222,3 +232,83 @@
 
     </div>
 </div>
+
+@* Modal Cập nhật thông tin *@
+<div class="modal fade" id="updateProfileModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <form method="post" asp-controller="Account" asp-action="UpdateProfile">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold">Cập nhật thông tin cá nhân</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3 text-start">
+                            <label class="form-label fw-bold text-muted small">Họ</label>
+                            <input type="text" name="LastName" class="form-control" required value="@Model.LastName" placeholder="Vd: Nguyễn Văn" />
+                        </div>
+                        <div class="col-md-6 mb-3 text-start">
+                            <label class="form-label fw-bold text-muted small">Tên</label>
+                            <input type="text" name="FirstName" class="form-control" required value="@Model.FirstName" placeholder="Vd: A" />
+                        </div>
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label class="form-label fw-bold text-muted small">Trường đại học</label>
+                        <input type="text" name="University" class="form-control" value="@Model.University" placeholder="Vd: Đại học Công nghệ thông tin" />
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0 pt-0">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">Lưu thay đổi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* Modal Đổi mật khẩu *@
+<div class="modal fade" id="changePasswordModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <form method="post" asp-controller="Account" asp-action="ChangePassword">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold">Đổi mật khẩu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3 text-start">
+                        <label class="form-label fw-bold text-muted small">Mật khẩu hiện tại</label>
+                        <input type="password" name="CurrentPassword" class="form-control" required minlength="6" />
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label class="form-label fw-bold text-muted small">Mật khẩu mới</label>
+                        <input type="password" name="NewPassword" id="NewPassword" class="form-control" required minlength="6" />
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label class="form-label fw-bold text-muted small">Xác nhận mật khẩu mới</label>
+                        <input type="password" name="ConfirmNewPassword" class="form-control" required minlength="6" />
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0 pt-0">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">Cập nhật mật khẩu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.querySelector('#changePasswordModal form').addEventListener('submit', function(e) {
+            const np = document.getElementById('NewPassword').value;
+            const cp = document.querySelector('input[name="ConfirmNewPassword"]').value;
+            if (np !== cp) {
+                e.preventDefault();
+                alert("Mật khẩu xác nhận không khớp!");
+            }
+        });
+    </script>
+}
