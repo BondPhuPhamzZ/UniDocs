@@ -10,7 +10,7 @@
         <div class="col-12 col-lg-8 d-flex flex-column gap-4">
             
             @* Thông tin tài liệu *@
-            <div class="card border-0 shadow-sm rounded-4 p-4">
+            <div class="card border-0 shadow-sm p-4">
                 <h2 class="headline-md text-dark mb-3">
                     @Model.Title
                 </h2>
@@ -33,7 +33,7 @@
             </div>
 
             @* Khu vực đọc PDF *@
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card border-0 shadow-sm overflow-hidden">
                 <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-2">
                     <h6 class="mb-0 fw-bold text-light">Nội dung</h6>
                     <a href="@Model.FilePath" target="_blank" class="btn btn-sm btn-outline-light rounded-pill px-3">
@@ -62,7 +62,7 @@
 
         @* ===== BUTTONS: RIGHT COLUMN ===== *@
         <div class="col-12 col-lg-4">
-            <div class="card border-0 shadow-sm rounded-4 p-4 sticky-lg-top" style="top: 80px; z-index: 990;">
+            <div class="card border-0 shadow-sm p-4 sticky-lg-top" style="top: 80px; z-index: 990;">
                 
                 @* Hàng nút Icon *@
                 <div class="d-flex justify-content-between gap-2 mb-3">
@@ -112,7 +112,7 @@
                 </button>
                 
                 @* Khu vực kết quả AI *@
-                <div id="aiResult" class="d-none mt-4 p-3 bg-white rounded-3 border border-2 border-primary">
+                <div id="aiResult" class="d-none mt-4 p-3 bg-white border border-2 border-primary">
                     <h6 class="fw-bold text-primary mb-2">AI result</h6>
                     <p id="aiText" class="small mb-0 text-dark"></p>
                 </div>

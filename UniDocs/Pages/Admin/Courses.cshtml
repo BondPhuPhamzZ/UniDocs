@@ -30,7 +30,7 @@
     @foreach (var course in Model.CourseList)
     {
         <div class="col">
-            <div class="card h-100 border-0 shadow-sm rounded-4 position-relative document-card-hover">
+            <div class="card h-100 border-0 shadow-sm position-relative document-card-hover">
                 
                 <div class="position-absolute top-0 end-0 mt-3 me-3 d-flex gap-2">
                     <button type="button" class="btn btn-sm btn-primary" title="Update course" data-bs-toggle="modal" data-bs-target="#editCourseModal-@course.Id">
@@ -75,7 +75,7 @@
 @* Modal Thêm môn học *@
 <div class="modal fade" id="addCourseModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow rounded-4">
+        <div class="modal-content border-0 shadow">
             <form method="post" asp-page-handler="AddCourse">
                 <div class="modal-header border-bottom-0 pb-0">
                     <h5 class="modal-title fw-bold">Add New Course</h5>
@@ -109,7 +109,7 @@
 {
     <div class="modal fade" id="editCourseModal-@course.Id" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow rounded-4">
+            <div class="modal-content border-0 shadow">
                 <form method="post" asp-page-handler="EditCourse" asp-route-id="@course.Id">
                     <div class="modal-header border-bottom-0 pb-0">
                         <h5 class="modal-title fw-bold">Update Course</h5>

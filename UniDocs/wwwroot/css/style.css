@@ -2,6 +2,15 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
+/* Loại bỏ border-radius cho các thẻ chứa nội dung, ảnh, bảng, v.v... */
+.card, .card-header, .card-body, .card-footer, .card-img-top,
+.img-thumbnail, .img-fluid, .img-thumbnail-preview,
+.alert, .toast, .modal-content, .list-group, .list-group-item,
+.badge, table, th, td, .dropdown-menu, .nav-tabs, .nav-pills,
+.accordion-item, .accordion-button, .bg-light, .bg-white {
+    border-radius: 0 !important;
+}
+
 :root {
     /* Màu chính -> nút bấm, viền, text-primary*/
     --bs-primary: #9c6644;
@@ -199,7 +208,7 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
 
 .course-sidebar-link:hover {
     background-color: #f8f9fa;
-    transform: translateX(2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .course-sidebar-link.active-course-link {
@@ -217,7 +226,6 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
 .card {
     border: none !important;
     border-bottom: 4px solid var(--bs-primary) !important;
-    border-radius: 8px;
     background-color: var(--academic-surface-elevated) !important;
     box-shadow: 0px 4px 24px rgba(0,0,0,0.04);
 }
@@ -228,13 +236,11 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
 
 .document-card-hover:hover {
     box-shadow: 0 10px 32px rgba(156, 102, 68, 0.12) !important;
-    transform: translateY(-4px);
 }
 
 /* Thumbnail preview radius */
 .img-thumbnail-preview,
 .card-img-top {
-    border-radius: 4px;
 }
 
 .document-grid {
