@@ -114,7 +114,7 @@ namespace UniDocs.Controllers
                 return RedirectToAction("Detail", new { id = matchedDoc.Course.Id, docQuery = query });
             }
 
-            TempData["ErrorMessage"] = "Không tìm thấy kết quả nào phù hợp!";
+            TempData["ErrorMessage"] = "No matching results found!";
             return RedirectToAction("Index");
         }
 

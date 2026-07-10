@@ -44,15 +44,15 @@ namespace UniDocs.Controllers
         public IActionResult Error (int? statusCode = null)
         {
             ViewBag.ErrorCode = statusCode ?? 500;
-            ViewBag.ErrorTitle = "Đã xảy ra lỗi hệ thống!";
-            ViewBag.ErrorMessage = "Chúng tôi đang khác phục sự cố. Vui lòng quay lại sau!";
+            ViewBag.ErrorTitle = "System Error Occurred!";
+            ViewBag.ErrorMessage = "We are fixing the issue. Please check back later!";
             ViewBag.ErrorIcon = "bi-exclamation-triangle text-danger";
 
             if (statusCode == 404)
             {
                 ViewBag.ErrorCode = 404;
-                ViewBag.ErrorTitle = "Không tìm thấy trang!";
-                ViewBag.ErrorMessage = "Đường dẫn bạn nhập không tồn tại, hoặc tài liệu đã bị xóa khỏi hệ thống.";
+                ViewBag.ErrorTitle = "Page Not Found!";
+                ViewBag.ErrorMessage = "The requested page does not exist, or the document has been deleted.";
                 ViewBag.ErrorIcon = "bi-search text-warning";
             }
 

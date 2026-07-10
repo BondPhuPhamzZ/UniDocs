@@ -42,7 +42,7 @@ namespace UniDocs.Controllers
             if (existingSave != null)
             {
                 _context.SavedDocuments.Remove(existingSave);
-                TempData["SuccessMessage"] = "Đã bỏ lưu tài liệu khỏi danh sách yêu thích!";
+                TempData["SuccessMessage"] = "Removed document from favorites!";
             }
             else
             {
@@ -53,7 +53,7 @@ namespace UniDocs.Controllers
                     SavedDate = DateTime.Now
                 };
                 _context.SavedDocuments.Add(newSave);
-                TempData["SuccessMessage"] = "Đã lưu tài liệu vào danh sách yêu thích thành công! ";
+                TempData["SuccessMessage"] = "Document added to favorites successfully!";
             }
             await _context.SaveChangesAsync();
 
@@ -117,7 +117,7 @@ namespace UniDocs.Controllers
 
             if (uploadedFile == null || uploadedFile.Length == 0)
             {
-                ModelState.AddModelError(string.Empty, "Vui lòng chọn 1 file để tải lên!");
+                ModelState.AddModelError(string.Empty, "Please select a file to upload!");
                 ViewBag.Courses = await _context.Courses.ToListAsync();
                 return View(model);
             }
@@ -127,7 +127,7 @@ namespace UniDocs.Controllers
 
             if (!allowedExtensions.Contains(extension))
             {
-                ModelState.AddModelError(string.Empty, "Chỉ cho phép tải lên file PDF, Word, PowerPoint, Excel!");
+                ModelState.AddModelError(string.Empty, "Only PDF, Word, PowerPoint, Excel files are allowed!");
                 ViewBag.Courses = await _context.Courses.ToListAsync();
                 return View(model);
             }
@@ -158,7 +158,7 @@ namespace UniDocs.Controllers
             _context.Documents.Add(model);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Tải tài liệu lên thành công!";
+            TempData["SuccessMessage"] = "Document uploaded successfully!";
             return RedirectToAction("Profile", "Account");
 
         }
@@ -206,7 +206,7 @@ namespace UniDocs.Controllers
                 .AnyAsync(r => r.DocumentId == documentId && r.ReporterId == userId);
             if (existed)
             {
-                TempData["ErrorMessage"] = "Bạn đã báo cáo tài liệu này rồi!";
+                TempData["ErrorMessage"] = "You have already reported this document!";
                 return RedirectToAction("Detail", new { id = documentId });
             }
 
@@ -233,7 +233,7 @@ namespace UniDocs.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Đã gửi báo cáo thành công! Admin sẽ xem xét sớm.";
+            TempData["SuccessMessage"] = "Report submitted successfully! Admin will review it soon.";
             return RedirectToAction("Detail", new { id = documentId });
         }
 

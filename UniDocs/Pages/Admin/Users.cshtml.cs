@@ -35,14 +35,14 @@ namespace UniDocs.Pages.Admin
 
             if (user.Role == UniDocs.Models.Enums.RoleEnum.Admin)
             {
-                TempData["ErrorMessage"] = "Không thể thao tác khóa/mở khóa tài khoản Quản trị viên!";
+                TempData["ErrorMessage"] = "Cannot lock/unlock an Admin account!";
                 return RedirectToPage("./Users");
             }
 
             user.IsActive = !user.IsActive;
             await _context.SaveChangesAsync();
 
-            string msg = user.IsActive ? "Đã mở khóa tài khoản!" : "Đã khóa tài khoản!";
+            string msg = user.IsActive ? "Account unlocked!" : "Account locked!";
             TempData["SuccessMessage"] = msg;
 
             return RedirectToPage("./Users");

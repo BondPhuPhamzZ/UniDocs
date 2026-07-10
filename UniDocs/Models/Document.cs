@@ -12,13 +12,13 @@ namespace UniDocs.Models
 
 
         // Title
-        [Required(ErrorMessage = "Tên tài liệu là bắt buộc")]
-        [MaxLength(100, ErrorMessage = "Tên tài liệu không được vượt quá 100 ký tự")]
+        [Required(ErrorMessage = "Document title is required")]
+        [MaxLength(100, ErrorMessage = "Document title cannot exceed 100 characters")]
         public string Title { get; set; } = string.Empty;
 
 
         // Mô tả thêm (tùy chọn)
-        [MaxLength(500, ErrorMessage = "Mô tả không được vượt quá 500 ký tự")]
+        [MaxLength(500, ErrorMessage = "Description cannot exceed 500 characters")]
         public string Description { get; set; }
 
 
@@ -27,7 +27,7 @@ namespace UniDocs.Models
 
 
         // Nam hoc
-        [MaxLength(20, ErrorMessage = "Năm học không hợp lệ")]
+        [MaxLength(20, ErrorMessage = "Invalid academic year")]
         public string AcademicYear { get; set; }
 
 

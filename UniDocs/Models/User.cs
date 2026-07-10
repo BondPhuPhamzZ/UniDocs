@@ -11,13 +11,13 @@ namespace UniDocs.Models
         public int Id { get; set; }
 
         // Input tên
-        [Required(ErrorMessage = "Vui lòng nhập Tên")]
+        [Required(ErrorMessage = "First name is required")]
         [StringLength(50)]
         public string FirstName { get; set; } = string.Empty;
 
 
         // Input họ
-        [Required(ErrorMessage = "Vui lòng nhập Họ")]
+        [Required(ErrorMessage = "Last name is required")]
         [StringLength(50)]
         public string LastName { get; set; } = string.Empty;
 

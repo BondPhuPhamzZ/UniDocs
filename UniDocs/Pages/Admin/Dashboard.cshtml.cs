@@ -55,7 +55,7 @@ namespace UniDocs.Pages.Admin
 
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Đã xóa tài liệu vi phạm thành công!";
+            TempData["SuccessMessage"] = "Violating document deleted successfully!";
             return RedirectToPage("./Dashboard");
         }
 
@@ -81,7 +81,7 @@ namespace UniDocs.Pages.Admin
 
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Đã bỏ qua báo cáo và khôi phục tài liệu thành công!";
+            TempData["SuccessMessage"] = "Report dismissed and document restored successfully!";
             return RedirectToPage("./Dashboard");
         }
     }

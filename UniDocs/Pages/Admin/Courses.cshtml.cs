@@ -55,13 +55,13 @@ namespace UniDocs.Pages.Admin
             {
                 if (await _context.Courses.AnyAsync(c => c.CourseCode == NewCourse.CourseCode))
                 {
-                    TempData["ErrorMessage"] = $"Mã môn học \"{NewCourse.CourseCode}\" đã tồn tại!";
+                    TempData["ErrorMessage"] = $"Course code \"{NewCourse.CourseCode}\" already exists!";
                     return RedirectToPage("./Courses");
                 }
 
                 _context.Courses.Add(NewCourse);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = $"Đã thêm môn học \"{NewCourse.CourseName}\" thành công!";
+                TempData["SuccessMessage"] = $"Course \"{NewCourse.CourseName}\" added successfully!";
             }
             return RedirectToPage("./Courses");
         }
@@ -76,7 +76,7 @@ namespace UniDocs.Pages.Admin
             {
                 if (await _context.Courses.AnyAsync(c => c.CourseCode == courseCode && c.Id != id))
                 {
-                    TempData["ErrorMessage"] = $"Mã môn học \"{courseCode}\" đã tồn tại ở môn học khác!";
+                    TempData["ErrorMessage"] = $"Course code \"{courseCode}\" already exists in another course!";
                     return RedirectToPage("./Courses");
                 }
 
@@ -84,7 +84,7 @@ namespace UniDocs.Pages.Admin
                 course.CourseCode = courseCode;
                 course.Department = department;
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = $"Đã cập nhật môn học \"{courseName}\" thành công!";
+                TempData["SuccessMessage"] = $"Course \"{courseName}\" updated successfully!";
             }
             return RedirectToPage("./Courses");
         }
@@ -100,13 +100,13 @@ namespace UniDocs.Pages.Admin
 
             if (course.Documents.Count > 0)
             {
-                TempData["ErrorMessage"] = "Không thể xóa môn học đang có tài liệu!";
+                TempData["ErrorMessage"] = "Cannot delete a course that has documents!";
                 return RedirectToPage("./Courses");
             }
             _context.Courses.Remove(course);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = $"Đã xóa môn học \"{course.CourseName}\"!";
+            TempData["SuccessMessage"] = $"Course \"{course.CourseName}\" deleted!";
             return RedirectToPage("./Courses");
         }
     }

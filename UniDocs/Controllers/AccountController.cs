@@ -42,13 +42,13 @@ namespace UniDocs.Controllers
 
             if (user == null || !_securityService.VerifyPassword(model.Password, user.PasswordHash))
             {
-                ModelState.AddModelError(string.Empty, "Email hoặc mật khẩu không chính xác!");
+                ModelState.AddModelError(string.Empty, "Invalid email or password!");
                 return View(model);
             }
 
             if (user.IsActive == false)
             {
-                ModelState.AddModelError(string.Empty, "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ Admin!");
+                ModelState.AddModelError(string.Empty, "Your account is locked. Please contact Admin!");
                 return View(model);
             }
 
@@ -92,7 +92,7 @@ namespace UniDocs.Controllers
             var emailTonTai = await _context.Users.AnyAsync(u => u.Email == model.Email);
             if (emailTonTai)
             {
-                ModelState.AddModelError(string.Empty, "Email này đã được sử dụng!");
+                ModelState.AddModelError(string.Empty, "This email is already in use!");
                 return View(model);
             }
 
@@ -111,7 +111,7 @@ namespace UniDocs.Controllers
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Đăng ký thành công! Vui lòng đăng nhập";
+            TempData["SuccessMessage"] = "Registration successful! Please login.";
             return RedirectToAction("Login", "Account");
 
         }
@@ -184,7 +184,7 @@ namespace UniDocs.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Đã xóa tài liệu thành công!";
+            TempData["SuccessMessage"] = "Document deleted successfully!";
             return RedirectToAction("Profile");
         }
 
@@ -196,7 +196,7 @@ namespace UniDocs.Controllers
         {
             if (!ModelState.IsValid)
             {
-                TempData["ErrorMessage"] = "Thông tin không hợp lệ. Vui lòng kiểm tra lại.";
+                TempData["ErrorMessage"] = "Invalid information. Please check again.";
                 return RedirectToAction("Profile");
             }
 
@@ -212,7 +212,7 @@ namespace UniDocs.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Cập nhật thông tin cá nhân thành công!";
+            TempData["SuccessMessage"] = "Profile updated successfully!";
             return RedirectToAction("Profile");
         }
 
@@ -224,7 +224,7 @@ namespace UniDocs.Controllers
         {
             if (!ModelState.IsValid)
             {
-                TempData["ErrorMessage"] = "Thông tin mật khẩu không hợp lệ. Vui lòng kiểm tra lại.";
+                TempData["ErrorMessage"] = "Invalid password information. Please check again.";
                 return RedirectToAction("Profile");
             }
 
@@ -236,14 +236,14 @@ namespace UniDocs.Controllers
 
             if (!_securityService.VerifyPassword(model.CurrentPassword, user.PasswordHash))
             {
-                TempData["ErrorMessage"] = "Mật khẩu hiện tại không chính xác!";
+                TempData["ErrorMessage"] = "Current password is incorrect!";
                 return RedirectToAction("Profile");
             }
 
             user.PasswordHash = _securityService.HashPassword(model.NewPassword);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Đổi mật khẩu thành công!";
+            TempData["SuccessMessage"] = "Password changed successfully!";
             return RedirectToAction("Profile");
         }
 
