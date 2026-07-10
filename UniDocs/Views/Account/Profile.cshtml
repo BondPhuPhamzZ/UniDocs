@@ -35,10 +35,10 @@
                     @* Buttons for Edit/Change Password *@
                     <div class="d-flex flex-column gap-2 mt-4 px-3">
                         <button class="btn btn-primary rounded-pill fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#updateProfileModal">
-                            <i class="bi bi-person-lines-fill me-2"></i>Cập nhật thông tin
+                            Update profile
                         </button>
                         <button class="btn btn-outline-primary rounded-pill fw-bold" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-                            <i class="bi bi-shield-lock-fill me-2"></i>Đổi mật khẩu
+                            Change password
                         </button>
                     </div>
 
@@ -122,7 +122,7 @@
                                                         <div class="d-flex justify-content-start align-items-start gap-2 flex-wrap">
                                                             @if (doc.Status == UniDocs.Models.Enums.DocumentStatusEnum.Approved)
                                                             {
-                                                                <form method="post" asp-controller="Account" asp-action="DeleteMyDocument" asp-route-id="@doc.Id" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác!');">
+                                                                <form method="post" asp-controller="Account" asp-action="DeleteMyDocument" asp-route-id="@doc.Id" onsubmit="return confirm('Are you sure you want to delete this document?');">
                                                                     <button type="submit" class="btn btn-sm btn-danger" title="Xóa tài liệu">
                                                                         <i class="bi bi-trash"></i>
                                                                     </button>
@@ -145,7 +145,7 @@
                                     {
                                         <tr>
                                             <td colspan="4" class="text-center py-5 text-muted">
-                                                Bạn chưa tải lên tài liệu nào!
+                                                You haven't uploaded any documents!
                                             </td>
                                         </tr>
                                     }
@@ -160,10 +160,10 @@
                                 <table class="table table-hover align-top mb-0 text-start">
                                     <thead class="table-light position-sticky top-0 shadow-sm" style="z-index: 1;">
                                     <tr>
-                                        <th class="ps-4 text-nowrap">Tên tài liệu</th>
-                                        <th class="text-nowrap">Môn học</th>
-                                        <th class="text-nowrap">Ngày lưu</th>
-                                        <th class="pe-4 text-nowrap">Thao tác</th>
+                                        <th class="ps-4 text-nowrap">Course name</th>
+                                        <th class="text-nowrap">Course</th>
+                                        <th class="text-nowrap">Saved date</th>
+                                        <th class="pe-4 text-nowrap">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -181,7 +181,7 @@
                                                                 @saved.Document?.Title
                                                             </a>
                                                             <div class="text-muted small">
-                                                                @saved.Document?.DownloadCount lượt tải
+                                                                @saved.Document?.DownloadCount
                                                             </div>
                                                         </div>
                                                     </div>
@@ -203,7 +203,7 @@
 
                                                         <button type="submit" class="btn btn-sm btn-outline-danger"
                                                                 title="Bỏ lưu">
-                                                            Bỏ lưu
+                                                            Unsaved
                                                         </button>
                                                     </form>
                                                 </td>
@@ -215,7 +215,7 @@
                                     {
                                         <tr>
                                             <td colspan="4" class="text-center py-5 text-muted">
-                                                Bạn chưa lưu tài liệu yêu thích nào!
+                                                You haven't saved any favorite documents!
                                             </td>
                                         </tr>
                                     }
