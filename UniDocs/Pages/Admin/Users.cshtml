@@ -10,7 +10,7 @@
 
 @if (TempData["SuccessMessage"] != null)
 {
-    <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+    <div class="alert alert-primary alert-dismissible fade show shadow-sm" role="alert">
         <i class="bi bi-check-circle-fill me-2"></i> @TempData["SuccessMessage"]
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
@@ -43,7 +43,7 @@
                             <td class="py-3">
                                 @if (user.IsActive)
                                 {
-                                    <span class="fw-bold text-success">Active</span>
+                                    <span class="fw-bold text-primary">Active</span>
                                 }
                                 else
                                 {
@@ -60,7 +60,7 @@
                                     }
                                     else
                                     {
-                                        <button type="submit" class="btn btn-outline-success btn-sm px-3 fw-bold">
+                                        <button type="submit" class="btn btn-outline-primary btn-sm px-3 fw-bold">
                                             Unlock
                                         </button>
                                     }

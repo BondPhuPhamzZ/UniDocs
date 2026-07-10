@@ -80,8 +80,8 @@
 
                         @if (User.IsInRole("Admin"))
                         {
-                            <a asp-controller="Admin" asp-action="Dashboard" class="btn btn-light border-0 fs-5 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;" title="Admin Dashboard">
-                                <i class="bi bi-shield-lock-fill text-warning"></i>
+                            <a asp-controller="Admin" asp-action="Dashboard" class="btn btn-light border-0 fs-5 p-2 d-flex align-items-center justify-content-center text-primary" style="width: 40px; height: 40px; border-radius: 50%;" title="Admin Dashboard">
+                                <i class="bi bi-shield-lock-fill"></i>
                             </a>
                         }
 
@@ -170,7 +170,7 @@
     @if (TempData["SuccessMessage"] != null)
     {
         <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999">
-            <div class="toast align-items-center text-white bg-success border-0 show" role="alert">
+            <div class="toast align-items-center text-white bg-primary border-0 show" role="alert">
                 <div class="d-flex">
                     <div class="toast-body fw-bold">
                         <i class="bi bi-check-circle me-2"></i>@TempData["SuccessMessage"]

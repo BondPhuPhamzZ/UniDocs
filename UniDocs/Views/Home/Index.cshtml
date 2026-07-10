@@ -23,7 +23,7 @@
 @* ===== Search Results ===== *@
 @if (!string.IsNullOrEmpty(ViewBag.SearchQuery))
 {
-    <div class="mt-4 alert alert-success text-center shadow-sm">
+    <div class="mt-4 alert alert-primary text-center shadow-sm">
         Found <strong>@Model.Count()</strong> results for keyword: <span class="text-danger fw-bold">"@ViewBag.SearchQuery"</span>
     </div>
 }
