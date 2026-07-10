@@ -27,7 +27,7 @@
                             <span class="small text-muted">Saved</span>
                         </div>
                         <div>
-                            <h5 class="fw-bold text-success mb-0">@(Model.Documents?.Sum(d => d.DownloadCount) ?? 0)</h5>
+                            <h5 class="fw-bold text-primary mb-0">@(Model.Documents?.Sum(d => d.DownloadCount) ?? 0)</h5>
                             <span class="small text-muted">Downloads</span>
                         </div>
                     </div>
@@ -50,14 +50,14 @@
                         <li class="nav-item">
                             <button class="nav-link active fw-bold d-flex align-items-center gap-2" data-bs-toggle="tab" data-bs-target="#tab-uploaded">
                                 <span>My docs</span>
-                                <span class="badge bg-primary">@Model.Documents?.Count()</span>
+                                <span class="fw-bold text-primary">(@Model.Documents?.Count())</span>
                             </button>
                         </li>
 
                         <li class="nav-item">
                             <button class="nav-link fw-bold d-flex align-items-center gap-2" data-bs-toggle="tab" data-bs-target="#tab-saved">
                                 <span>Favorites</span>
-                                <span class="badge bg-danger">@Model.SavedDocuments?.Count()</span>
+                                <span class="fw-bold text-danger">(@Model.SavedDocuments?.Count())</span>
                             </button>
                         </li>
                     </ul>
