@@ -20,15 +20,15 @@
                     <div class="d-flex justify-content-around text-center border-top pt-3">
                         <div>
                             <h5 class="fw-bold text-primary mb-0">@Model.Documents?.Count()</h5>
-                            <span class="small text-muted">Đã đăng</span>
+                            <span class="small text-muted">Uploaded</span>
                         </div>
                         <div>
                             <h5 class="fw-bold text-danger mb-0">@Model.SavedDocuments?.Count()</h5>
-                            <span class="small text-muted">Đã lưu</span>
+                            <span class="small text-muted">Saved</span>
                         </div>
                         <div>
                             <h5 class="fw-bold text-success mb-0">@(Model.Documents?.Sum(d => d.DownloadCount) ?? 0)</h5>
-                            <span class="small text-muted">Lượt tải</span>
+                            <span class="small text-muted">Downloads</span>
                         </div>
                     </div>
 
@@ -49,14 +49,14 @@
 
                         <li class="nav-item">
                             <button class="nav-link active fw-bold d-flex align-items-center gap-2" data-bs-toggle="tab" data-bs-target="#tab-uploaded">
-                                <span>Tài liệu của tôi</span>
+                                <span>My docs</span>
                                 <span class="badge bg-primary">@Model.Documents?.Count()</span>
                             </button>
                         </li>
 
                         <li class="nav-item">
                             <button class="nav-link fw-bold d-flex align-items-center gap-2" data-bs-toggle="tab" data-bs-target="#tab-saved">
-                                <span>Đã lưu yêu thích</span>
+                                <span>Favorites</span>
                                 <span class="badge bg-danger">@Model.SavedDocuments?.Count()</span>
                             </button>
                         </li>
@@ -112,24 +112,19 @@
                                                         <div class="d-flex justify-content-start align-items-start gap-2 flex-wrap">
                                                             @if (doc.Status == UniDocs.Models.Enums.DocumentStatusEnum.Approved)
                                                             {
-                                                                <span class="fw-bold text-success mt-1">Đang hiển thị</span>
-                                                            }
-                                                            else if (doc.Status == UniDocs.Models.Enums.DocumentStatusEnum.Deleted)
-                                                            {
-                                                                <span class="fw-bold text-danger mt-1">Đã xóa</span>
-                                                            }
-                                                            else
-                                                            {
-                                                                <span class="fw-bold text-warning mt-1">Chờ duyệt</span>
-                                                            }
-                                                            
-                                                            @if (doc.Status == UniDocs.Models.Enums.DocumentStatusEnum.Approved)
-                                                            {
                                                                 <form method="post" asp-controller="Account" asp-action="DeleteMyDocument" asp-route-id="@doc.Id" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác!');">
                                                                     <button type="submit" class="btn btn-sm btn-danger" title="Xóa tài liệu">
                                                                         <i class="bi bi-trash"></i>
                                                                     </button>
                                                                 </form>
+                                                            }
+                                                            else if (doc.Status == UniDocs.Models.Enums.DocumentStatusEnum.Deleted)
+                                                            {
+                                                                <span class="fw-bold text-danger mt-1">Deleted</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="fw-bold text-warning mt-1">Pending</span>
                                                             }
                                                         </div>
                                                 </td>
