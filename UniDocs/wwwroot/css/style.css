@@ -7,7 +7,7 @@ body {
 .img-thumbnail, .img-fluid, .img-thumbnail-preview,
 .alert, .toast, .modal-content, .list-group, .list-group-item,
 .badge, table, th, td, .dropdown-menu, .nav-tabs, .nav-pills,
-.accordion-item, .accordion-button, .bg-light, .bg-white {
+.accordion-item, .accordion-button {
     border-radius: 0 !important;
 }
 
