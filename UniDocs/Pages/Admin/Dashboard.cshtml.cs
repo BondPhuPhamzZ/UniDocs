@@ -44,7 +44,7 @@ namespace UniDocs.Pages.Admin
             }
 
             // Xóa mềm tài liệu
-            document.Status = UniDocs.Models.Enums.DocumentStatusEnum.Deleted;
+            document.Status = Models.Enums.DocumentStatusEnum.Deleted;
             
             // Chuyển toàn bộ Report Pending của tài liệu này thành Finished
             var pendingReports = await _context.Reports.Where(r => r.DocumentId == id && r.Status == UniDocs.Models.Enums.ReportStatusEnum.Pending).ToListAsync();
@@ -67,16 +67,16 @@ namespace UniDocs.Pages.Admin
                 return NotFound();
 
             // Chuyển toàn bộ Report Pending của tài liệu này thành Finished
-            var pendingReports = await _context.Reports.Where(r => r.DocumentId == report.DocumentId && r.Status == UniDocs.Models.Enums.ReportStatusEnum.Pending).ToListAsync();
+            var pendingReports = await _context.Reports.Where(r => r.DocumentId == report.DocumentId && r.Status == Models.Enums.ReportStatusEnum.Pending).ToListAsync();
             foreach (var r in pendingReports)
             {
-                r.Status = UniDocs.Models.Enums.ReportStatusEnum.Finished;
+                r.Status = Models.Enums.ReportStatusEnum.Finished;
             }
 
             // Phục hồi tài liệu (nếu nó đang bị Pending)
             if (report.Document != null && report.Document.Status == UniDocs.Models.Enums.DocumentStatusEnum.Pending)
             {
-                report.Document.Status = UniDocs.Models.Enums.DocumentStatusEnum.Approved;
+                report.Document.Status = Models.Enums.DocumentStatusEnum.Approved;
             }
 
             await _context.SaveChangesAsync();

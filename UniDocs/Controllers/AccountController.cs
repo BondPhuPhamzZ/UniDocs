@@ -104,7 +104,7 @@ namespace UniDocs.Controllers
                 University = model.University,
                 PasswordHash = _securityService.HashPassword(model.Password),
 
-                Role = UniDocs.Models.Enums.RoleEnum.Student,
+                Role = Models.Enums.RoleEnum.Student,
                 IsActive = true
             };
 
@@ -174,12 +174,12 @@ namespace UniDocs.Controllers
             }
 
             // Soft delete
-            document.Status = UniDocs.Models.Enums.DocumentStatusEnum.Deleted;
+            document.Status = Models.Enums.DocumentStatusEnum.Deleted;
 
             var relatedReports = await _context.Reports.Where(r => r.DocumentId == id && r.Status == UniDocs.Models.Enums.ReportStatusEnum.Pending).ToListAsync();
             foreach (var report in relatedReports)
             {
-                report.Status = UniDocs.Models.Enums.ReportStatusEnum.Finished; 
+                report.Status = Models.Enums.ReportStatusEnum.Finished; 
             }
 
             await _context.SaveChangesAsync();

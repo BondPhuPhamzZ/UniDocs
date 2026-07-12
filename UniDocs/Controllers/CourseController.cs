@@ -21,7 +21,7 @@ namespace UniDocs.Controllers
         {
             int pageSize = 6;
 
-            var courseQuery = _context.Courses.Include(c => c.Documents.Where(d => d.Status == UniDocs.Models.Enums.DocumentStatusEnum.Approved)).AsQueryable();
+            var courseQuery = _context.Courses.Include(c => c.Documents.Where(d => d.Status == Models.Enums.DocumentStatusEnum.Approved)).AsQueryable();
 
             // Nếu User gõ vào thanh tìm kiếm
             if (!string.IsNullOrEmpty(query))
@@ -65,7 +65,7 @@ namespace UniDocs.Controllers
             var docsQuery = _context.Documents
                 .Include(d => d.User)
                 .Include(d => d.Course) 
-                .Where(d => d.CourseId == id && d.Status == UniDocs.Models.Enums.DocumentStatusEnum.Approved);
+                .Where(d => d.CourseId == id && d.Status == Models.Enums.DocumentStatusEnum.Approved);
 
             if (!string.IsNullOrEmpty(docQuery))
             {
@@ -106,7 +106,7 @@ namespace UniDocs.Controllers
             // 2. Nếu không có môn nào khớp, tìm tài liệu khớp tên
             var matchedDoc = await _context.Documents
                 .Include(d => d.Course)
-                .Where(d => d.Title.Contains(query) && d.Status == UniDocs.Models.Enums.DocumentStatusEnum.Approved)
+                .Where(d => d.Title.Contains(query) && d.Status == Models.Enums.DocumentStatusEnum.Approved)
                 .FirstOrDefaultAsync();
 
             if (matchedDoc != null && matchedDoc.Course != null)

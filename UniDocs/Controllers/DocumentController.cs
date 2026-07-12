@@ -99,6 +99,7 @@ namespace UniDocs.Controllers
             ViewBag.Courses = await _context.Courses.ToListAsync();
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upload(Document model, IFormFile uploadedFile)
@@ -150,7 +151,7 @@ namespace UniDocs.Controllers
             model.FilePath = "/uploads/" + fileName;
             model.UploadDate = DateTime.Now;
             model.DownloadCount = 0;
-            model.Status = UniDocs.Models.Enums.DocumentStatusEnum.Approved;
+            model.Status = Models.Enums.DocumentStatusEnum.Approved;
 
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
             model.UserId = int.Parse(userIdStr);
@@ -178,7 +179,7 @@ namespace UniDocs.Controllers
                 return NotFound("This document could not be found!");
             }
 
-            if (document.Status != UniDocs.Models.Enums.DocumentStatusEnum.Approved)
+            if (document.Status != Models.Enums.DocumentStatusEnum.Approved)
             {
                 bool isAdmin = User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("Admin");
                 bool isOwner = User.Identity != null && User.Identity.IsAuthenticated && document.UserId.ToString() == User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
@@ -197,7 +198,7 @@ namespace UniDocs.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Report(UniDocs.ViewModels.ReportViewModel model)
+        public async Task<IActionResult> Report(ViewModels.ReportViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -222,7 +223,7 @@ namespace UniDocs.Controllers
                 ReporterId = userId,
                 Reason = model.Reason,
                 ReportDate = DateTime.Now,
-                Status = UniDocs.Models.Enums.ReportStatusEnum.Pending
+                Status = Models.Enums.ReportStatusEnum.Pending
             };
             _context.Reports.Add(report);
 
@@ -230,9 +231,9 @@ namespace UniDocs.Controllers
             if (reportCount >= 3)
             {
                 var docToHide = await _context.Documents.FindAsync(model.DocumentId);
-                if (docToHide != null && docToHide.Status == UniDocs.Models.Enums.DocumentStatusEnum.Approved)
+                if (docToHide != null && docToHide.Status == Models.Enums.DocumentStatusEnum.Approved)
                 {
-                    docToHide.Status = UniDocs.Models.Enums.DocumentStatusEnum.Pending;
+                    docToHide.Status = Models.Enums.DocumentStatusEnum.Pending;
                 }
             }
 
@@ -243,7 +244,7 @@ namespace UniDocs.Controllers
         }
 
 
-        // ===== AI Summary =====
+        // ========== AI Summary ==========
         [AllowAnonymous]
         public async Task<IActionResult> AiSummary(int id)
         {

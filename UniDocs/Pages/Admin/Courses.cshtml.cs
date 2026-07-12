@@ -24,9 +24,12 @@ namespace UniDocs.Pages.Admin
 
         public List<string> Departments { get; set; } = new List<string>();
 
+
+        // Phân trang
         public int CurrentPage { get; set; } = 1;
         public int TotalPages { get; set; }
         public const int PageSize = 6;
+
 
         public async Task OnGetAsync(int p = 1)
         {

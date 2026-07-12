@@ -33,7 +33,7 @@ namespace UniDocs.Pages.Admin
             if (user == null)
                 return NotFound();
 
-            if (user.Role == UniDocs.Models.Enums.RoleEnum.Admin)
+            if (user.Role == Models.Enums.RoleEnum.Admin)
             {
                 TempData["ErrorMessage"] = "Cannot lock/unlock an Admin account!";
                 return RedirectToPage("./Users");
