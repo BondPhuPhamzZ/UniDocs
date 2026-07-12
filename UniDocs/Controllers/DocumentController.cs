@@ -197,33 +197,39 @@ namespace UniDocs.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Report(int documentId, string reason)
+        public async Task<IActionResult> Report(UniDocs.ViewModels.ReportViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Reason is required!";
+                return RedirectToAction("Detail", new { id = model.DocumentId });
+            }
+
             if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
                 return RedirectToAction("Login", "Account");
 
             var existed = await _context.Reports
-                .AnyAsync(r => r.DocumentId == documentId && r.ReporterId == userId);
+                .AnyAsync(r => r.DocumentId == model.DocumentId && r.ReporterId == userId);
             if (existed)
             {
                 TempData["ErrorMessage"] = "You have already reported this document!";
-                return RedirectToAction("Detail", new { id = documentId });
+                return RedirectToAction("Detail", new { id = model.DocumentId });
             }
 
             var report = new Report
             {
-                DocumentId = documentId,
+                DocumentId = model.DocumentId,
                 ReporterId = userId,
-                Reason = reason,
+                Reason = model.Reason,
                 ReportDate = DateTime.Now,
                 Status = UniDocs.Models.Enums.ReportStatusEnum.Pending
             };
             _context.Reports.Add(report);
 
-            var reportCount = await _context.Reports.CountAsync(r => r.DocumentId == documentId && r.Status == UniDocs.Models.Enums.ReportStatusEnum.Pending) + 1;
+            var reportCount = await _context.Reports.CountAsync(r => r.DocumentId == model.DocumentId && r.Status == UniDocs.Models.Enums.ReportStatusEnum.Pending) + 1;
             if (reportCount >= 3)
             {
-                var docToHide = await _context.Documents.FindAsync(documentId);
+                var docToHide = await _context.Documents.FindAsync(model.DocumentId);
                 if (docToHide != null && docToHide.Status == UniDocs.Models.Enums.DocumentStatusEnum.Approved)
                 {
                     docToHide.Status = UniDocs.Models.Enums.DocumentStatusEnum.Pending;
@@ -233,7 +239,7 @@ namespace UniDocs.Controllers
             await _context.SaveChangesAsync();
 
             TempData["SuccessMessage"] = "Report submitted successfully! Admin will review it soon.";
-            return RedirectToAction("Detail", new { id = documentId });
+            return RedirectToAction("Detail", new { id = model.DocumentId });
         }
 
 

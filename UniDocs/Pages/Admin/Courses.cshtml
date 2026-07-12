@@ -84,15 +84,15 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label fw-bold text-muted small">Course name</label>
-                        <input type="text" asp-for="NewCourse.CourseName" class="form-control" required placeholder="E.g: Advanced Web" />
+                        <input type="text" asp-for="CourseInput.CourseName" class="form-control" required placeholder="E.g: Advanced Web" />
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold text-muted small">CourseID</label>
-                        <input type="text" asp-for="NewCourse.CourseCode" class="form-control" required placeholder="E.g: SE104" />
+                        <input type="text" asp-for="CourseInput.CourseCode" class="form-control" required placeholder="E.g: SE104" />
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold text-muted small">Department</label>
-                        <input type="text" asp-for="NewCourse.Department" class="form-control" list="deptList" required placeholder="E.g: Công nghệ phần mềm" />
+                        <input type="text" asp-for="CourseInput.Department" class="form-control" list="deptList" required placeholder="E.g: Công nghệ phần mềm" />
                     </div>
                 </div>
                 <div class="modal-footer border-top-0 pt-0">
@@ -118,15 +118,15 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label fw-bold text-muted small">Course name</label>
-                            <input type="text" name="courseName" class="form-control" required value="@course.CourseName" />
+                            <input type="text" name="CourseInput.CourseName" class="form-control" required value="@course.CourseName" />
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold text-muted small">CourseID</label>
-                            <input type="text" name="courseCode" class="form-control" required value="@course.CourseCode" />
+                            <input type="text" name="CourseInput.CourseCode" class="form-control" required value="@course.CourseCode" />
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold text-muted small">Department</label>
-                            <input type="text" name="department" class="form-control" list="deptList" required value="@course.Department" />
+                            <input type="text" name="CourseInput.Department" class="form-control" list="deptList" required value="@course.Department" />
                         </div>
                     </div>
                     <div class="modal-footer border-top-0 pt-0">

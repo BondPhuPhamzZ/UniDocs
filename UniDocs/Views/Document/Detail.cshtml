@@ -94,14 +94,14 @@
                 {
                     <div class="collapse mb-3 text-start" id="reportForm">
                         <form asp-action="Report" asp-controller="Document" method="post">
-                            <input type="hidden" name="documentId" value="@Model.Id" />
-                            <select name="reason" class="form-select form-select-sm mb-2">
+                            <input type="hidden" name="DocumentId" value="@Model.Id" />
+                            <select name="Reason" class="form-select form-select-sm mb-2">
                                 <option>Incorrect content</option>
                                 <option>Copyright violated</option>
                                 <option>The document cannot be opened</option>
                                 <option>Not suitable content</option>
                             </select>
-                            <button type="submit" class="btn btn-danger btn-sm w-100">Gửi</button>
+                            <button type="submit" class="btn btn-danger btn-sm w-100">Send</button>
                         </form>
                     </div>
                 }

@@ -20,7 +20,7 @@ namespace UniDocs.Pages.Admin
         public IList<Course> CourseList { get; set; } = new List<Course>();
 
         [BindProperty]
-        public Course NewCourse { get; set; } = new Course();
+        public Course CourseInput { get; set; } = new Course();
 
         public List<string> Departments { get; set; } = new List<string>();
 
@@ -51,41 +51,55 @@ namespace UniDocs.Pages.Admin
 
         public async Task<IActionResult> OnPostAddCourseAsync()
         {
-            if (!string.IsNullOrEmpty(NewCourse.CourseName) && !string.IsNullOrEmpty(NewCourse.CourseCode))
-            {
-                if (await _context.Courses.AnyAsync(c => c.CourseCode == NewCourse.CourseCode))
-                {
-                    TempData["ErrorMessage"] = $"Course code \"{NewCourse.CourseCode}\" already exists!";
-                    return RedirectToPage("./Courses");
-                }
+            ModelState.Remove("CourseInput.Id");
+            ModelState.Remove("CourseInput.Documents");
 
-                _context.Courses.Add(NewCourse);
-                await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = $"Course \"{NewCourse.CourseName}\" added successfully!";
+            if (!ModelState.IsValid)
+            {
+                TempData["ErrorMessage"] = "Invalid course information!";
+                return RedirectToPage("./Courses");
             }
+
+            if (await _context.Courses.AnyAsync(c => c.CourseCode == CourseInput.CourseCode))
+            {
+                TempData["ErrorMessage"] = $"Course code \"{CourseInput.CourseCode}\" already exists!";
+                return RedirectToPage("./Courses");
+            }
+
+            _context.Courses.Add(CourseInput);
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = $"Course \"{CourseInput.CourseName}\" added successfully!";
+            
             return RedirectToPage("./Courses");
         }
 
-        public async Task<IActionResult> OnPostEditCourseAsync(int id, string courseName, string courseCode, string department)
+        public async Task<IActionResult> OnPostEditCourseAsync(int id)
         {
+            ModelState.Remove("CourseInput.Id");
+            ModelState.Remove("CourseInput.Documents");
+
             var course = await _context.Courses.FindAsync(id);
             if (course == null)
                 return NotFound();
 
-            if (!string.IsNullOrEmpty(courseName) && !string.IsNullOrEmpty(courseCode))
+            if (!ModelState.IsValid)
             {
-                if (await _context.Courses.AnyAsync(c => c.CourseCode == courseCode && c.Id != id))
-                {
-                    TempData["ErrorMessage"] = $"Course code \"{courseCode}\" already exists in another course!";
-                    return RedirectToPage("./Courses");
-                }
-
-                course.CourseName = courseName;
-                course.CourseCode = courseCode;
-                course.Department = department;
-                await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = $"Course \"{courseName}\" updated successfully!";
+                TempData["ErrorMessage"] = "Invalid course information!";
+                return RedirectToPage("./Courses");
             }
+
+            if (await _context.Courses.AnyAsync(c => c.CourseCode == CourseInput.CourseCode && c.Id != id))
+            {
+                TempData["ErrorMessage"] = $"Course code \"{CourseInput.CourseCode}\" already exists in another course!";
+                return RedirectToPage("./Courses");
+            }
+
+            course.CourseName = CourseInput.CourseName;
+            course.CourseCode = CourseInput.CourseCode;
+            course.Department = CourseInput.Department;
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = $"Course \"{course.CourseName}\" updated successfully!";
+            
             return RedirectToPage("./Courses");
         }
 
