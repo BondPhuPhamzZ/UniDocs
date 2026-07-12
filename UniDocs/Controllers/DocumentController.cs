@@ -72,14 +72,14 @@ namespace UniDocs.Controllers
             var document = await _context.Documents.FindAsync(id);
             if (document == null)
             {
-                return NotFound("Tài liệu không tồn tại!");
+                return NotFound("Document does not exists");
             }
 
             string physicalPath = Path.Combine(_env.WebRootPath, document.FilePath.TrimStart('/'));
 
             if (!System.IO.File.Exists(physicalPath))
             {
-                return NotFound("Lỗi: Không tìm thấy file trong máy chủ!");
+                return NotFound("Error: File not found on the server!");
             }
 
             document.DownloadCount += 1;
@@ -175,7 +175,7 @@ namespace UniDocs.Controllers
 
             if (document == null)
             {
-                return NotFound("Không tìm thấy tài liệu này!");
+                return NotFound("This document could not be found!");
             }
 
             if (document.Status != UniDocs.Models.Enums.DocumentStatusEnum.Approved)
@@ -185,7 +185,7 @@ namespace UniDocs.Controllers
                 
                 if (!isAdmin && !isOwner)
                 {
-                    return NotFound("Tài liệu này không tồn tại hoặc đã bị gỡ bỏ.");
+                    return NotFound("This document does not exist or has been removed.");
                 }
             }
 
@@ -220,7 +220,6 @@ namespace UniDocs.Controllers
             };
             _context.Reports.Add(report);
 
-            // Auto-hide logic: If a document has >= 3 pending reports, mark it as Pending (hide from public)
             var reportCount = await _context.Reports.CountAsync(r => r.DocumentId == documentId && r.Status == UniDocs.Models.Enums.ReportStatusEnum.Pending) + 1;
             if (reportCount >= 3)
             {
@@ -238,7 +237,7 @@ namespace UniDocs.Controllers
         }
 
 
-        // ===== AI Summary (Tích hợp AI) =====
+        // ===== AI Summary =====
         [AllowAnonymous]
         public async Task<IActionResult> AiSummary(int id)
         {
@@ -248,12 +247,12 @@ namespace UniDocs.Controllers
                 .FirstOrDefaultAsync(d => d.Id == id);
 
             if (doc == null)
-                return Json(new { summary = "Không tìm thấy tài liệu." });
+                return Json(new { summary = "Document not found." });
 
-            string prompt = $"Hãy tóm tắt ngắn gọn (3-5 câu) bằng tiếng Việt về tài liệu học tập sau: " +
-                            $"Tên: {doc.Title}. Môn học: {doc.Course?.CourseName}. " +
-                            $"Loại: {doc.DocType}. Mô tả: {doc.Description ?? "Không có mô tả"}. " +
-                            $"Hãy trả lời tự nhiên như một trợ lý học tập thân thiện.";
+            string prompt = $"Please provide a brief summary (3-5 sentences, each on a new line with bullet points) in English about the following study material: " +
+                            $"Name: {doc.Title}. Course: {doc.Course?.CourseName}. " +
+                            $"Type: {doc.DocType}. Description: {doc.Description ?? "No description"}. " +
+                            $"Please respond naturally and briefly outline the concept (if any) of the topic as a friendly study assistant.";
             try
             {
                 using var client = new HttpClient();
@@ -263,7 +262,7 @@ namespace UniDocs.Controllers
                     return Json(
                         new 
                         { 
-                            summary = "Chưa cấu hình API Key. Vui lòng liên hệ Admin." 
+                            summary = "API key not configured. Please contact the admin."
                         }
                     );
 
@@ -286,7 +285,7 @@ namespace UniDocs.Controllers
                     return Json(
                         new 
                         { 
-                            summary = "Tính năng AI tóm tắt hiện không khả dụng. Vui lòng thử lại sau." 
+                            summary = "The AI summarization feature is currently unavailable. Please try again later."
                         }
                     );
 
@@ -296,7 +295,7 @@ namespace UniDocs.Controllers
                     .GetProperty("content")
                     .GetProperty("parts")[0]
                     .GetProperty("text")
-                    .GetString() ?? "Không thể tóm tắt.";
+                    .GetString() ?? "Cannot be summarized.";
 
                 return Json(new { summary });
             }
@@ -305,7 +304,7 @@ namespace UniDocs.Controllers
                 return Json(
                     new 
                     { 
-                        summary = "Tính năng AI tóm tắt hiện không khả dụng. Vui lòng thử lại sau." 
+                        summary = "The AI summarization feature is currently unavailable. Please try again later."
                     }
                 );
             }
