@@ -203,7 +203,7 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
 
 .course-sidebar-link {
     margin-bottom: 0.25rem;
-    transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+    transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .course-sidebar-link:hover {
@@ -238,10 +238,6 @@ h1, h2, h3, h4, h5, h6, .text-dark, .navbar-brand {
     box-shadow: 0 10px 32px rgba(156, 102, 68, 0.12) !important;
 }
 
-/* Thumbnail preview radius */
-.img-thumbnail-preview,
-.card-img-top {
-}
 
 .document-grid {
     display: grid;
