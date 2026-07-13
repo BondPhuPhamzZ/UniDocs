@@ -16,7 +16,7 @@ namespace UniDocs.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var courses = await _context.Courses
-                .Include(c => c.Documents.Where(d => d.Status == UniDocs.Models.Enums.DocumentStatusEnum.Approved))
+                .Include(c => c.Documents.Where(d => d.Status == Models.Enums.DocumentStatusEnum.Approved))
                 .ToListAsync();
 
             return View(courses);

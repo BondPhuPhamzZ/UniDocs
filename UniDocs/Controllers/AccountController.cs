@@ -13,17 +13,16 @@ namespace UniDocs.Controllers
     public class AccountController : Controller
     {
         private readonly AppDbContext _context;
-        private readonly UniDocs.Services.SecurityService _securityService;
-        private readonly Microsoft.AspNetCore.Hosting.IWebHostEnvironment _env;
+        private readonly Services.SecurityService _securityService;
+        private readonly IWebHostEnvironment _env;
 
-        public AccountController(AppDbContext context, UniDocs.Services.SecurityService securityService, Microsoft.AspNetCore.Hosting.IWebHostEnvironment env)
+        public AccountController(AppDbContext context, Services.SecurityService securityService, IWebHostEnvironment env)
         {
             _context = context;
             _securityService = securityService;
             _env = env;
         }
 
-        // ========== Đăng nhập ===========
         public ViewResult Login()
         {
             return View();
@@ -73,7 +72,6 @@ namespace UniDocs.Controllers
         }
 
 
-        // ========== Đăng ký ==========
         public ViewResult Register()
         {
             return View();
@@ -117,7 +115,6 @@ namespace UniDocs.Controllers
         }
 
 
-        // ===== Xử lý đăng xuất =====
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -125,7 +122,7 @@ namespace UniDocs.Controllers
         }
 
 
-        // ========== User Profile -> Trang cá nhân ==========
+        // ========== User Profile ==========
         [Authorize]
         public async Task<IActionResult> Profile()
         {
@@ -161,9 +158,8 @@ namespace UniDocs.Controllers
 
             if (document == null)
             {
-                return NotFound("Tài liệu không tồn tại hoặc bạn không có quyền xóa!");
+                return NotFound("The document does not exist or you do not have permission to delete it!");
             }
-
 
             // Xóa file vật lý
             if (document.FilePath != null && document.FilePath.StartsWith("/uploads/"))
@@ -173,7 +169,6 @@ namespace UniDocs.Controllers
                     System.IO.File.Delete(physicalPath);
             }
 
-            // Soft delete
             document.Status = Models.Enums.DocumentStatusEnum.Deleted;
 
             var relatedReports = await _context.Reports.Where(r => r.DocumentId == id && r.Status == UniDocs.Models.Enums.ReportStatusEnum.Pending).ToListAsync();

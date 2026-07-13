@@ -16,7 +16,6 @@ namespace UniDocs.Controllers
         }
 
 
-        // Danh sách các môn học
         public async Task<IActionResult> Index(string query, int page = 1)
         {
             int pageSize = 6;
@@ -30,7 +29,6 @@ namespace UniDocs.Controllers
                 ViewBag.SearchQuery = query;
             }
 
-            // Phân trang -> Dựa trên courseQuery đã dc lọc
             int totalCourses = await courseQuery.CountAsync();
             ViewBag.TotalPages = (int)Math.Ceiling((double)totalCourses / pageSize);
             ViewBag.CurrentPage = page;
@@ -45,7 +43,6 @@ namespace UniDocs.Controllers
         }
 
 
-        // Trang chi tiết tài liệu của 1 môn 
         public async Task<IActionResult> Detail(int id, string docQuery = null, int page = 1)
         {
             int pageSize = 5; 
@@ -56,7 +53,6 @@ namespace UniDocs.Controllers
                 return NotFound("Không tìm thấy môn học!");
             }
 
-            // Lưu thông tin môn học vào Viewbag
             ViewBag.CourseName = course.CourseName;
             ViewBag.Department = course.Department;
             ViewBag.CourseId = course.Id;
@@ -72,7 +68,6 @@ namespace UniDocs.Controllers
                 docsQuery = docsQuery.Where(d => d.Title.Contains(docQuery));
             }
 
-            // Tính toán tổng số trang
             int totalDocs = await docsQuery.CountAsync();
             ViewBag.TotalDocuments = totalDocs;
             ViewBag.TotalPages = (int)Math.Ceiling((double)totalDocs / pageSize);
@@ -93,7 +88,6 @@ namespace UniDocs.Controllers
             if (string.IsNullOrWhiteSpace(query))
                 return RedirectToAction("Index");
 
-            // 1. Tìm môn học khớp tên trước
             var matchedCourse = await _context.Courses
                 .Where(c => c.CourseName.Contains(query))
                 .FirstOrDefaultAsync();
@@ -103,7 +97,6 @@ namespace UniDocs.Controllers
                 return RedirectToAction("Detail", new { id = matchedCourse.Id });
             }
 
-            // 2. Nếu không có môn nào khớp, tìm tài liệu khớp tên
             var matchedDoc = await _context.Documents
                 .Include(d => d.Course)
                 .Where(d => d.Title.Contains(query) && d.Status == Models.Enums.DocumentStatusEnum.Approved)
