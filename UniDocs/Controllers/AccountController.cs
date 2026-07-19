@@ -242,5 +242,20 @@ namespace UniDocs.Controllers
             return RedirectToAction("Profile");
         }
 
+        [AllowAnonymous] 
+        public async Task<IActionResult> PublicProfile(int id)
+        {
+            var user = await _context.Users
+                .Include(u => u.Documents.Where(d => d.Status == Models.Enums.DocumentStatusEnum.Approved))
+                    .ThenInclude(d => d.Course)
+                .AsNoTracking() 
+                .FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+            return View(user);
+        }
+
     }
 }

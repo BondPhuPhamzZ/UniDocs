@@ -1,0 +1,75 @@
+﻿@model UniDocs.Models.User
+@{
+    ViewData["Title"] = $"{Model.LastName} {Model.FirstName} - Profile";
+}
+
+<div class="container py-5 flex-grow-1">
+    <div class="row">
+        @* Cột Trái: Thông tin cơ bản *@
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow-sm text-center p-4 sticky-lg-top" style="top: 100px;">
+                <img src="https://ui-avatars.com/api/?name=@(Model.FirstName)+@(Model.LastName)&background=2A4365&color=fff&size=150"
+                     class="rounded-circle shadow-sm mb-3 mx-auto" alt="Avatar" />
+
+                <h3 class="fw-bold text-dark mb-1">@Model.LastName @Model.FirstName</h3>
+                <p class="text-muted small mb-3">@Model.University</p>
+
+                <div class="d-flex justify-content-center gap-4 text-center border-top pt-3 mt-2">
+                    <div>
+                        <h4 class="fw-bold text-primary mb-0">@Model.Documents?.Count()</h4>
+                        <span class="small text-muted">Documents</span>
+                    </div>
+                    <div>
+                        <h4 class="fw-bold text-primary mb-0">@(Model.Documents?.Sum(d => d.DownloadCount) ?? 0)</h4>
+                        <span class="small text-muted">Downloads</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* Cột Phải: Danh sách tài liệu đã đóng góp *@
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm p-4">
+                <h5 class="fw-bold text-primary border-bottom pb-3 mb-3">
+                    <i class="bi bi-folder-check me-2"></i> Shared Documents
+                </h5>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light text-muted">
+                            <tr>
+                                <th>Name</th>
+                                <th>Course</th>
+                                <th class="text-center">Downloads</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Documents != null && Model.Documents.Any())
+                            {
+                                foreach (var doc in Model.Documents)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a asp-controller="Document" asp-action="Detail" asp-route-id="@doc.Id" class="text-decoration-none text-dark fw-bold">
+                                                @doc.Title
+                                            </a>
+                                            <div class="text-muted small">@doc.UploadDate.ToString("dd/MM/yyyy")</div>
+                                        </td>
+                                        <td><span class="fw-bold text-muted">@doc.Course?.CourseName</span></td>
+                                        <td class="text-center fw-bold text-primary">@doc.DownloadCount</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3" class="text-center py-5 text-muted">This user has not shared any documents yet.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
