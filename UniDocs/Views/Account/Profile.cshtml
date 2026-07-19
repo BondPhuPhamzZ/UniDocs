@@ -94,7 +94,6 @@
                                         foreach (var doc in Model.Documents)
                                         {
                                             <tr>
-                                                @* Hiển thị thông tin tài liệu mà User đã đăng *@
                                                 <td class="ps-4 text-start">
                                                     <div class="d-flex align-items-start">
                                                         <div>
@@ -122,19 +121,17 @@
                                                         <div class="d-flex justify-content-start align-items-start gap-2 flex-wrap">
                                                             @if (doc.Status == UniDocs.Models.Enums.DocumentStatusEnum.Approved)
                                                             {
-                                                                <form method="post" asp-controller="Account" asp-action="DeleteMyDocument" asp-route-id="@doc.Id" onsubmit="return confirm('Are you sure you want to delete this document?');">
+                                                                <form method="post" asp-controller="Account" asp-action="DeleteMyDocument" asp-route-id="@doc.Id" onsubmit="return confirm('Are you sure that you want to delete this document?');">
                                                                     <button type="submit" class="btn btn-sm btn-danger" title="Xóa tài liệu">
                                                                         <i class="bi bi-trash"></i>
                                                                     </button>
                                                                 </form>
                                                             }
-                                                            else if (doc.Status == UniDocs.Models.Enums.DocumentStatusEnum.Deleted)
-                                                            {
-                                                                <span class="fw-bold text-danger mt-1">Deleted</span>
-                                                            }
                                                             else
                                                             {
-                                                                <span class="fw-bold text-warning mt-1">Pending</span>
+                                                                <div class="mt-1">
+                                                                    <status-text doc-status="@doc.Status"></status-text>
+                                                                </div>
                                                             }
                                                         </div>
                                                 </td>

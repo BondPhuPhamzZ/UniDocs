@@ -50,20 +50,12 @@
                                 <td class="py-3 text-muted small">
                                     @item.ReportDate.ToString("dd/MM/yyyy HH:mm")
                                 </td>
+
+                                @* Custom TagHelper *@
                                 <td class="py-3">
-                                    @if (item.Status == UniDocs.Models.Enums.ReportStatusEnum.Pending)
-                                    {
-                                        <span class="fw-bold text-warning">Pending</span>
-                                    }
-                                    else if (item.Status == UniDocs.Models.Enums.ReportStatusEnum.Finished)
-                                    {
-                                        <span class="fw-bold text-primary">Finished</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="fw-bold text-info">@item.Status</span>
-                                    }
+                                    <status-text status="@item.Status"></status-text>
                                 </td>
+
                                 <td class="pe-4 py-3">
                                     @if (item.Status == UniDocs.Models.Enums.ReportStatusEnum.Pending)
                                     {

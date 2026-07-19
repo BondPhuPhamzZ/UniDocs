@@ -45,7 +45,7 @@ namespace UniDocs.Models
 
 
         // Trạng thái tài liệu
-        public UniDocs.Models.Enums.DocumentStatusEnum Status { get; set; } = UniDocs.Models.Enums.DocumentStatusEnum.Pending;
+        public Enums.DocumentStatusEnum Status { get; set; } = Enums.DocumentStatusEnum.Pending;
 
 
         // FK (khóa ngoại) connect to bảng User (người dùng)
