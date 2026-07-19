@@ -16,10 +16,12 @@
                 </h2>
                 
                 <div class="d-flex flex-wrap gap-4 text-muted small mb-3">
-                    <span class="fw-bold text-dark">Course: </span>
-                    <a asp-controller="Course" asp-action="Detail" asp-route-id="@Model.CourseId" class="text-decoration-none text-primary fw-bold">
-                        @Model.Course?.CourseName
-                    </a>
+                    <span>
+                        <span class="fw-bold text-dark">Course: </span>
+                        <a asp-controller="Course" asp-action="Detail" asp-route-id="@Model.CourseId" class="text-decoration-none text-primary fw-bold">
+                            @Model.Course?.CourseName
+                        </a>
+                    </span>
                     <span><span class="fw-bold text-dark">Year: </span> @Model.AcademicYear</span>
                     <span><span class="fw-bold text-dark">Type: </span> @Model.DocType</span>
                 </div>
