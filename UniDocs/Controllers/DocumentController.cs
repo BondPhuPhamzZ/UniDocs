@@ -66,7 +66,7 @@ namespace UniDocs.Controllers
 
 
         // ===== DOWNLOAD =====
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> Download(int id)
         {
             var document = await _context.Documents.FindAsync(id);
@@ -74,6 +74,19 @@ namespace UniDocs.Controllers
             {
                 return NotFound("Document does not exists");
             }
+
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdStr)) 
+                return RedirectToAction("Login", "Account");
+            int userId = int.Parse(userIdStr);
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user == null || user.Credits <= 0)
+            {
+                TempData["OutOfCredits"] = "True";
+                return RedirectToAction("Detail", new { id = document.Id });
+            }
+
 
             string physicalPath = Path.Combine(_env.WebRootPath, document.FilePath.TrimStart('/'));
 
@@ -83,6 +96,7 @@ namespace UniDocs.Controllers
             }
 
             document.DownloadCount += 1;
+            user.Credits -= 1;
             await _context.SaveChangesAsync();
 
             byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(physicalPath);
