@@ -45,6 +45,10 @@ namespace UniDocs.Models
         public bool IsActive { get; set; } = true;
 
 
+        // Điểm tín dụng -> dùng để tải tài liệu
+        public int Credits { get; set; } = 3;
+
+
         // 1 User có thể đăng nhiều document
         public ICollection<Document> Documents { get; set; } = new List<Document>();
 
