@@ -95,7 +95,6 @@
                         {
                             <a asp-controller="Document" asp-action="Download" asp-route-id="@Model.Id" class="btn btn-primary fw-bold rounded flex-grow-1">
                                 <i class="bi bi-download me-2"></i>Download
-                                <span class="badge bg-light text-primary ms-1">-1 Credit</span>
                             </a>
                         }
                     </div>
@@ -181,32 +180,4 @@
     </script>
 }
 
-@* Modal Out of Credits *@
-<div class="modal fade" id="outOfCreditsModal" tabindex="-1" aria-labelledby="outOfCreditsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-danger text-white border-0">
-                <h5 class="modal-title fw-bold" id="outOfCreditsModalLabel">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i>Out of Credits!
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4 text-center">
-                <img src="https://cdn-icons-png.flaticon.com/512/5726/5726674.png" alt="No Credits" class="img-fluid mb-3" style="width: 100px;">
-                <h4 class="fw-bold mb-3">You've reached your download limit</h4>
-                <p class="text-muted mb-4">
-                    Your current credit balance is <strong>0</strong>. You need credits to download study materials. What would you like to do?
-                </p>
-                <div class="d-grid gap-3">
-                    <a asp-controller="Document" asp-action="Upload" class="btn btn-outline-primary btn-lg fw-bold">
-                        <i class="bi bi-cloud-arrow-up me-2"></i>Upload to Earn (+2 Credits)
-                    </a>
-                    <!-- Nút này tạm thời để mồi, Giai đoạn 4 ta sẽ ráp VNPay vào đây -->
-                    <a href="#" class="btn btn-warning btn-lg fw-bold text-dark disabled">
-                        <i class="bi bi-lightning-charge-fill me-2"></i>Upgrade Plan (Coming soon)
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<partial name="_OutOfCreditsModalPartial" />

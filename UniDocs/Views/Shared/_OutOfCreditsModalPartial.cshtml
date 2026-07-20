@@ -1,0 +1,29 @@
+﻿<div class="modal fade" id="outOfCreditsModal" tabindex="-1" aria-labelledby="outOfCreditsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title fw-bold text-primary" id="outOfCreditsModalLabel">
+                    Out of Credits
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-4 text-center">
+                <h4 class="fw-bold mb-3">You've reached your download limit</h4>
+                <p class="text-muted mb-4">
+                    Your current credit balance is <strong>0</strong>. You need credits to download study materials. What would you like to do?
+                </p>
+                <div class="d-grid gap-3">
+                    <a asp-controller="Document" asp-action="Upload" class="btn btn-outline-primary rounded-pill fw-bold">
+                        Upload to Earn (+2 Credits)
+                    </a>
+                    <a href="#" class="btn btn-outline-primary rounded-pill fw-bold">
+                        Upgrade Plan (Coming soon)
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

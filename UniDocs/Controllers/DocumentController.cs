@@ -79,10 +79,8 @@ namespace UniDocs.Controllers
 
             if (user == null || user.Credits <= 0)
             {
-                TempData["OutOfCredits"] = "True";
                 return RedirectToAction("Detail", new { id = document.Id });
             }
-
 
             string physicalPath = Path.Combine(_env.WebRootPath, document.FilePath.TrimStart('/'));
 
