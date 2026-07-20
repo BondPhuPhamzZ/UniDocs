@@ -45,7 +45,7 @@ namespace UniDocs.Controllers
 
         public async Task<IActionResult> Detail(int id, string docQuery = null, int page = 1)
         {
-            int pageSize = 5; 
+            int pageSize = 6; 
 
             var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == id);
             if (course == null)
