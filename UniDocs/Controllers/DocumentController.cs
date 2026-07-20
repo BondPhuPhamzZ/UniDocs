@@ -23,9 +23,7 @@ namespace UniDocs.Controllers
         }
 
 
-        // ===== Lưu tài liệu =====
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveDocument(int documentId)
         {
@@ -65,8 +63,6 @@ namespace UniDocs.Controllers
         }
 
 
-        // ===== DOWNLOAD =====
-        [Authorize]
         public async Task<IActionResult> Download(int id)
         {
             var document = await _context.Documents.FindAsync(id);
@@ -107,7 +103,6 @@ namespace UniDocs.Controllers
         }
 
 
-        // ===== UPLOAD =====
         public async Task<IActionResult> Upload()
         {
             ViewBag.Courses = await _context.Courses.ToListAsync();
@@ -173,7 +168,13 @@ namespace UniDocs.Controllers
             _context.Documents.Add(model);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Document uploaded successfully!";
+            var currentUser = await _context.Users.FindAsync(model.UserId);
+            if (currentUser != null)
+            {
+                currentUser.Credits += 2;
+                await _context.SaveChangesAsync();
+            }
+            TempData["SuccessMessage"] = "Document uploaded successfully! You earned 2 Credits.";
             return RedirectToAction("Profile", "Account");
 
         }
@@ -204,13 +205,22 @@ namespace UniDocs.Controllers
                 }
             }
 
-            return View(document);
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!string.IsNullOrEmpty(userIdStr))
+            {
+                var currentUser = await _context.Users.FindAsync(int.Parse(userIdStr));
+                ViewBag.UserCredits = currentUser?.Credits ?? 0;
+            }
+            else
+            {
+                ViewBag.UserCredits = 0; 
+            }
 
+            return View(document);
         }
 
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Report(ViewModels.ReportViewModel model)
         {
