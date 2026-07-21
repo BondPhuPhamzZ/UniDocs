@@ -3,7 +3,6 @@ using UniDocs.Models.Enums;
 
 namespace UniDocs.TagHelpers
 {
-    // <status-text>
     [HtmlTargetElement("status-text")]
     public class StatusTextTagHelper : TagHelper
     {
