@@ -77,9 +77,38 @@ namespace UniDocs.Controllers
             int userId = int.Parse(userIdStr);
             var user = await _context.Users.FindAsync(userId);
 
-            if (user == null || user.Credits <= 0)
+            if (user == null)
             {
-                return RedirectToAction("Detail", new { id = document.Id });
+                return RedirectToAction("Login", "Account");
+            }
+
+            bool isVip = user.VipExpirationDate.HasValue && user.VipExpirationDate.Value > DateTime.Now;
+
+            if (isVip)
+            {
+                if (!user.LastDownloadDate.HasValue || user.LastDownloadDate.Value.Date != DateTime.Now.Date)
+                {
+                    user.DailyDownloadCount = 0; 
+                }
+            }
+
+            // 2. Quyết định xem sẽ trừ lượt VIP hay trừ Credits
+            bool canDownload = false;
+            if (isVip && user.DailyDownloadCount < 10)
+            {
+                user.DailyDownloadCount += 1;
+                user.LastDownloadDate = DateTime.Now;
+                canDownload = true;
+            }
+            else if (user.Credits > 0)
+            {
+                user.Credits -= 1;
+                canDownload = true;
+            }
+
+            if (!canDownload)
+            {
+                return RedirectToAction("Detail", new { id = document.Id }); 
             }
 
             string physicalPath = Path.Combine(_env.WebRootPath, document.FilePath.TrimStart('/'));
@@ -90,7 +119,6 @@ namespace UniDocs.Controllers
             }
 
             document.DownloadCount += 1;
-            user.Credits -= 1;
             await _context.SaveChangesAsync();
 
             byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(physicalPath);

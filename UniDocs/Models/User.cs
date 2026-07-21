@@ -49,6 +49,14 @@ namespace UniDocs.Models
         public int Credits { get; set; } = 3;
 
 
+        // VIP Plan
+        public DateTime? VipExpirationDate { get; set; }
+
+        public int DailyDownloadCount { get; set; } = 0;
+
+        public DateTime? LastDownloadDate { get; set; }
+
+
         // 1 User có thể đăng nhiều document
         public ICollection<Document> Documents { get; set; } = new List<Document>();
 
