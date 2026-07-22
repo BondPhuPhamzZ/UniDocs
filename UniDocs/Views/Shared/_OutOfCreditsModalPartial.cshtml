@@ -1,4 +1,4 @@
-﻿<div class="modal fade" id="outOfCreditsModal" tabindex="-1" aria-labelledby="outOfCreditsModalLabel" aria-hidden="true">
+<div class="modal fade" id="outOfCreditsModal" tabindex="-1" aria-labelledby="outOfCreditsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
 
@@ -18,7 +18,7 @@
                     <a asp-controller="Document" asp-action="Upload" class="btn btn-outline-primary rounded-pill fw-bold">
                         Upload to Earn (+2 Credits)
                     </a>
-                    <a href="#" class="btn btn-outline-primary rounded-pill fw-bold">
+                    <a asp-controller="Payment" asp-action="Pricing" class="btn btn-outline-primary rounded-pill fw-bold">
                         Upgrade Plan 
                     </a>
                 </div>

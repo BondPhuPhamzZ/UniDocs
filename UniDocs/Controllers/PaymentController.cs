@@ -112,6 +112,7 @@ namespace UniDocs.Controllers
                 string vnp_TxnRef = vnpay.GetResponseData("vnp_TxnRef"); 
 
                 bool checkSignature = vnpay.ValidateSignature(vnp_SecureHash, vnp_HashSecret);
+                
                 if (checkSignature)
                 {
                     if (vnp_ResponseCode == "00" && vnp_TransactionStatus == "00")

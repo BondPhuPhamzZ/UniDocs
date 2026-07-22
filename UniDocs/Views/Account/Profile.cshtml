@@ -16,6 +16,18 @@
                     <h2 class="title-lg text-dark mt-3 mb-1">@Model.LastName @Model.FirstName</h2>
                     <p class="text-muted small mb-3">@Model.Email</p>
 
+                    @* VIP Badge *@
+                    @if (Model.VipExpirationDate.HasValue && Model.VipExpirationDate.Value > DateTime.Now)
+                    {
+                        <div class="mb-3 px-3">
+                            <div class="bg-warning text-dark px-3 py-2 rounded-3 shadow-sm d-inline-block">
+                                <i class="bi bi-star-fill text-danger me-1"></i> <strong>VIP MEMBER</strong>
+                                <br/>
+                                <small>Hết hạn: @Model.VipExpirationDate.Value.ToString("dd/MM/yyyy")</small>
+                            </div>
+                        </div>
+                    }
+
                     @* Thống kê *@
                     <div class="d-flex justify-content-around text-center border-top pt-3">
                         <div>
