@@ -236,10 +236,16 @@ namespace UniDocs.Controllers
             {
                 var currentUser = await _context.Users.FindAsync(int.Parse(userIdStr));
                 ViewBag.UserCredits = currentUser?.Credits ?? 0;
+                
+                bool isVip = currentUser.VipExpirationDate.HasValue && currentUser.VipExpirationDate.Value > DateTime.Now;
+                bool hasVipDownloadsLeft = isVip && (!currentUser.LastDownloadDate.HasValue || currentUser.LastDownloadDate.Value.Date != DateTime.Now.Date || currentUser.DailyDownloadCount < 10);
+                
+                ViewBag.CanDownload = (ViewBag.UserCredits > 0) || hasVipDownloadsLeft;
             }
             else
             {
                 ViewBag.UserCredits = 0; 
+                ViewBag.CanDownload = false;
             }
 
             return View(document);
