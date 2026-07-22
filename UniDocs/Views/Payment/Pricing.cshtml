@@ -4,8 +4,8 @@
 
 <div class="container py-5">
     <div class="text-center mb-5">
-        <h1 class="display-5 fw-bold text-primary">Nâng Cấp Tài Khoản VIP</h1>
-        <p class="lead text-muted">Mở khóa 10 lượt tải tài liệu miễn phí mỗi ngày. Chọn gói phù hợp với bạn!</p>
+        <h1 class="display-5 fw-bold text-primary">Upgrade Plan</h1>
+        <p class="lead text-muted">Unlock 10 free document downloads each day. Choose the package that suits you!</p>
     </div>
 
     @if (TempData["ErrorMessage"] != null)
@@ -48,10 +48,10 @@
                 </div>
                 <div class="card-body bg-light d-flex flex-column">
                     <h1 class="card-title pricing-card-title text-primary">119,000<small class="text-muted fw-light">VNĐ</small><span class="fs-5 text-muted">/3 months</span></h1>
-                    <p class="text-success fw-bold small"><i class="bi bi-tag-fill me-1"></i>Save up to 28,000VNĐ</p>
+                    <p class="text-success fw-bold small">Save up to 28,000VNĐ</p>
                     <ul class="list-unstyled mt-3 mb-4 text-start ms-4 flex-grow-1">
                         <li><strong>Free 10 downloads</strong> / day</li>
-                        <li>>Downloads all documents</li>
+                        <li>Downloads all documents</li>
                     </ul>
                     <a asp-controller="Payment" asp-action="CreatePayment" asp-route-planId="2" class="w-100 btn btn-lg btn-primary fw-bold shadow mt-auto">
                         Buy Now
