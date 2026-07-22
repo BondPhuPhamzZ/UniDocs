@@ -1,7 +1,22 @@
 <!doctype html>
 <html lang="vi">
+@using System.Security.Claims
+@inject UniDocs.Data.AppDbContext _context
 @{
     var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    bool isVip = false;
+    if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!string.IsNullOrEmpty(userIdStr))
+        {
+            var user = _context.Users.Find(int.Parse(userIdStr));
+            if (user != null && user.VipExpirationDate.HasValue && user.VipExpirationDate.Value > DateTime.Now)
+            {
+                isVip = true;
+            }
+        }
+    }
 }
 <head>
     <meta charset="UTF-8" />
@@ -74,8 +89,14 @@
                 <div class="d-flex align-items-center gap-2">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a asp-controller="Account" asp-action="Profile" class="btn btn-light border-0 fs-5 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;" title="Profile">
+                        <a asp-controller="Account" asp-action="Profile" class="btn btn-light border-0 fs-5 rounded-circle p-2 d-flex align-items-center justify-content-center position-relative" style="width: 40px; height: 40px;" title="Profile">
                             <i class="bi bi-person-circle text-primary"></i>
+                            @if(isVip)
+                            {
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark border border-2 border-white shadow" style="font-size: 0.55rem;">
+                                    VIP
+                                </span>
+                            }
                         </a>
 
                         @if (User.IsInRole("Admin"))
@@ -139,8 +160,12 @@
             <div class="list-group list-group-flush">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <a asp-controller="Account" asp-action="Profile" class="list-group-item list-group-item-action py-3 border-0 fw-medium rounded-2 mb-1 text-dark">
+                    <a asp-controller="Account" asp-action="Profile" class="list-group-item list-group-item-action py-3 border-0 fw-medium rounded-2 mb-1 text-dark d-flex align-items-center">
                         <i class="bi bi-person-circle fs-5 me-3 text-primary"></i> Profile
+                        @if(isVip)
+                        {
+                            <span class="badge rounded-pill bg-warning text-dark ms-2" style="font-size: 0.65rem;">VIP</span>
+                        }
                     </a>
 
                     @if (User.IsInRole("Admin"))
