@@ -12,12 +12,12 @@ namespace UniDocs
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // ===== Dki Database =====
+            // ===== Database =====
             builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-            // ===== Dki Cookie Authentication =====
+            // ===== Cookie Authentication =====
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
@@ -28,9 +28,8 @@ namespace UniDocs
             builder.Services.AddControllersWithViews();
 
 
-
             // Dki Security Service
-            builder.Services.AddSingleton<UniDocs.Services.SecurityService>();
+            builder.Services.AddSingleton<Services.SecurityService>();
 
 
             builder.Services.AddRazorPages();
@@ -56,7 +55,7 @@ namespace UniDocs
             }
 
 
-            // ===== Cấu hình Middleware =====
+            // ===== Middleware =====
             if (!app.Environment.IsDevelopment())
             {
                 // Catch 500
@@ -70,13 +69,12 @@ namespace UniDocs
             app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 
 
-            // Phải được kích hoạt để có thể đọc được style.css và main.js trong thư mục wwwroot
             app.UseStaticFiles(); 
 
 
             app.UseRouting();
 
-            // Kích hoạt xác thực và phân quyền
+            // Xác thực - phân quyền
             app.UseAuthentication();
 
             app.UseAuthorization();
