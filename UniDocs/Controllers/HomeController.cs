@@ -17,7 +17,7 @@ namespace UniDocs.Controllers
             _logger = logger;
         }
 
-
+        // Home page
         public async Task<IActionResult> Index(string query)
         {
             var documentsQuery = _context.Documents
@@ -39,6 +39,7 @@ namespace UniDocs.Controllers
             return View(documents);
         }
 
+        // Error
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error (int? statusCode = null)

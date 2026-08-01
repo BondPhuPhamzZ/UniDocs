@@ -15,14 +15,13 @@ namespace UniDocs.Controllers
             _context = context;
         }
 
-
+        // Index page
         public async Task<IActionResult> Index(string query, int page = 1)
         {
             int pageSize = 6;
 
             var courseQuery = _context.Courses.Include(c => c.Documents.Where(d => d.Status == Models.Enums.DocumentStatusEnum.Approved)).AsQueryable();
 
-            // Nếu User gõ vào thanh tìm kiếm
             if (!string.IsNullOrEmpty(query))
             {
                 courseQuery = courseQuery.Where(c => c.CourseName.Contains(query));
@@ -42,7 +41,7 @@ namespace UniDocs.Controllers
 
         }
 
-
+        // Detail page
         public async Task<IActionResult> Detail(int id, string docQuery = null, int page = 1)
         {
             int pageSize = 6; 
@@ -73,7 +72,6 @@ namespace UniDocs.Controllers
             ViewBag.TotalPages = (int)Math.Ceiling((double)totalDocs / pageSize);
             ViewBag.CurrentPage = page;
 
-            // Phân trang
             var documents = await docsQuery
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -83,6 +81,7 @@ namespace UniDocs.Controllers
 
         }
 
+        // Searching
         public async Task<IActionResult> SearchSidebar(string query)
         {
             if (string.IsNullOrWhiteSpace(query))

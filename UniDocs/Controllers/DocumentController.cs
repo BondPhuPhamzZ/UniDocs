@@ -22,7 +22,7 @@ namespace UniDocs.Controllers
             _configuration = configuration;
         }
 
-
+        // Save document
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveDocument(int documentId)
@@ -62,7 +62,7 @@ namespace UniDocs.Controllers
 
         }
 
-
+        // Download
         public async Task<IActionResult> Download(int id)
         {
             var document = await _context.Documents.FindAsync(id);
@@ -92,7 +92,7 @@ namespace UniDocs.Controllers
                 }
             }
 
-            // 2. Quyết định xem sẽ trừ lượt VIP hay trừ Credits
+            // check credits/ vip
             bool canDownload = false;
             if (isVip && user.DailyDownloadCount < 10)
             {
@@ -128,13 +128,13 @@ namespace UniDocs.Controllers
 
         }
 
-
+        // Upload page
         public async Task<IActionResult> Upload()
         {
             ViewBag.Courses = await _context.Courses.ToListAsync();
             return View();
         }
-
+        // Upload
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upload(Document model, IFormFile uploadedFile)
@@ -205,7 +205,7 @@ namespace UniDocs.Controllers
 
         }
 
-
+        // Detail page
         [AllowAnonymous]
         public async Task<IActionResult> Detail(int id)
         {
@@ -251,7 +251,7 @@ namespace UniDocs.Controllers
             return View(document);
         }
 
-
+        // Report
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Report(ViewModels.ReportViewModel model)
@@ -299,8 +299,7 @@ namespace UniDocs.Controllers
             return RedirectToAction("Detail", new { id = model.DocumentId });
         }
 
-
-        // ========== AI Summary ==========
+        // AI Summary
         [AllowAnonymous]
         public async Task<IActionResult> AiSummary(int id)
         {

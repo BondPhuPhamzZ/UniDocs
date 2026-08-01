@@ -12,33 +12,29 @@ namespace UniDocs
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // ===== Database =====
+            // Database
             builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
-            // ===== Cookie Authentication =====
+            // Cookie
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = "/Account/Login"; // Nếu chưa login mà đòi vào trang cấm, sẽ bị đuổi về đây
+                    options.LoginPath = "/Account/Login"; 
                     options.AccessDeniedPath = "/Account/Login";
                 });
 
             builder.Services.AddControllersWithViews();
 
-
-            // Dki Security Service
+            // Security Service
             builder.Services.AddSingleton<Services.SecurityService>();
 
-
+            // Razor
             builder.Services.AddRazorPages();
-
 
             var app = builder.Build();
 
-
-            // ===== Seed Data =====
+            // Seed data
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -55,7 +51,7 @@ namespace UniDocs
             }
 
 
-            // ===== Middleware =====
+            // Middlle ware
             if (!app.Environment.IsDevelopment())
             {
                 // Catch 500
@@ -74,7 +70,7 @@ namespace UniDocs
 
             app.UseRouting();
 
-            // Xác thực - phân quyền
+            //
             app.UseAuthentication();
 
             app.UseAuthorization();

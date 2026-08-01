@@ -23,6 +23,7 @@ namespace UniDocs.Controllers
             _env = env;
         }
 
+        // Login
         public ViewResult Login()
         {
             return View();
@@ -71,7 +72,7 @@ namespace UniDocs.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
+        // Register
         public ViewResult Register()
         {
             return View();
@@ -86,7 +87,6 @@ namespace UniDocs.Controllers
                 return View(model);
             }
 
-            // Check email 
             var emailTonTai = await _context.Users.AnyAsync(u => u.Email == model.Email);
             if (emailTonTai)
             {
@@ -114,7 +114,7 @@ namespace UniDocs.Controllers
 
         }
 
-
+        // Logout
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -122,7 +122,7 @@ namespace UniDocs.Controllers
         }
 
 
-        // ========== User Profile ==========
+        // Profile
         [Authorize]
         public async Task<IActionResult> Profile()
         {
@@ -146,6 +146,7 @@ namespace UniDocs.Controllers
         }
 
 
+        // Action my document
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -161,7 +162,6 @@ namespace UniDocs.Controllers
                 return NotFound("The document does not exist or you do not have permission to delete it!");
             }
 
-            // Xóa file vật lý
             if (document.FilePath != null && document.FilePath.StartsWith("/uploads/"))
             {
                 string physicalPath = System.IO.Path.Combine(_env.WebRootPath, document.FilePath.TrimStart('/'));
@@ -183,7 +183,7 @@ namespace UniDocs.Controllers
             return RedirectToAction("Profile");
         }
 
-        // ========== Update Profile ==========
+        // Update profile
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -211,7 +211,7 @@ namespace UniDocs.Controllers
             return RedirectToAction("Profile");
         }
 
-        // ========== Change Password ==========
+        // Change pass
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -242,6 +242,7 @@ namespace UniDocs.Controllers
             return RedirectToAction("Profile");
         }
 
+        // Public profile
         [AllowAnonymous] 
         public async Task<IActionResult> PublicProfile(int id)
         {

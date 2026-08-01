@@ -19,13 +19,14 @@ namespace UniDocs.Controllers
             _configuration = configuration;
         }
         
-        // Bảng giá
+        // Pricing plan page
         [AllowAnonymous]
         public IActionResult Pricing()
         {
             return View();
         }
 
+        // Payment action
         public IActionResult CreatePayment(int planId)
         {
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -34,7 +35,6 @@ namespace UniDocs.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            // Giá tiền các gói
             long amount = 0;
             string orderInfo = "";
 
@@ -64,7 +64,6 @@ namespace UniDocs.Controllers
             string vnp_Version = _configuration["VnPay:Version"];
             string vnp_Returnurl = $"{Request.Scheme}://{Request.Host}/Payment/PaymentCallback";
 
-            // Tạo request VNPay
             var vnpay = new VnPayLibrary();
             vnpay.AddRequestData("vnp_Version", vnp_Version);
             vnpay.AddRequestData("vnp_Command", "pay");
@@ -79,17 +78,15 @@ namespace UniDocs.Controllers
             vnpay.AddRequestData("vnp_OrderType", "other");
             vnpay.AddRequestData("vnp_ReturnUrl", vnp_Returnurl);
             
-            // Xác định được mua gói nào khi callback
             string txnRef = planId.ToString() + "_" + DateTime.Now.Ticks.ToString();
             vnpay.AddRequestData("vnp_TxnRef", txnRef);
 
-            // Url
             string paymentUrl = vnpay.CreateRequestUrl(vnp_Url, vnp_HashSecret);
 
             return Redirect(paymentUrl);
         }
 
-        // Kqua from VNPay
+        // Result from VNPay (action)
         public async Task<IActionResult> PaymentCallback()
         {
             if (Request.Query.Count > 0)
@@ -117,7 +114,6 @@ namespace UniDocs.Controllers
                 {
                     if (vnp_ResponseCode == "00" && vnp_TransactionStatus == "00")
                     {
-                        // Thanh toán thành công
                         int planId = int.Parse(vnp_TxnRef.Split('_')[0]);
                         var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
                         if (!string.IsNullOrEmpty(userIdStr))
@@ -128,14 +124,12 @@ namespace UniDocs.Controllers
                             {
                                 int addMonths = planId == 1 ? 1 : (planId == 2 ? 3 : 12);
                                 
-                                // Chưa có VIP hoặc đã hết hạn -> cộng từ hôm nay
                                 if (!user.VipExpirationDate.HasValue || user.VipExpirationDate.Value < DateTime.Now)
                                 {
                                     user.VipExpirationDate = DateTime.Now.AddMonths(addMonths);
                                 }
                                 else 
                                 {
-                                    // Đã là VIP -> cộng dồn
                                     user.VipExpirationDate = user.VipExpirationDate.Value.AddMonths(addMonths);
                                 }
 
