@@ -65,7 +65,7 @@ namespace UniDocs.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-            if (user.Role == UniDocs.Models.Enums.RoleEnum.Admin)
+            if (user.Role == Models.Enums.RoleEnum.Admin)
             {
                 return RedirectToAction("Dashboard", "Admin");
             }
@@ -121,7 +121,6 @@ namespace UniDocs.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
         // Profile
         [Authorize]
         public async Task<IActionResult> Profile()
@@ -145,8 +144,7 @@ namespace UniDocs.Controllers
             return View(user);
         }
 
-
-        // Action my document
+        // Delete document
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -164,14 +162,14 @@ namespace UniDocs.Controllers
 
             if (document.FilePath != null && document.FilePath.StartsWith("/uploads/"))
             {
-                string physicalPath = System.IO.Path.Combine(_env.WebRootPath, document.FilePath.TrimStart('/'));
+                string physicalPath = Path.Combine(_env.WebRootPath, document.FilePath.TrimStart('/'));
                 if (System.IO.File.Exists(physicalPath))
                     System.IO.File.Delete(physicalPath);
             }
 
             document.Status = Models.Enums.DocumentStatusEnum.Deleted;
 
-            var relatedReports = await _context.Reports.Where(r => r.DocumentId == id && r.Status == UniDocs.Models.Enums.ReportStatusEnum.Pending).ToListAsync();
+            var relatedReports = await _context.Reports.Where(r => r.DocumentId == id && r.Status == Models.Enums.ReportStatusEnum.Pending).ToListAsync();
             foreach (var report in relatedReports)
             {
                 report.Status = Models.Enums.ReportStatusEnum.Finished; 
@@ -199,7 +197,8 @@ namespace UniDocs.Controllers
             int userId = int.Parse(userIdStr);
 
             var user = await _context.Users.FindAsync(userId);
-            if (user == null) return NotFound();
+            if (user == null) 
+                return NotFound();
 
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;

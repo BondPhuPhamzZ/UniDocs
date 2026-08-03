@@ -16,7 +16,6 @@ namespace UniDocs.TagHelpers
 
             if (Status != null)
             {
-                // Report
                 if (Status == ReportStatusEnum.Pending)
                 {
                     output.Attributes.SetAttribute("class", "text-warning fw-bold");
@@ -31,7 +30,6 @@ namespace UniDocs.TagHelpers
 
             if (DocStatus != null)
             {
-                // Docs
                 if (DocStatus == DocumentStatusEnum.Pending)
                 {
                     output.Attributes.SetAttribute("class", "text-warning fw-bold");

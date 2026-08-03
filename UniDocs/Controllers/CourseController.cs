@@ -49,7 +49,7 @@ namespace UniDocs.Controllers
             var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == id);
             if (course == null)
             {
-                return NotFound("Không tìm thấy môn học!");
+                return NotFound("Courses cannor found!");
             }
 
             ViewBag.CourseName = course.CourseName;

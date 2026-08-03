@@ -30,6 +30,7 @@ namespace UniDocs.Pages.Admin
                 .ToListAsync();
         }
 
+        // delete document
         public async Task<IActionResult> OnPostDeleteDocumentAsync(int id)
         {
             var document = await _context.Documents.FindAsync(id);
@@ -43,14 +44,12 @@ namespace UniDocs.Pages.Admin
                     System.IO.File.Delete(physicalPath);
             }
 
-            // Xóa mềm tài liệu
             document.Status = Models.Enums.DocumentStatusEnum.Deleted;
             
-            // Chuyển toàn bộ Report Pending của tài liệu này thành Finished
-            var pendingReports = await _context.Reports.Where(r => r.DocumentId == id && r.Status == UniDocs.Models.Enums.ReportStatusEnum.Pending).ToListAsync();
+            var pendingReports = await _context.Reports.Where(r => r.DocumentId == id && r.Status == Models.Enums.ReportStatusEnum.Pending).ToListAsync();
             foreach(var report in pendingReports)
             {
-                report.Status = UniDocs.Models.Enums.ReportStatusEnum.Finished; 
+                report.Status = Models.Enums.ReportStatusEnum.Finished; 
             }
 
             await _context.SaveChangesAsync();
@@ -59,22 +58,20 @@ namespace UniDocs.Pages.Admin
             return RedirectToPage("./Dashboard");
         }
 
-        // Bỏ qua -> Tài liệu được phục hồi
+        // Dismiss
         public async Task<IActionResult> OnPostDismissReportAsync(int id)
         {
             var report = await _context.Reports.Include(r => r.Document).FirstOrDefaultAsync(r => r.Id == id);
             if (report == null)
                 return NotFound();
 
-            // Chuyển toàn bộ Report Pending của tài liệu này thành Finished
             var pendingReports = await _context.Reports.Where(r => r.DocumentId == report.DocumentId && r.Status == Models.Enums.ReportStatusEnum.Pending).ToListAsync();
             foreach (var r in pendingReports)
             {
                 r.Status = Models.Enums.ReportStatusEnum.Finished;
             }
 
-            // Phục hồi tài liệu (nếu nó đang bị Pending)
-            if (report.Document != null && report.Document.Status == UniDocs.Models.Enums.DocumentStatusEnum.Pending)
+            if (report.Document != null && report.Document.Status == Models.Enums.DocumentStatusEnum.Pending)
             {
                 report.Document.Status = Models.Enums.DocumentStatusEnum.Approved;
             }

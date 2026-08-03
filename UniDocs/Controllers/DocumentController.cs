@@ -92,7 +92,7 @@ namespace UniDocs.Controllers
                 }
             }
 
-            // check credits/ vip
+            // check 
             bool canDownload = false;
             if (isVip && user.DailyDownloadCount < 10)
             {
@@ -223,7 +223,7 @@ namespace UniDocs.Controllers
             if (document.Status != Models.Enums.DocumentStatusEnum.Approved)
             {
                 bool isAdmin = User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("Admin");
-                bool isOwner = User.Identity != null && User.Identity.IsAuthenticated && document.UserId.ToString() == User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
+                bool isOwner = User.Identity != null && User.Identity.IsAuthenticated && document.UserId.ToString() == User.FindFirstValue(ClaimTypes.NameIdentifier);
                 
                 if (!isAdmin && !isOwner)
                 {
@@ -283,7 +283,7 @@ namespace UniDocs.Controllers
             };
             _context.Reports.Add(report);
 
-            var reportCount = await _context.Reports.CountAsync(r => r.DocumentId == model.DocumentId && r.Status == UniDocs.Models.Enums.ReportStatusEnum.Pending) + 1;
+            var reportCount = await _context.Reports.CountAsync(r => r.DocumentId == model.DocumentId && r.Status == Models.Enums.ReportStatusEnum.Pending) + 1;
             if (reportCount >= 3)
             {
                 var docToHide = await _context.Documents.FindAsync(model.DocumentId);

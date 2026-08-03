@@ -23,7 +23,7 @@ namespace UniDocs.Controllers
             var documentsQuery = _context.Documents
                 .Include(d => d.Course)
                 .Include(d => d.User)
-                .Where(d => d.Status == UniDocs.Models.Enums.DocumentStatusEnum.Approved);
+                .Where(d => d.Status == Models.Enums.DocumentStatusEnum.Approved);
 
             if (!string.IsNullOrEmpty(query))
             {

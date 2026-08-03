@@ -51,7 +51,7 @@ namespace UniDocs
             }
 
 
-            // Middlle ware
+            // Middlleware
             if (!app.Environment.IsDevelopment())
             {
                 // Catch 500

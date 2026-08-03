@@ -25,12 +25,11 @@ namespace UniDocs.Pages.Admin
         public List<string> Departments { get; set; } = new List<string>();
 
 
-        // Phân trang
         public int CurrentPage { get; set; } = 1;
         public int TotalPages { get; set; }
         public const int PageSize = 6;
 
-
+        // Course page
         public async Task OnGetAsync(int p = 1)
         {
             CurrentPage = p;
@@ -52,6 +51,7 @@ namespace UniDocs.Pages.Admin
                 .ToListAsync();
         }
 
+        // Add course
         public async Task<IActionResult> OnPostAddCourseAsync()
         {
             ModelState.Remove("CourseInput.Id");
@@ -76,6 +76,7 @@ namespace UniDocs.Pages.Admin
             return RedirectToPage("./Courses");
         }
 
+        // Edit course
         public async Task<IActionResult> OnPostEditCourseAsync(int id)
         {
             ModelState.Remove("CourseInput.Id");
@@ -106,6 +107,7 @@ namespace UniDocs.Pages.Admin
             return RedirectToPage("./Courses");
         }
 
+        // Delete course
         public async Task<IActionResult> OnPostDeleteCourseAsync(int id)
         {
             var course = await _context.Courses

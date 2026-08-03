@@ -27,6 +27,7 @@ namespace UniDocs.Pages.Admin
                 .ToListAsync();
         }
 
+        // Lock/ Unlock
         public async Task<IActionResult> OnPostToggleLockAsync(int id)
         {
             var user = await _context.Users.FindAsync(id);
