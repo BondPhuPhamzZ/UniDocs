@@ -2,7 +2,8 @@
 
 UniDocs is a modern, scalable web platform designed to streamline the sharing and management of study materials for university students. By integrating AI capabilities and a tiered subscription model, UniDocs provides an enhanced and highly efficient learning experience.
 
-<img width="356" height="421" alt="1" src="https://github.com/user-attachments/assets/e7102c74-ba21-41db-a45c-d2c047bacc84" />
+<img width="536" height="635" alt="Final" src="https://github.com/user-attachments/assets/023fceed-2e1e-4e6e-92f1-f086167786a7" />
+
 
 ## ✨ Key Features
 - **AI-Assisted Summarization:** Automatically generates concise summaries of uploaded documents using AI, saving students valuable reading time.
@@ -11,7 +12,12 @@ UniDocs is a modern, scalable web platform designed to streamline the sharing an
 - **Document Management:** Easy-to-use interface for uploading, categorizing, searching, and sharing digital resources.
 
 ## 📸 Core Features
-<img width="344" height="422" alt="1" src="https://github.com/user-attachments/assets/c66558a2-ee43-46c5-8fe0-0c3f1db9fd93" />
+1. AI Summarization
+<img width="536" height="635" alt="Final" src="https://github.com/user-attachments/assets/b917ca67-1be7-4dda-b512-f8533081fef8" />
+2. Upgrade Plan
+<img width="719" height="421" alt="1" src="https://github.com/user-attachments/assets/9b6e69bc-1ff3-4d0f-97a9-78bdf9aa7fe0" />
+
+
 
 
 ## 🛠️ Tech Stack
