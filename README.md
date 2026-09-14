@@ -15,7 +15,6 @@ UniDocs is a modern, scalable web platform designed to streamline the sharing an
 1. AI Summarization
 <img width="599" height="631" alt="Final" src="https://github.com/user-attachments/assets/6e9f7da5-0b1f-42d8-b916-d29c132aa6ad" />
 
-
 2. Upgrade Plan
 <img width="719" height="421" alt="1" src="https://github.com/user-attachments/assets/9b6e69bc-1ff3-4d0f-97a9-78bdf9aa7fe0" />
 
